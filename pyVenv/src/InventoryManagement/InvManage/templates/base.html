@@ -22,11 +22,12 @@
 			/* border: none; */
 		}
 		label, .collapsable_card_header{
+			margin: 0;
 			color: #777777;
-			font-size: 1.2em;
+			font-size: 1em;
 		}
 		div.icon>img{
-			height: 40px;
+			height: 30px;
 		}
 
 		div.attribution{
@@ -35,12 +36,16 @@
 			bottom: 0;
 			right: 0;
 		}
+		div.card-header{
+			height: 50px;
+			vertical-align: middle;
+		}
 	</style>
 </head>
 <body>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 <div class="container col-sm-12">
-	{% include "navbar.html" %}
+	{% include "navbar/navbar.html" %}
 </div>
 
 <div class="container col-sm-12 row">
