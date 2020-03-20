@@ -10,6 +10,7 @@ from .models import Product
 
 
 class ProductBasicInfoForm(forms.Form):
+    prefix = "basic"
     context={
         "class": "form-control",
     }
@@ -25,6 +26,7 @@ class ProductBasicInfoForm(forms.Form):
     ))
 
 class ProductDetailedInfoForm(forms.Form):
+    prefix = "detailed"
     context={
         "class": "form-control",
     }
@@ -36,6 +38,7 @@ class ProductDetailedInfoForm(forms.Form):
 
 
 class ProductThumbnailForm(forms.Form):
+    prefix = "thumbnail"
     image = forms.ImageField()
     # class Meta:
     #     model = Product
@@ -44,6 +47,7 @@ class ProductThumbnailForm(forms.Form):
     # class ProductDetailedDimensionsForm(forms.Form):
 
 class ProductStorageInfoForm(forms.Form):
+    prefix = "storage"
     barcode = forms.ImageField()
     context={
         "class": "form-control",
@@ -52,6 +56,7 @@ class ProductStorageInfoForm(forms.Form):
     expiry = forms.DateField(widget=forms.widgets.DateInput(attrs=context))
 
 class ProductPricingForm(forms.Form):
+    prefix = "pricing"
     context={
         "class": "form-control",
     }

@@ -43,30 +43,35 @@
 	</style>
 </head>
 <body>
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-<div class="container col-sm-12">
-	{% include "navbar/navbar.html" %}
-</div>
 
-<div class="container col-sm-12 row">
-	<div class="col-sm-3">
-		{% include "crud/sidebar.html" %}
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+	<div class="container col-sm-12">
+		{% include "navbar/navbar.html" %}
 	</div>
-	<div class="col-sm-9">
-		{% include "crud/toolbar.html" %}
-		<div class="row">
-			<div class="col-sm-6">
-				{% include "crud/basic_info.html" %}
-				{% include "crud/thumbnail.html" %}
-			</div>
-			<div class="col-sm-6">
-				{% include "crud/status.html" %}
-				{% include "crud/pricing_info.html" %}
-				{% include "crud/detailed_info.html" %}
-			</div>
+
+	<div class="container col-sm-12 row">
+		<div class="col-sm-3">
+			{% include "crud/sidebar.html" %}
 		</div>
+		<div class="col-sm-9">
+			<form enctype="multipart/form-data" action="" method="POST">
+				{% csrf_token %}
+			{% include "crud/toolbar.html" %}
+			<div class="row">
+				<div class="col-sm-6">
+					{% include "crud/basic_info.html" %}
+					{% include "crud/thumbnail.html" %}
+				</div>
+				<div class="col-sm-6">
+					{% include "crud/status.html" %}
+					{% include "crud/pricing_info.html" %}
+					{% include "crud/detailed_info.html" %}
+				</div>
+			</div>
+		</div>	
+		<input type="submit" name="Submit">
+	</form>
 	</div>
-</div>
 <div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

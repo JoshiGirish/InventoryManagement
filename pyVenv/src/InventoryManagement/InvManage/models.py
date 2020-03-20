@@ -14,12 +14,14 @@ class Product(models.Model):
     description = models.TextField()
     # Pricing
     price = models.FloatField()
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=0,null=True)
     # Dimensions
     # ProductImage = models.ImageField(upload="")
     length = models.FloatField()
     width = models.FloatField()
     height = models.FloatField()
+    weight = models.FloatField()
+    discount = models.IntegerField(default=0)
     product_image = models.ImageField(upload_to='images/') 
 
 
