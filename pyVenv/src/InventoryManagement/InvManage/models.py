@@ -3,8 +3,6 @@ from django.db import models
 class Dashboard(models.Model):
     pass
     
-    
-    
 class Product(models.Model):
     # CATEGORY=
     # Basic Information
@@ -15,6 +13,8 @@ class Product(models.Model):
     # Pricing
     price = models.FloatField()
     quantity = models.IntegerField(default=0,null=True)
+    identifier = models.CharField(max_length=30,blank=False, null=True)
+    location = models.CharField(max_length=100,blank=False, null=True)
     # Dimensions
     # ProductImage = models.ImageField(upload="")
     length = models.FloatField()
@@ -22,19 +22,14 @@ class Product(models.Model):
     height = models.FloatField()
     weight = models.FloatField()
     discount = models.IntegerField(default=0)
-    product_image = models.ImageField(upload_to='images/') 
-
-
-
+    image = models.ImageField(blank=True,upload_to='images/') 
+    barcode = models.CharField(max_length=100,null=True,blank=True)
+    expiry = models.DateTimeField(null=True, blank=True)
 
 class Purchase(models.Model):
     VendorName = models.CharField(max_length=100)
     VendorPhone = models.CharField(max_length=10)
     VendorAdd = models.TextField()
-
-
-
-
 
 class Sale(models.Model):
     pass

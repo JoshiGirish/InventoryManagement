@@ -2,16 +2,16 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">Quantity</h4>
-                <input class="score form-control">
+                <h4 class="label-head">{{ status_form.quantity.label }}</h4>
+                {{ status_form.quantity }}
             </div>
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">Identifier</h4>
-                <input class="score form-control">
+                <h4 class="label-head">{{ status_form.identifier.label }}</h4>
+                {{ status_form.identifier }}
             </div>
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">Location</h4>
-                <input class="score form-control">
+                <h4 class="label-head">{{ status_form.location.label }}</h4>
+                {{ status_form.location }}
             </div>
         </div>
     </div>
