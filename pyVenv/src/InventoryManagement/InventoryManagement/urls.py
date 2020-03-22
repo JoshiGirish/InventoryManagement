@@ -4,10 +4,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from InvManage.views import product_view
+from InvManage.views import *
 
 urlpatterns = [
-	path('product/',product_view),
+	path('create_product/',create_product_view, name='create_product'),
+    path('update_product/<str:pk>/',update_product_view, name='update_product'),
+    path('delete_product/', delete_product_view, name='delete_product'),
+    path('products/',products_view, name='products'),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

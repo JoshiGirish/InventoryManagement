@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block contents %}
+    <table class="table table-sm">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Identifier</th>
+            <th scope="col">Location</th>
+            <th scope="col">Update</th>
+            <th scope="col">Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <!-- <th scope="row">1</th> -->
+                <td class="product_name">{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.identifier }}</td>
+                <td>{{ product.location }}</td>
+                <td><a href="{% url 'update_product' product.id %}" class="btn btn-sm btn-info">Update</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-prod_id="{{ product.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Modal -->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{% url 'delete_product' %}" method="POST">
+          {% csrf_token %}
+        <div class="modal-body">
+          Are you sure you want to delete!
+        <input type="hidden" name="product_id" id="pro_id" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  
+     <script type="text/javascript">
+      $('#delModal').on('show.bs.modal', function(event){
+          var button = $(event.relatedTarget);
+          console.log(button)
+          var product_id = button.data('prod_id');
+          var modal = $(this);
+          modal.find('.modal-body #pro_id').val(product_id);
+          // alert("you are here")
+        //   document.getElementById('pro_id').value = 10;
+      })
+  </script>
+  </div>
+    <!-- {% include 'crud/delete.html' %} -->
+{% endblock %}

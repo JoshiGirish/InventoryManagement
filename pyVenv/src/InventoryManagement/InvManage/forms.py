@@ -47,8 +47,9 @@ class ProductThumbnailForm(forms.Form):
     # class ProductDetailedDimensionsForm(forms.Form):
 
 class ProductStorageInfoForm(forms.Form):
+
     prefix = "storage"
-    barcode = forms.ImageField()
+    barcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
     context={
         "class": "form-control",
         "type": "date"
@@ -62,3 +63,12 @@ class ProductPricingForm(forms.Form):
     }
     price = forms.FloatField(label="MRP",widget=forms.NumberInput(attrs={'id': 'form_homework', 'step': "1", "class": "form-control"}))
     discount = forms.FloatField(widget=forms.NumberInput(attrs={'id': 'form_homework', 'step': "1", "class": "form-control"}))
+
+class ProductStatusForm(forms.Form):
+    context={
+        "class": "form-control",
+    }
+    prefix = "status"
+    quantity = forms.IntegerField(label="Quantity", widget=forms.NumberInput(attrs={"class": "score form-control"}))
+    identifier = forms.CharField(label="Identifier", widget=forms.TextInput(attrs={"class": "score form-control"}))
+    location = forms.CharField(label="Location",widget=forms.TextInput(attrs={"class": "score form-control"}))

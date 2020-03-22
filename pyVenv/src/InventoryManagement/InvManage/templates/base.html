@@ -54,6 +54,7 @@
 			{% include "crud/sidebar.html" %}
 		</div>
 		<div class="col-sm-9">
+			{% block contents %}
 			<form enctype="multipart/form-data" action="" method="POST">
 				{% csrf_token %}
 			{% include "crud/toolbar.html" %}
@@ -69,8 +70,9 @@
 				</div>
 			</div>
 		</div>	
-		<input type="submit" name="Submit">
+		<!-- <input type="submit" name="Submit"> -->
 	</form>
+	{% endblock %}
 	</div>
 <div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
