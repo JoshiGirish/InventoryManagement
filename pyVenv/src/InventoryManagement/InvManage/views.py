@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from .forms import *
 from .models import Product
 from django.core.files.storage import FileSystemStorage
+import io,csv
 
 def create_product_view(request):
 	basic_form = ProductBasicInfoForm()
@@ -79,5 +80,35 @@ def delete_product_view(request):
 	prod.delete()
 	# if request.method == 'POST':
 	# 	product = Product.objects.get(id=pk)
+	return redirect('/products')
+
+def uploadCSV(request):
+	if request.method == "POST":
+		csv_file = request.FILES['file']
+
+	data_set = csv_file.read().decode('UTF-8')
+
+	print('Starting to print data_set:',data_set)
+
+	io_string = io.StringIO(data_set)
+	next(io_string)
+	for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+		_, created = Product.objects.update_or_create(
+			name=column[0],
+			category=column[1],
+			item_type=column[2],
+			description=column[3],
+			price=column[4],
+			quantity=column[5],
+			identifier=column[6],
+			location=column[7],
+			length=column[8],
+			width=column[9],
+			height=column[10],
+			weight=column[11],
+			discount=column[12],
+			barcode=column[13]
+		)
+	
 	return redirect('/products')
 		

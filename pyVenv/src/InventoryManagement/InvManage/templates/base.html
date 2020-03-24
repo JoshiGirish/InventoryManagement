@@ -41,6 +41,8 @@
 			vertical-align: middle;
 		}
 	</style>
+	{% load static %}
+    <link rel="stylesheet" href="{% static 'dropzone.css' %}">
 </head>
 <body>
 
@@ -54,28 +56,15 @@
 			{% include "crud/sidebar.html" %}
 		</div>
 		<div class="col-sm-9">
+
+			{% block title %}
+			{% endblock %}
+
 			{% block contents %}
-			<form enctype="multipart/form-data" action="" method="POST">
-				{% csrf_token %}
-			{% include "crud/toolbar.html" %}
-			<div class="row">
-				<div class="col-sm-6">
-					{% include "crud/basic_info.html" %}
-					{% include "crud/thumbnail.html" %}
-				</div>
-				<div class="col-sm-6">
-					{% include "crud/status.html" %}
-					{% include "crud/pricing_info.html" %}
-					{% include "crud/detailed_info.html" %}
-				</div>
-			</div>
-		</div>	
-		<!-- <input type="submit" name="Submit"> -->
-	</form>
-	{% endblock %}
+			{% endblock %}
+			
 	</div>
 <div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

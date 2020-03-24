@@ -120,6 +120,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'InventoryManagement/assets/'),
+    os.path.join(BASE_DIR, 'InventoryManagement/assets/css/'),
+    os.path.join(BASE_DIR, 'InventoryManagement/assets/scripts/')
 ]
 
 MEDIA_URL = '/media/'
