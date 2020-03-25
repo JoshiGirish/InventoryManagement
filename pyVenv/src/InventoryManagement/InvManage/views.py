@@ -4,11 +4,13 @@ from .forms import *
 from .models import Product
 from django.core.files.storage import FileSystemStorage
 import io,csv
+from .filters import ProductFilter
+from django.core.paginator import Paginator
 
 def create_product_view(request):
 	basic_form = ProductBasicInfoForm()
 	detailed_form = ProductDetailedInfoForm()
-	thumnail_form = ProductThumbnailForm()
+	thumbnail_form = ProductThumbnailForm()
 	storage_form = ProductStorageInfoForm()
 	pricing_form = ProductPricingForm()
 	status_form = ProductStatusForm()
@@ -24,12 +26,13 @@ def create_product_view(request):
 			if form.is_valid():
 				data.update(form.cleaned_data)
 		Product.objects.create(**data)
+		print(request.FILES)
 		uploaded_file = request.FILES['thumbnail-image']
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
 		return redirect('/products')
 	return render(request, 'product.html',{'basic_form':basic_form,
-											'thumbnail_form':thumnail_form,
+											'thumbnail_form':thumbnail_form,
 											'detailed_form':detailed_form,
 											'storage_form':storage_form,
 											'pricing_form':pricing_form,
@@ -37,7 +40,16 @@ def create_product_view(request):
 
 def products_view(request):
 	products = Product.objects.all()
-	return render(request, 'display/products.html',{'products': products})
+
+	myFilter = ProductFilter(request.GET, queryset=products)
+	products = myFilter.qs
+	number_of_products = len(products)
+	paginator = Paginator(products,10)
+
+	page_number = request.GET.get('page')
+	page_obj = paginator.get_page(page_number)
+
+	return render(request, 'display/products.html',{'page_obj':page_obj,'myFilter':myFilter, 'n_prod': number_of_products})
 
 def update_product_view(request,pk):
 	product = Product.objects.get(id=pk)
