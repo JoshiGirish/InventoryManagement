@@ -40,10 +40,13 @@ def create_product_view(request):
 
 def products_view(request):
 	products = Product.objects.all()
-
+	# desc_filter = request.GET.get('description__contains')
+	# print(request.GET)
+	# print(desc_filter)
 	myFilter = ProductFilter(request.GET, queryset=products)
 	products = myFilter.qs
 	number_of_products = len(products)
+	
 	paginator = Paginator(products,10)
 
 	page_number = request.GET.get('page')
