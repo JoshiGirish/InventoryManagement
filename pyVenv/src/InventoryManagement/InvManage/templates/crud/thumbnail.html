@@ -14,28 +14,22 @@
         </div>
     </div>
 </div> -->
-<div class="row">
-    <div class="col-4 mt-3">
+<!-- <div class="row"> -->
+    <div class="row">
+    <div class="col-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header" id="headingTwo">
                 <label class="card-text">Snapshot</label>
             </div>
-            <!-- <form method="POST">
-                <div class="dropzone needsclick dz-clickable" id="imgDrop">
-                    <div class="dz-message needsclick row">
-                        <input type="hidden" name="prod_id" value="{% thumbnail_url request.get_full_path %}">
-                        <button type="button" class="dz-button">Drop image here.</button>
-                    </div>
-                </div> -->
-                <!-- <button class="btn btn-sm btn-primary" id="imgUpload">Upload</button> -->
-            <!-- </form> -->
-            <div>
-                <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Product Thumbnail">
+            <div class="card-body">
+                <div>
+                    <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Product Thumbnail">
+                </div>
+                <label class="btn btn-light m-1">
+                    <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">
+                    <!-- <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image"> -->
+                </label>
             </div>
-            <label class="btn btn-light m-1">
-                <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">
-                <!-- <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image"> -->
-            </label>
             <script>
                 function previewFile() {
                 var preview = document.querySelector('#prod_thumbnail');
@@ -59,6 +53,7 @@
         {% include "crud/variants.html" %}
     </div>
 </div>
+<!-- </div> -->
 {% load static %}
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.js"></script> -->
     <script src="{% static 'dropzone.js' %}"></script>

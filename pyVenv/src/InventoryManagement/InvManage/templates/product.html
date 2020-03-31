@@ -5,7 +5,7 @@
       {% csrf_token %}
             <div class="m-2 d-flex align-items-center row">
                 <!-- <h2 class="col-sm-6">Create Product</h2> -->
-                <h2 class="col-sm-6 mr-auto" style="color: #777777;">Create Product</h2>
+                <h2 class="col-sm-6 mr-auto label-head">Create Product</h2>
                     <div class="float-right">
                         <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
                         <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
@@ -21,12 +21,12 @@
         <div class="row">
             <div class="col-sm-6">
                 {% include "crud/basic_info.html" %}
-                {% include "crud/thumbnail.html" %}
+                {% include "crud/detailed_info.html" %}
             </div>
             <div class="col-sm-6">
                 {% include "crud/status.html" %}
                 {% include "crud/pricing_info.html" %}
-                {% include "crud/detailed_info.html" %}
+                {% include "crud/thumbnail.html" %}
             </div>
         </div>
       </form>

@@ -8,14 +8,58 @@
 		/* div {
 			border: 1px solid violet;
 		} */
-		div.card{
-			background-color: #f9f9f9;
+
+		.app-name{
+			font-family: 'Orbitron', sans-serif;
+			font-size: 1.5em;
 		}
+
+		div.card{
+			background-color: #ffffff;
+			border-radius: 5px;
+			-webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+			box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+			border: none;
+			margin-bottom: 30px;
+			-webkit-transition: all 0.3s ease-in-out;
+			transition: all 0.3s ease-in-out;
+			font-family: 'Comfortaa', cursive;
+		}
+
+		.bg-c-blue {
+			background: linear-gradient(45deg,#4099ff,#73b4ff);
+		}
+
+		.bg-c-green {
+			background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+		}
+
+		.bg-c-yellow {
+			background: linear-gradient(45deg,#FFB64D,#ffcb80);
+		}
+
+		/* .bg-c-pink { */
+		.card{
+			background: linear-gradient(45deg,#ffffff,#ffffff);
+		}
+
+		.card-header{
+			background-color: #eeeeee;
+			font-family: 'Baloo 2', cursive;
+		}
+
+
+		.card-body{
+			background-color: #fefefe;
+		}
+
 		.label-head{
-			color: #777777;
+			color: #252525;
+			font-family: 'Baloo 2', cursive;
+			font-size: 1.5em;
 		}
 		input.score{
-			color: #777777;
+			color: #252525;
 			font-size: 2em;
 			background-color: none;
 			text-align: center;
@@ -23,7 +67,7 @@
 		}
 		label, .collapsable_card_header{
 			margin: 0;
-			color: #777777;
+			color: #252525;
 			font-size: 1em;
 		}
 		div.icon>img{
@@ -40,6 +84,15 @@
 			height: 50px;
 			vertical-align: middle;
 		}
+
+		.workarea{
+			background-color: linear-gradient(#84c0da, #f6fcff);
+		}
+		.form-control{
+			background-color: #ffffff;
+			border-style: solid;
+			border-color: #e7e7e7;
+		}
 	</style>
 	{% load static %}
     <link rel="stylesheet" href="{% static 'dropzone.css' %}">
@@ -52,22 +105,28 @@
 	</div>
 
 	<div class="container col-sm-12 row">
-		<div class="col-sm-3">
+
+		<div class="col-sm-3 sidebar">
 			{% include "crud/sidebar.html" %}
 		</div>
-		<div class="col-sm-9">
 
+		<div class="col-sm-9 workarea">
 			{% block title %}
 			{% endblock %}
 
 			{% block contents %}
 			{% endblock %}
-			
-	</div>
-<div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+		</div>
+
+		<div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"> 
 </body>
 </html>
