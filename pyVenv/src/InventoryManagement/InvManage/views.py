@@ -6,14 +6,22 @@ from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 def create_product_view(request):
-	basic_form = ProductBasicInfoForm()
-	detailed_form = ProductDetailedInfoForm()
-	thumbnail_form = ProductThumbnailForm()
-	storage_form = ProductStorageInfoForm()
-	pricing_form = ProductPricingForm()
-	status_form = ProductStatusForm()
+	if request.method == 'GET':
+		basic_form = ProductBasicInfoForm()
+		detailed_form = ProductDetailedInfoForm()
+		thumbnail_form = ProductThumbnailForm()
+		storage_form = ProductStorageInfoForm()
+		pricing_form = ProductPricingForm()
+		status_form = ProductStatusForm()	
+		return render(request, 'product.html',{'basic_form':basic_form,
+													'thumbnail_form':thumbnail_form,
+													'detailed_form':detailed_form,
+													'storage_form':storage_form,
+													'pricing_form':pricing_form,
+													'status_form':status_form})
 
 	if request.method == 'POST':
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
@@ -25,18 +33,12 @@ def create_product_view(request):
 			form = form_type(request.POST, prefix = pre)
 			if form.is_valid():
 				data.update(form.cleaned_data)
-		Product.objects.create(**data)
-		print(request.FILES)
 		uploaded_file = request.FILES['thumbnail-image']
+		data.update({'image':uploaded_file})
+		Product.objects.create(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
 		return redirect('/products')
-	return render(request, 'product.html',{'basic_form':basic_form,
-											'thumbnail_form':thumbnail_form,
-											'detailed_form':detailed_form,
-											'storage_form':storage_form,
-											'pricing_form':pricing_form,
-											'status_form':status_form})
 
 def products_view(request):
 	products = Product.objects.all()
@@ -63,23 +65,27 @@ def update_product_view(request,pk):
 	storage_form = ProductStorageInfoForm(initial=data)
 	pricing_form = ProductPricingForm(initial=data)
 	status_form = ProductStatusForm(initial=data)
+	thumbnail = product.image.name
 
 	if request.method == 'POST':
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
-		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
 		data = {}
-		print(request.POST)
+		# print(request.POST)
 		for form_type in types:
 			pre = form_type.prefix
 			form = form_type(request.POST, prefix = pre)
 			if form.is_valid():
 				data.update(form.cleaned_data)
+
+		uploaded_file = request.FILES['thumbnail-image']
+		data.update({'image':uploaded_file})
 		print('Printing DATA:',data)
 		Product.objects.filter(id=pk).update(**data)
-		# prod.save()
-		uploaded_file = request.FILES['thumbnail-image']
+
+		# product.update({'image':uploaded_file})
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
+
 		return redirect('/products')
 
 	return render(request, 'product.html',{'basic_form':basic_form,
@@ -87,7 +93,18 @@ def update_product_view(request,pk):
 											'detailed_form':detailed_form,
 											'storage_form':storage_form,
 											'pricing_form':pricing_form,
-											'status_form':status_form})
+											'status_form':status_form,
+											'thumbnail':thumbnail})
+
+# def create_product_thumbnail(request):
+# 	print(request.POST)
+# 	prod_id = request.POST.get('prod_id')
+# 	product = Product.objects.get(id=prod_id)
+# 	uploaded_file = request.FILES['thumbnail-image']
+# 	product.update({'image':uploaded_file})
+# 	fs = FileSystemStorage()
+# 	fs.save(uploaded_file.name,uploaded_file)
+# 	return redirect('/products')
 
 def delete_product_view(request):
 	prod_id = request.POST.get('product_id')
@@ -99,7 +116,7 @@ def delete_product_view(request):
 
 def uploadCSV(request):
 	if request.method == "POST":
-		csv_file = request.FILES['file']
+		csv_file = request.FILES.get('file')
 
 	data_set = csv_file.read().decode('UTF-8')
 

@@ -8,6 +8,7 @@ from InvManage.views import *
 
 urlpatterns = [
 	path('create_product/',create_product_view, name='create_product'),
+    # path('create_product_thumbnail/', create_product_thumbnail, name='create_thumbnail'),
     path('update_product/<str:pk>/',update_product_view, name='update_product'),
     path('delete_product/', delete_product_view, name='delete_product'),
     path('products/',products_view, name='products'),

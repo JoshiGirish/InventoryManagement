@@ -39,7 +39,7 @@ class ProductDetailedInfoForm(forms.Form):
 
 class ProductThumbnailForm(forms.Form):
     prefix = "thumbnail"
-    image = forms.ImageField()
+    image = forms.ImageField(widget=forms.FileInput(attrs={"class": "upload"}))
     # class Meta:
     #     model = Product
     #     fields = ['name','category','item_type','description']
