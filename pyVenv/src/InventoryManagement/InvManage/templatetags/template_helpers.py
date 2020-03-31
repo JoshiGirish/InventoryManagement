@@ -1,4 +1,5 @@
 from django import template
+import re
 
 register = template.Library()
 
@@ -10,4 +11,14 @@ def relative_url(value, field_name, urlencode=None):
         filtered_querystring = filter(lambda p: p.split('=')[0] != field_name, querystring)
         encoded_querystring = '&'.join(filtered_querystring)
         url = '{}&{}'.format(url, encoded_querystring)
+    return url
+
+@register.simple_tag
+def thumbnail_url(urlencode=None):
+    # print(urlencode)
+    id = re.search(r'(\d)+',urlencode)
+    # url = f'create_product_thumbnail/{id.group()}/'
+    # url = f'/create_product_thumbnail/{id.group()}/'
+    url = id
+    print(url)
     return url
