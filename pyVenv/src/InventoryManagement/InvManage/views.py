@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
-from .models import Product
+from .models import Product, Vendor, PurchaseOrder
 from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter
@@ -22,7 +22,6 @@ def create_product_view(request):
 													'storage_form':storage_form,
 													'pricing_form':pricing_form,
 													'status_form':status_form})
-
 	if request.method == 'POST':
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
@@ -42,18 +41,12 @@ def create_product_view(request):
 
 def products_view(request):
 	products = Product.objects.all()
-	# desc_filter = request.GET.get('description__contains')
-	# print(request.GET)
-	# print(desc_filter)
 	myFilter = ProductFilter(request.GET, queryset=products)
 	products = myFilter.qs
 	number_of_products = len(products)
-	
 	paginator = Paginator(products,10)
-
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
-
 	return render(request, 'display/products.html',{'page_obj':page_obj,'myFilter':myFilter, 'n_prod': number_of_products})
 
 def update_product_view(request,pk):
@@ -66,26 +59,20 @@ def update_product_view(request,pk):
 	pricing_form = ProductPricingForm(initial=data)
 	status_form = ProductStatusForm(initial=data)
 	thumbnail = product.image.name
-
 	if request.method == 'POST':
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		data = {}
-		# print(request.POST)
 		for form_type in types:
 			pre = form_type.prefix
 			form = form_type(request.POST, prefix = pre)
 			if form.is_valid():
 				data.update(form.cleaned_data)
-
 		uploaded_file = request.FILES['thumbnail-image']
 		data.update({'image':uploaded_file})
 		print('Printing DATA:',data)
 		Product.objects.filter(id=pk).update(**data)
-
-		# product.update({'image':uploaded_file})
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-
 		return redirect('/products')
 
 	return render(request, 'product.html',{'basic_form':basic_form,
@@ -96,32 +83,16 @@ def update_product_view(request,pk):
 											'status_form':status_form,
 											'thumbnail':thumbnail})
 
-# def create_product_thumbnail(request):
-# 	print(request.POST)
-# 	prod_id = request.POST.get('prod_id')
-# 	product = Product.objects.get(id=prod_id)
-# 	uploaded_file = request.FILES['thumbnail-image']
-# 	product.update({'image':uploaded_file})
-# 	fs = FileSystemStorage()
-# 	fs.save(uploaded_file.name,uploaded_file)
-# 	return redirect('/products')
-
 def delete_product_view(request):
 	prod_id = request.POST.get('product_id')
 	prod = Product.objects.get(id=prod_id)
 	prod.delete()
-	# if request.method == 'POST':
-	# 	product = Product.objects.get(id=pk)
 	return redirect('/products')
 
 def uploadCSV(request):
 	if request.method == "POST":
 		csv_file = request.FILES.get('file')
-
 	data_set = csv_file.read().decode('UTF-8')
-
-	print('Starting to print data_set:',data_set)
-
 	io_string = io.StringIO(data_set)
 	next(io_string)
 	for column in csv.reader(io_string, delimiter=',', quotechar="|"):
@@ -141,6 +112,42 @@ def uploadCSV(request):
 			discount=column[12],
 			barcode=column[13]
 		)
-	
 	return redirect('/products')
 		
+def create_purchase_order_view(request):
+	if request.method == 'GET':
+		prods = []
+		for i,prod in enumerate(Product.objects.all()):
+			prods.append({'id':prod.id,'name':prod.name,'code':prod.identifier})
+		purchase_form = PurchaseOrderBasicInfo()	
+		return render(request, 'purchase_order.html',{'purchase_form': purchase_form, 'prods': prods})
+	if request.method == 'POST':
+		print(request.POST)
+		types = ['PurchaseOrderBasicInfo']
+		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
+		data = {}
+		print(request.POST)
+		for form_type in types:
+			pre = form_type.prefix
+			form = form_type(request.POST, prefix = pre)
+			if form.is_valid():
+				data.update(form.cleaned_data)
+		PurchaseOrder.objects.create(**data)
+		fs = FileSystemStorage()
+		return redirect('/products')	
+
+def create_vendor_view(request):
+	if request.method == 'GET':
+		vendors = []
+		for i,vend in enumerate(Vendor.objects.all()):
+			vendors.append({'id':vend.id,'name':vend.name,'code':vend.identifier})
+		vendor_form = VendorForm()	
+		return render(request, 'vendor.html',{'vendor_form': vendor_form, 'vendors': vendors})
+
+	if request.method == 'POST':
+		data = {}
+		form = VendorForm(request.POST, prefix = VendorForm.prefix)
+		if form.is_valid():
+			data.update(form.cleaned_data)
+		Vendor.objects.create(**data)
+		return redirect('/products')

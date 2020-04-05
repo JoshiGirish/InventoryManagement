@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
+import django
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -76,12 +78,21 @@ WSGI_APPLICATION = 'InventoryManagement.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'mongoCluster',
+    #     'HOST': "mongodb+srv://Girish:Giri$hthe1@mongocluster-5yefg.mongodb.net/test?retryWrites=true&w=majority",
+    #     'USER': 'Girish',
+    #     'PASSWORD': 'Giri$hthe1',
+    # }
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+# client = pymongo.MongoClient("mongodb+srv://Girish:<password>@mongocluster-5yefg.mongodb.net/test?retryWrites=true&w=majority")
+# db = client.test
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
