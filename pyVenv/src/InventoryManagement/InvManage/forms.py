@@ -1,5 +1,6 @@
 from django import forms
-from .models import Product
+from .models import Product, Vendor
+
 
 # def basic_info_form():
 #     name = models.CharField(max_length=100)
@@ -72,3 +73,56 @@ class ProductStatusForm(forms.Form):
     quantity = forms.IntegerField(label="Quantity", widget=forms.NumberInput(attrs={"class": "score form-control"}))
     identifier = forms.CharField(label="Identifier", widget=forms.TextInput(attrs={"class": "score form-control"}))
     location = forms.CharField(label="Location",widget=forms.TextInput(attrs={"class": "score form-control"}))
+
+####### Purchase Order Forms #########
+
+class PurchaseOrderBasicInfo(forms.Form):
+    prefix = "po"
+    context={
+        "class": "form-control",
+    }
+    product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    vendor_choices = [(v.id, v.name) for v in Vendor.objects.all()]
+
+    # Vendor details
+    vendor = forms.ChoiceField(required=True, label='Vendors', choices=vendor_choices)
+    
+    # Order details
+    date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}))
+    po = forms.IntegerField(label="PO", widget=forms.TextInput(attrs=context))
+    # Pricing details
+    discount = forms.FloatField(widget=forms.TextInput(attrs=context))
+    tax = forms.FloatField(widget=forms.TextInput(attrs=context))
+    paid = forms.FloatField(widget=forms.TextInput(attrs=context))
+    balance = forms.FloatField(widget=forms.TextInput(attrs=context))
+    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    prods = forms.ChoiceField(required=True, label='Products', choices=product_choices)
+    
+class VendorForm(forms.Form):
+    prefix = "vend"
+    context={
+        "class": "form-control",
+    }
+    name = forms.CharField(widget=forms.TextInput(attrs=context))
+    identifier = forms.CharField(widget=forms.TextInput(attrs=context))
+    phone = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    address = forms.CharField(widget=forms.Textarea(
+        attrs={
+            "class": "form-control",
+            "rows": 3
+        }
+    ))
+    email = forms.CharField(widget=forms.TextInput(attrs=context))
+    location = forms.CharField(widget=forms.TextInput(attrs=context))
+
+
+class ProductPurchaseEntryForm(forms.Form):
+    context={
+        "class": "form-control",
+    }
+    product = forms.ChoiceField()
+    # identifier = forms.CharField(widget=forms.)
+    quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    price = forms.FloatField(widget=forms.TextInput(attrs=context))
+    discount = forms.FloatField(widget=forms.TextInput(attrs=context))
+    

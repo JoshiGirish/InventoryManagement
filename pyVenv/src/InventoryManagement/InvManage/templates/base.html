@@ -93,6 +93,35 @@
 			border-style: solid;
 			border-color: #e7e7e7;
 		}
+		.table td, .table th,.table input {
+			text-align: center;
+			vertical-align: middle;   
+			font-family: 'Comfortaa', cursive;
+		}
+
+		table#order_total td{
+			text-align: left;
+			vertical-align: middle;  
+			border: none;
+			font-family: 'Comfortaa', cursive;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+
+		table#order_total td.orderSumLabel{
+			text-align: right;
+			padding-right: 1em;
+		}
+
+		#orderTotalLabel{
+			font-weight: bold;
+		}
+
+		tbody#addProduct td.orderSumLabel{
+			text-align: right;
+			padding-right: 1em;
+		}
+
 	</style>
 	{% load static %}
     <link rel="stylesheet" href="{% static 'dropzone.css' %}">

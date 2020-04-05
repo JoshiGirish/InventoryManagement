@@ -1,0 +1,25 @@
+{% load static %}
+
+    <div class="card">
+        <div class="card-body">
+            <!-- PO field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.po.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.po }}
+                </div>
+            </div>
+            <!-- Date field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.date.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.date }}
+                </div>
+            </div>
+        </div>
+    </div>
+

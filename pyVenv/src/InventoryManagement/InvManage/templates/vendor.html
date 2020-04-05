@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+    
+    {% block title %}
+    <form action="{% url 'create_vendor' %}" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row">
+                <!-- <h2 class="col-sm-6">Create Product</h2> -->
+                <h2 class="col-sm-6 mr-auto label-head">Create Vendor</h2>
+                    <div class="float-right">
+                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                        <!-- <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button> -->
+                        <!-- <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</a> -->
+                    </div>
+            </div>
+              
+    {% endblock %}
+
+    {% block contents %}     
+    <div class="row">
+            <div class="col-sm-6">
+                {% include "vendor/vendor_info.html" %}
+                <!-- {% include "crud/detailed_info.html" %} -->
+                <button class="btn btn-sm btn-light" type="Submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    {% endblock %}
