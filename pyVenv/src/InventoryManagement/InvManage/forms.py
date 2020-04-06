@@ -95,8 +95,7 @@ class PurchaseOrderBasicInfo(forms.Form):
     tax = forms.FloatField(widget=forms.TextInput(attrs=context))
     paid = forms.FloatField(widget=forms.TextInput(attrs=context))
     balance = forms.FloatField(widget=forms.TextInput(attrs=context))
-    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
-    prods = forms.ChoiceField(required=True, label='Products', choices=product_choices)
+    # prods = forms.ChoiceField(required=True, label='Products', choices=product_choices)
     
 class VendorForm(forms.Form):
     prefix = "vend"
@@ -117,10 +116,12 @@ class VendorForm(forms.Form):
 
 
 class ProductPurchaseEntryForm(forms.Form):
+    prefix = "form"
     context={
         "class": "form-control",
     }
-    product = forms.ChoiceField()
+    product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    product = forms.ChoiceField(required=True, label='Products', choices=product_choices)
     # identifier = forms.CharField(widget=forms.)
     quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
     price = forms.FloatField(widget=forms.TextInput(attrs=context))
