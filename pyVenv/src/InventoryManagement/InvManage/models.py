@@ -29,15 +29,6 @@ class PurchaseOrder(models.Model):
     balance = models.FloatField()
 
 
-class ProductPurchaseEntry(models.Model):
-    identifier = models.CharField(max_length=100)
-    quantity = models.IntegerField()
-    price = models.FloatField()
-    discount = models.FloatField()
-    subtotal = models.FloatField()
-    order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
-
-
 class Product(models.Model):
     # Basic Information
     name = models.CharField(max_length=100)
@@ -58,10 +49,20 @@ class Product(models.Model):
     image = models.ImageField(blank=True,upload_to='images/') 
     barcode = models.CharField(max_length=100,null=True,blank=True)
     expiry = models.DateTimeField(null=True, blank=True)
-    ppentries = models.ManyToManyField(ProductPurchaseEntry)
 
     def __str__(self):
         return self.name
+
+
+class ProductPurchaseEntry(models.Model):
+    # identifier = models.CharField(max_length=100)
+    product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    discount = models.FloatField()
+    # subtotal = models.FloatField()
+    order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
+
 
 class Sale(models.Model):
     pass

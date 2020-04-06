@@ -11,9 +11,9 @@
                 <th scope="col">Subtotal</th>
             </tr>
             </thead>
-            <form action=""></form>
+            <form action="">
               <tbody id="addProduct">
-                <!-- {{ purchase_form.prods }} -->
+                {{ pentry_formset.management_form }}
               </tbody>
             </form> 
         </table>
@@ -43,54 +43,61 @@
             </div>
           </div>
         {{ prods|json_script:"product-data" }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
         <script>
           var count = 0;
           var data = JSON.parse(document.getElementById('product-data').textContent);
           document.getElementById('add').onclick = function(){
-            count++;
             var opt='';
+            var prefix = 'form';
             var i;
             for (i in data){
               opt += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
             }
-            var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>'
-            var sel = '<select onchange="setIdentifier(this)" class="form-control" data-num="'+count+'" name="po-prods" id="sel'+count+'">'+opt+'</select>';
-            var ids = '<td><label name="id'+count+'" id="id'+count+'">'+data[0].code+'</label></td>';
-            var qty = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="qty'+count+'" id="qty'+count+'" value=0></td>';
-            var pri = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="price'+count+'" id="price'+count+'" value=0></td>';
-            var dis = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="dis'+count+'" id="dis'+count+'" value=0></td>';
-            var sub = '<td class="orderSumLabel"><label name="subt'+count+'" id="subt'+count+'">0</label></td></tr>';
+            var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>';
+            var sel = '<td><select onchange="setIdentifier(this)" class="form-control" data-num="'+count+'" name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product">'+opt+'</select></td>';
+            var ids = '<td><label name="'+prefix+'-'+count+'-id" id="id_'+prefix+'-'+count+'-id">'+data[0].code+'</label></td>';
+            var qty = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value=0></td>';
+            var pri = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-price" id="id_'+prefix+'-'+count+'-price" value=0></td>';
+            var dis = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-discount" id="id_'+prefix+'-'+count+'-discount" value=0></td>';
+            var sub = '<td class="orderSumLabel"><label name="'+prefix+'-'+count+'-subt" id="id_'+prefix+'-'+count+'-subt">0</label></td>';
             // rows.innerHTML += '<tr><td id="prod'+count+'">'+sel+'</td><td><label name="id'+count+'" id="id'+count+'"></label></td><td><input class="form-control" type="text" name="qty'+count+'" id="qty'+count+'"></td><td><input class="form-control" type="text" name="price'+count+'" id="price'+count+'"></td><td><input class="form-control" type="text" name="dis'+count+'" id="dis'+count+'"></td><td><label name="subt'+count+'" id="subt'+count+'"></label></td></tr>';           
-            var markup ='<tr>'+del+'<td id="prod'+count+'">'+sel+'</td>'+ids+qty+pri+dis+sub;           
+            var markup ='<tr>'+del+sel+ids+qty+pri+dis+sub+'</tr>';           
             $('#addProduct').append(markup);
-            }
+            count++;
+
+            var form_idx = $('#id_form-TOTAL_FORMS').val();
+            // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
+            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+            };
 
           // Sets the identifier in the table according to the selected value in the product dropdown menu
           function setIdentifier(tag){
               var ind = data.findIndex(p => p.id == tag.value)
-              $('#id'+tag.dataset.num)[0].textContent = data[ind].code
-            }
+              $('#id_'+prefix+'-'+tag.dataset.num+'-id')[0].textContent = data[ind].code
+            };
 
           // Deletes the table row
           function deleteRow(row){
             $(row).parents("tr").remove();
             updateSubTotal(row);
-          }
+          };
 
           // Updates the subtotal cell
           function updateSubTotal(inTag){
-            var num = $(inTag).data('num')
-            var q = $('#qty'+num).val()
-            var d = $('#dis'+num).val()
-            var p = $('#price'+num).val()
+            var num = $(inTag).data('num');
+            var q = $('#id_'+prefix+'-'+num+'-quantity').val();
+            var d = $('#id_'+prefix+'-'+num+'-discount').val();
+            var p = $('#id_'+prefix+'-'+num+'-price').val();
             var subtotal = p*q-(p*q*d/100);
-            $('#subt'+num).html(subtotal.toFixed(2));
+            $('#id_'+prefix+'-'+num+'-subt').html(subtotal.toFixed(2));
             // Calculate subtotals
-            var subTags = $('label[id*="subt"]')
-            var s = 0
+            var subTags = $('label[id*="subt"]');
+            var s = 0;
             for(var i=0;i<subTags.length;i++){
-              s += parseFloat(subTags[i].textContent)
-            }
+              s += parseFloat(subTags[i].textContent);
+            };
             $('#total_sb').html(s.toFixed(2));
             // Calculate tax
             var tax = s*8/100;
@@ -98,5 +105,11 @@
             // Calculate total amount
             var t = s+tax;
             $('#total_amt').html(t.toFixed(2));
-          }
+          };
+
+          // $('#addProduct').formset({
+          //     addText: 'Add',
+          //     deleteText: 'remove'
+          // });
         </script>
+        

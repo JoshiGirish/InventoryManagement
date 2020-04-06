@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
-from .models import Product, Vendor, PurchaseOrder
+from django.forms.formsets import formset_factory
+from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry
 from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.contrib import messages
+from django.db import IntegrityError, transaction
 
 def create_product_view(request):
 	if request.method == 'GET':
@@ -115,25 +118,82 @@ def uploadCSV(request):
 	return redirect('/products')
 		
 def create_purchase_order_view(request):
+	ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm)
+	pentry_formset = ProductPurchaseEntryFormset()
+	pentry_form = ProductPurchaseEntryForm()
+
 	if request.method == 'GET':
+		vendor_form = VendorForm()
 		prods = []
 		for i,prod in enumerate(Product.objects.all()):
 			prods.append({'id':prod.id,'name':prod.name,'code':prod.identifier})
-		purchase_form = PurchaseOrderBasicInfo()	
-		return render(request, 'purchase_order.html',{'purchase_form': purchase_form, 'prods': prods})
+		purchase_form = PurchaseOrderBasicInfo()
+		context = {
+			'purchase_form': purchase_form,
+			'pentry_form': pentry_form,
+			'prods': prods,
+			'vendor_form': vendor_form,
+			'pentry_formset': pentry_formset
+		}	
+		return render(request, 'purchase_order.html',context)
+
 	if request.method == 'POST':
-		print(request.POST)
-		types = ['PurchaseOrderBasicInfo']
-		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
+		# print(request.POST)
+		purchase_form = PurchaseOrderBasicInfo(request.POST, prefix='po')
+		pentry_formset = ProductPurchaseEntryFormset(request.POST,prefix = 'form')
 		data = {}
-		print(request.POST)
-		for form_type in types:
-			pre = form_type.prefix
-			form = form_type(request.POST, prefix = pre)
-			if form.is_valid():
-				data.update(form.cleaned_data)
-		PurchaseOrder.objects.create(**data)
-		fs = FileSystemStorage()
+		if purchase_form.is_valid() and pentry_formset.is_valid():
+			vendor_id = purchase_form.cleaned_data.get('vendor')
+			vendor = Vendor.objects.get(id=vendor_id)
+			po = purchase_form.cleaned_data.get('po')
+			date = purchase_form.cleaned_data.get('date')
+			tax = purchase_form.cleaned_data.get('tax')
+			discount = purchase_form.cleaned_data.get('discount')
+			paid = purchase_form.cleaned_data.get('paid')
+			balance = purchase_form.cleaned_data.get('balance')
+			data = {
+				'vendor':vendor,
+				'po':po,
+				'date':date,
+				'tax':tax,
+				'discount':discount,
+				'paid':paid,
+				'balance':balance
+			}
+			new_po = PurchaseOrder.objects.create(**data)
+			# PurchaseOrder.objects.create(**data)
+
+            # # create purchase entries
+			purchase_entries = []
+
+			for ppeform in pentry_formset:
+				print(ppeform.cleaned_data)
+				product_id = ppeform.cleaned_data.get('product')
+				print(product_id)
+				product = Product.objects.get(id=int(product_id))
+				quantity = ppeform.cleaned_data.get('quantity')
+				print(quantity)
+				price = ppeform.cleaned_data.get('price')
+				print(price)
+				discount = ppeform.cleaned_data.get('discount')
+				print(discount)
+				order = new_po
+				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
+				# purchase_entries.append(ProductPurchaseEntry(product=product,quantity=quantity,price=price,discount=discount,order=order))
+			# print('Printing purchase entries: ',purchase_entries)
+			# try:
+			# 	with transaction.atomic():
+            #         #Replace the old with the new
+            #         # UserLink.objects.filter(user=user).delete()
+			# 		ProductPurchaseEntry.objects.bulk_create(purchase_entries)
+
+            #         # And notify our users that it worked
+			# 		messages.success(request, 'You have created a purchase order.')
+
+			# except IntegrityError: #If the transaction failed
+			# 	messages.error(request, 'There was an error creating the purchase order.')
+			# 	return redirect('/products')
+
 		return redirect('/products')	
 
 def create_vendor_view(request):

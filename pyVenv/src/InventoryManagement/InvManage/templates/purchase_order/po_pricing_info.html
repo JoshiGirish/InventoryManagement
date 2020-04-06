@@ -23,3 +23,44 @@
         </div>
     </div>
 
+    <div class="card">
+        <div class="card-body">
+            <!-- Tax field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.tax.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.tax }}
+                </div>
+            </div>
+            <!-- Discount field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.discount.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.discount }}
+                </div>
+            </div>
+            <!-- Paid field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.paid.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.paid }}
+                </div>
+            </div>
+            <!-- Balance field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ purchase_form.balance.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.balance }}
+                </div>
+            </div>
+        </div>
+    </div>
+
