@@ -82,10 +82,13 @@ class PurchaseOrderBasicInfo(forms.Form):
         "class": "form-control",
     }
     product_choices = [(p.id, p.name) for p in Product.objects.all()]
-    vendor_choices = [(v.id, v.name) for v in Vendor.objects.all()]
+    # vendor_choices = [(v.id, v.name) for v in Vendor.objects.all()]
+    vendor_choices = ((v.id,v.name) for v in Vendor.objects.all())
+    # vendor_choices = Vendor.objects.all()
 
     # Vendor details
-    vendor = forms.ChoiceField(required=True, label='Vendors', choices=vendor_choices)
+    # vendor = forms.ChoiceField(required=True, choices=vendor_choices, widget=forms.Select(attrs=context))
+    vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
     
     # Order details
     date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}))
@@ -95,7 +98,10 @@ class PurchaseOrderBasicInfo(forms.Form):
     tax = forms.FloatField(widget=forms.TextInput(attrs=context))
     paid = forms.FloatField(widget=forms.TextInput(attrs=context))
     balance = forms.FloatField(widget=forms.TextInput(attrs=context))
-    # prods = forms.ChoiceField(required=True, label='Products', choices=product_choices)
+    subtotal = forms.FloatField(widget=forms.TextInput(attrs=context))
+    taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context))
+    ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context))
+
     
 class VendorForm(forms.Form):
     prefix = "vend"
@@ -120,8 +126,12 @@ class ProductPurchaseEntryForm(forms.Form):
     context={
         "class": "form-control",
     }
-    product_choices = [(p.id, p.name) for p in Product.objects.all()]
-    product = forms.ChoiceField(required=True, label='Products', choices=product_choices)
+    # product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    product = forms.ModelChoiceField(
+                    queryset= Product.objects.all(),
+                    widget=forms.Select(attrs={
+                                            "class": "form-control",
+                                            "onchange":"setIdentifier(this)"}))
     # identifier = forms.CharField(widget=forms.)
     quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
     price = forms.FloatField(widget=forms.TextInput(attrs=context))

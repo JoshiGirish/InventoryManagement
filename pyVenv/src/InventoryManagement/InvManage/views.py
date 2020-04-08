@@ -7,9 +7,10 @@ from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
+from .serializers import VendorSerializer
 
 def create_product_view(request):
 	if request.method == 'GET':
@@ -113,7 +114,8 @@ def uploadCSV(request):
 			height=column[10],
 			weight=column[11],
 			discount=column[12],
-			barcode=column[13]
+			barcode=column[13],
+			expiry=column[14],
 		)
 	return redirect('/products')
 		
@@ -121,17 +123,22 @@ def create_purchase_order_view(request):
 	ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm)
 	pentry_formset = ProductPurchaseEntryFormset()
 	pentry_form = ProductPurchaseEntryForm()
+	print(pentry_form)
 
 	if request.method == 'GET':
+		purchase_form = PurchaseOrderBasicInfo()
 		vendor_form = VendorForm()
 		prods = []
 		for i,prod in enumerate(Product.objects.all()):
 			prods.append({'id':prod.id,'name':prod.name,'code':prod.identifier})
-		purchase_form = PurchaseOrderBasicInfo()
+		vendors = []
+		for i,vend in enumerate(Vendor.objects.all()):
+			vendors.append({'id': vend.id,'name':vend.name})
 		context = {
 			'purchase_form': purchase_form,
 			'pentry_form': pentry_form,
 			'prods': prods,
+			'vendors': vendors,
 			'vendor_form': vendor_form,
 			'pentry_formset': pentry_formset
 		}	
@@ -140,17 +147,23 @@ def create_purchase_order_view(request):
 	if request.method == 'POST':
 		# print(request.POST)
 		purchase_form = PurchaseOrderBasicInfo(request.POST, prefix='po')
+		print(purchase_form)
 		pentry_formset = ProductPurchaseEntryFormset(request.POST,prefix = 'form')
 		data = {}
+		print(purchase_form.is_valid())
+		print(pentry_formset.is_valid())
 		if purchase_form.is_valid() and pentry_formset.is_valid():
-			vendor_id = purchase_form.cleaned_data.get('vendor')
-			vendor = Vendor.objects.get(id=vendor_id)
+			vendor = purchase_form.cleaned_data.get('vendor')
+			# vendor = Vendor.objects.get(id=vendor_id)
 			po = purchase_form.cleaned_data.get('po')
 			date = purchase_form.cleaned_data.get('date')
 			tax = purchase_form.cleaned_data.get('tax')
 			discount = purchase_form.cleaned_data.get('discount')
 			paid = purchase_form.cleaned_data.get('paid')
 			balance = purchase_form.cleaned_data.get('balance')
+			subtotal = purchase_form.cleaned_data.get('subtotal')
+			taxtotal = purchase_form.cleaned_data.get('taxtotal')
+			ordertotal = purchase_form.cleaned_data.get('ordertotal')
 			data = {
 				'vendor':vendor,
 				'po':po,
@@ -158,41 +171,24 @@ def create_purchase_order_view(request):
 				'tax':tax,
 				'discount':discount,
 				'paid':paid,
-				'balance':balance
+				'balance':balance,
+				'subtotal':subtotal,
+				'taxtotal':taxtotal,
+				'ordertotal':ordertotal
 			}
 			new_po = PurchaseOrder.objects.create(**data)
 			# PurchaseOrder.objects.create(**data)
 
             # # create purchase entries
-			purchase_entries = []
-
+			# purchase_entries = []
 			for ppeform in pentry_formset:
-				print(ppeform.cleaned_data)
-				product_id = ppeform.cleaned_data.get('product')
-				print(product_id)
-				product = Product.objects.get(id=int(product_id))
+				product = ppeform.cleaned_data.get('product')
 				quantity = ppeform.cleaned_data.get('quantity')
-				print(quantity)
 				price = ppeform.cleaned_data.get('price')
-				print(price)
 				discount = ppeform.cleaned_data.get('discount')
-				print(discount)
 				order = new_po
 				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
-				# purchase_entries.append(ProductPurchaseEntry(product=product,quantity=quantity,price=price,discount=discount,order=order))
-			# print('Printing purchase entries: ',purchase_entries)
-			# try:
-			# 	with transaction.atomic():
-            #         #Replace the old with the new
-            #         # UserLink.objects.filter(user=user).delete()
-			# 		ProductPurchaseEntry.objects.bulk_create(purchase_entries)
 
-            #         # And notify our users that it worked
-			# 		messages.success(request, 'You have created a purchase order.')
-
-			# except IntegrityError: #If the transaction failed
-			# 	messages.error(request, 'There was an error creating the purchase order.')
-			# 	return redirect('/products')
 
 		return redirect('/products')	
 
@@ -211,3 +207,11 @@ def create_vendor_view(request):
 			data.update(form.cleaned_data)
 		Vendor.objects.create(**data)
 		return redirect('/products')
+
+def get_vendor(request):
+	print(request.GET)
+	vendor_id = request.GET.get('vendor_id')
+	vendor = VendorSerializer(Vendor.objects.get(id=vendor_id))
+	return JsonResponse(vendor.data)
+
+	

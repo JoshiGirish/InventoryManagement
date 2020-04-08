@@ -1,20 +1,6 @@
 {% load template_helpers %}
 {% load static %}
-<!-- <div class="card mt-3">
-    <div class="card-body">
-        <div class="form-group form-row m-1">
-            <div class="icon col-1">
-                <img src="{% static 'inv/website.png' %}" alt="Storage">
-            </div>
-            <div class="col-sm-3">
-                <label>{{ thumbnail_form.image.label }} </label> 
-            </div>
-            <div class="col-sm-8 fileupload">
-            </div>
-        </div>
-    </div>
-</div> -->
-<!-- <div class="row"> -->
+
     <div class="row">
     <div class="col-4">
         <div class="card">
@@ -27,7 +13,6 @@
                 </div>
                 <label class="btn btn-light m-1">
                     <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">
-                    <!-- <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image"> -->
                 </label>
             </div>
             <script>
@@ -53,30 +38,3 @@
         {% include "crud/variants.html" %}
     </div>
 </div>
-<!-- </div> -->
-{% load static %}
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.js"></script> -->
-    <script src="{% static 'dropzone.js' %}"></script>
-    <script src="{% static 'jquery.js' %}"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-      <!-- <script>
-        console.log("{% thumbnail_url request.get_full_path %}")
-        var imgDropzone = new Dropzone(document.querySelector('#imgDrop'), { // Make the whole body a dropzone
-            url: "/create_product_thumbnail/",
-            paramName: 'thumbnail-image',
-            thumbnailWidth: 80,
-            thumbnailHeight: 80,
-            parallelUploads: 20,
-            autoQueue: false});
-
-        imgDropzone.on("addedfile", function(file) {
-        // Hookup the start button
-        document.getElementById("save").onclick = function() { imgDropzone.enqueueFile(file); };
-        });
-        document.getElementById("save").onclick = function() {
-            imgDropzone.enqueueFiles(imgDropzone.getFilesWithStatus(Dropzone.ADDED));
-            // myDropzone.processQueue();
-        };
-        </script> -->
