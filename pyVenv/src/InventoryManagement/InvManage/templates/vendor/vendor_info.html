@@ -1,4 +1,13 @@
-{{ purchase_form.vendor }}
+
+<div class="form-group form-row m-1">
+    <div class="col-sm-4">
+        <label>Selelct a vendor</label>
+    </div>
+    <div class="col-sm-8">
+        {{ purchase_form.vendor }}
+    </div>
+</div>
+
 <div class="card">
     <div class="card-body">
     <!-- Vendor name field -->
@@ -9,7 +18,7 @@
         <div class="col-sm-8">
             {{ vendor_form.name }}
         </div>
-        </div>
+    </div>
     <!-- Vendor identifier field -->
     <div class="form-group form-row m-1">
         <div class="col-sm-4">
@@ -57,3 +66,23 @@
         </div>
     </div>
 </div>
+<script>
+    $('#id_po-vendor').change(function(){
+        var vendor_id = $('#id_po-vendor option:selected').val();
+        $.ajax({
+            url: "{% url 'get_vendor' %}",
+            data: {
+                'vendor_id': vendor_id
+            },
+            dataType:'json',
+            success: function(data){
+                $('#id_vend-name').val(data.name);
+                $('#id_vend-identifier').val(data.identifier);
+                $('#id_vend-phone').val(data.phone);
+                $('#id_vend-address').val(data.address);
+                $('#id_vend-email').val(data.email);
+                $('#id_vend-location').val(data.location);
+            }
+        });
+    });
+</script>

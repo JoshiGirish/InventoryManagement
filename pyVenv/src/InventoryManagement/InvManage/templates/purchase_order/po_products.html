@@ -1,4 +1,7 @@
 {% load static %}
+          {{ purchase_form.subtotal.as_hidden }}
+          {{ purchase_form.taxtotal.as_hidden }}
+          {{ purchase_form.ordertotal.as_hidden }}
           <table class="table table-sm">
             <thead class="thead-light">
             <tr>
@@ -15,6 +18,10 @@
               <tbody id="addProduct">
                 {{ pentry_formset.management_form }}
               </tbody>
+              <!-- <input id="po-subtotal" type="text" hidden="hidden">
+              <input id="po-taxtotal" type="text" hidden="hidden">
+              <input id="po-ordertotal" type="text" hidden="hidden"> -->
+              
             </form> 
         </table>
         <div class="row m-1">
@@ -43,13 +50,17 @@
             </div>
           </div>
         {{ prods|json_script:"product-data" }}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
-        <script>
+       <script>
           var count = 0;
           var data = JSON.parse(document.getElementById('product-data').textContent);
-          document.getElementById('add').onclick = function(){
+          var prefix = 'form';
+          var isFirst = true;
+
+          document.getElementById('add').onclick = addRow;
+          addRow()
+          // Add row function
+          function addRow(){
             var opt='';
-            var prefix = 'form';
             var i;
             for (i in data){
               opt += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
@@ -65,11 +76,12 @@
             var markup ='<tr>'+del+sel+ids+qty+pri+dis+sub+'</tr>';           
             $('#addProduct').append(markup);
             count++;
-
-            var form_idx = $('#id_form-TOTAL_FORMS').val();
-            // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
-            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-
+            if (isFirst != true){ // dont increament if it is the first row as TOTAL_FORMS is already set to 1.
+              var form_idx = $('#id_form-TOTAL_FORMS').val();
+              // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
+              $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+            }
+            isFirst = false;
             };
 
           // Sets the identifier in the table according to the selected value in the product dropdown menu
@@ -105,11 +117,11 @@
             // Calculate total amount
             var t = s+tax;
             $('#total_amt').html(t.toFixed(2));
-          };
 
-          // $('#addProduct').formset({
-          //     addText: 'Add',
-          //     deleteText: 'remove'
-          // });
+            // Assign values to the hidden inputs
+            $('#id_po-subtotal').val(s.toFixed(2));
+            $('#id_po-taxtotal').val(tax.toFixed(2));
+            $('#id_po-ordertotal').val(t.toFixed(2));
+          };
         </script>
         

@@ -23,10 +23,13 @@ class PurchaseOrder(models.Model):
     date = models.DateTimeField(null=True, blank=True)
     po = models.IntegerField()
     # Pricing information
-    discount = models.FloatField()
-    tax = models.FloatField()
-    paid = models.FloatField()
-    balance = models.FloatField()
+    discount = models.FloatField(null=True)
+    tax = models.FloatField(null=True)
+    paid = models.FloatField(null=True)
+    balance = models.FloatField(null=True)
+    subtotal = models.FloatField(null=True)
+    taxtotal = models.FloatField(null=True)
+    ordertotal = models.FloatField(null=True)
 
 
 class Product(models.Model):
@@ -46,9 +49,9 @@ class Product(models.Model):
     height = models.FloatField(null=True,blank=True)
     weight = models.FloatField(null=True,blank=True)
     discount = models.IntegerField(default=0)
-    image = models.ImageField(blank=True,upload_to='images/') 
     barcode = models.CharField(max_length=100,null=True,blank=True)
     expiry = models.DateTimeField(null=True, blank=True)
+    image = models.ImageField(blank=True,upload_to='images/') 
 
     def __str__(self):
         return self.name
@@ -57,9 +60,9 @@ class Product(models.Model):
 class ProductPurchaseEntry(models.Model):
     # identifier = models.CharField(max_length=100)
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
-    quantity = models.IntegerField()
-    price = models.FloatField()
-    discount = models.FloatField()
+    quantity = models.IntegerField(null=True)
+    price = models.FloatField(null=True)
+    discount = models.FloatField(null=True)
     # subtotal = models.FloatField()
     order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
 

@@ -6,4 +6,4 @@ class ProductFilter(django_filters.FilterSet):
     # desc = CharFilter(field_name='description', lookup_expr='icontains')
     class Meta:
         model = Product
-        fields = {'description': ['contains']}
+        fields = {'name': ['contains']}
