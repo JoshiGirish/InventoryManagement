@@ -7,7 +7,7 @@ class Dashboard(models.Model):
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
-    phone = models.IntegerField(null=True, blank=True)
+    phone = models.CharField(max_length=100, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     email = models.CharField(null=True, blank=True,max_length=100)
     location = models.CharField(null=True, blank=True,max_length=100)

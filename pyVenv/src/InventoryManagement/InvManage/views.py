@@ -93,32 +93,64 @@ def delete_product_view(request):
 	prod.delete()
 	return redirect('/products')
 
-def uploadCSV(request):
+def uploadCSV(request,data):
+	return_url = '/products'
+	if request.method == 'GET':
+		pass
+
 	if request.method == "POST":
+		# Decides which fucntion needs to be called to handle the upload
+		def upload_router(data):
+			route = {
+				'products': (create_products,'/products'),
+				'vendors': (create_vendors,'/products')
+			}
+			return route.get(data)
+
+		# Function which creates products from the uploaded file
+		def create_products(io_string):
+			for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+				_, created = Product.objects.update_or_create(
+					name=column[0],
+					category=column[1],
+					item_type=column[2],
+					description=column[3],
+					price=column[4],
+					quantity=column[5],
+					identifier=column[6],
+					location=column[7],
+					length=column[8],
+					width=column[9],
+					height=column[10],
+					weight=column[11],
+					discount=column[12],
+					barcode=column[13],
+					expiry=column[14],
+				)
+			return
+		# Function which creates vendors from the uploaded file
+		def create_vendors(io_string):
+			for column in csv.reader(io_string, delimiter='|'):
+				_, created = Vendor.objects.update_or_create(
+					name=column[0],
+					identifier=column[1],
+					phone=column[2],
+					address=column[3],
+					email=column[4],
+					location=column[5],
+				)
+			return
+
 		csv_file = request.FILES.get('file')
-	data_set = csv_file.read().decode('UTF-8')
-	io_string = io.StringIO(data_set)
-	next(io_string)
-	for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-		_, created = Product.objects.update_or_create(
-			name=column[0],
-			category=column[1],
-			item_type=column[2],
-			description=column[3],
-			price=column[4],
-			quantity=column[5],
-			identifier=column[6],
-			location=column[7],
-			length=column[8],
-			width=column[9],
-			height=column[10],
-			weight=column[11],
-			discount=column[12],
-			barcode=column[13],
-			expiry=column[14],
-		)
-	return redirect('/products')
-		
+		data_set = csv_file.read().decode('UTF-8')
+		io_string = io.StringIO(data_set)
+		next(io_string)
+		route_func,return_url = upload_router(data)  # Get the function and return url
+		route_func(io_string) # Execute the route function
+
+	return redirect(return_url)
+
+
 def create_purchase_order_view(request):
 	ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm)
 	pentry_formset = ProductPurchaseEntryFormset()
@@ -188,7 +220,6 @@ def create_purchase_order_view(request):
 				discount = ppeform.cleaned_data.get('discount')
 				order = new_po
 				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
-
 
 		return redirect('/products')	
 

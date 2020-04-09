@@ -41,7 +41,7 @@
           </button>
         </div>
         <form id="csvDrop" class="dropzone needsclick dz-clickable modal-body">
-          <form class="dropzone needsclick dz-clickable"  id="myAwesomeDropzone" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+          <form class="dropzone needsclick dz-clickable"  id="myAwesomeDropzone" action="{% url 'upload' 'products' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
                 <div class="dz-message needsclick row">
                   <div class="col-sm-5">
@@ -54,7 +54,7 @@
                 </div>
               </form>
           <div class="modal-footer">
-            <button type="button" id"closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button id="uploadBtn" class="btn btn-success">Upload</button>
           </div>
         </form>
@@ -78,7 +78,7 @@
       </script>
       <script>
      var myDropzone = new Dropzone(document.querySelector('#csvDrop'), { // Make the whole body a dropzone
-      url: "{% url 'upload' %}", // Set the url
+      url: "{% url 'upload' 'products' %}", // Set the url
       thumbnailWidth: 80,
       thumbnailHeight: 80,
       parallelUploads: 20,
