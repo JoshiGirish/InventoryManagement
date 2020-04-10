@@ -1,0 +1,98 @@
+{% extends "vendor.html" %}
+
+    {% block title %}
+    <form action="{% url 'vendor' %}" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row">
+                <h2 class="col-sm-6 mr-auto label-head">Create Vendor</h2>
+                <div class="float-right">
+                    <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                    <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                    <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                    <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button>
+                </div>
+            </div>
+    {% endblock title %}
+
+    {% block contents %} 
+      {% block info %}    
+      <div class="row">
+              <div class="col-sm-6">
+                  {% include "vendor/vendor_info.html" %}
+              </div>
+          </form>
+      </div>
+      {% endblock info %}
+
+      {% block modal %}
+        <!-- Modal -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form id="csvDrop" class="dropzone needsclick dz-clickable modal-body">
+                <form class="dropzone needsclick dz-clickable"  id="myAwesomeDropzone" action="{% url 'upload' data='vendors' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                      <div class="dz-message needsclick row">
+                        <div class="col-sm-5">
+                          {% load static %}
+                          <img style="max-height: 100px;" src="{% static 'file-csv-solid.svg' %}" alt="">
+                        </div>
+                        <div class="col-sm-7">
+                          <button type="button" class="dz-button">Drop files here or click to upload.</button><br />
+                        </div>
+                      </div>
+                    </form>
+                <div class="modal-footer">
+                  <button type="button" id="closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button id="uploadBtn" class="btn btn-success">Upload</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endblock modal %}
+
+      {% block additional %}
+        {% load static %}
+        <script src="{% static 'bootstrap.min.js' %}"></script>
+        <script>
+          var myDropzone = new Dropzone(document.querySelector('#csvDrop'), { // Make the whole body a dropzone
+          url: "{% url 'upload' data='vendors' %}", // Set the url
+          thumbnailWidth: 80,
+          thumbnailHeight: 80,
+          parallelUploads: 20,
+          autoQueue: false, // Make sure the files aren't queued until manually added
+        });
+        myDropzone.on("addedfile", function(file) {
+          // Hookup the start button
+          document.getElementById("uploadBtn").onclick = function() { myDropzone.enqueueFile(file); };
+        });
+        document.getElementById("uploadBtn").onclick = function() {
+          myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+        };
+        document.getElementById("closeBtn").onclick = function() {
+          myDropzone.removeAllFiles(true);
+        };
+        </script>
+          <style>
+              .main-section{
+                margin:0 auto;
+                padding: 20px;
+                margin-top: 100px;
+                background-color: #fff;
+                box-shadow: 0px 0px 20px #c1c1c1;
+                }
+                .fileinput-remove,
+                .fileinput-upload{
+                    display: none;
+              }
+        </style>
+      {% endblock additional %}
+
+    {% endblock contents%}

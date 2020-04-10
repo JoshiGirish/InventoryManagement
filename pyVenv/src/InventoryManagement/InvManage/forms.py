@@ -1,14 +1,5 @@
 from django import forms
-from .models import Product, Vendor
-
-
-# def basic_info_form():
-#     name = models.CharField(max_length=100)
-#     item_type = models.CharField(max_length=100)
-#     category = models.CharField(max_length=100)
-#     description = models.TextField()
-
-
+from .models import Product, Vendor, PurchaseOrder
 
 class ProductBasicInfoForm(forms.Form):
     prefix = "basic"
@@ -41,11 +32,6 @@ class ProductDetailedInfoForm(forms.Form):
 class ProductThumbnailForm(forms.Form):
     prefix = "thumbnail"
     image = forms.ImageField(widget=forms.FileInput(attrs={"class": "upload"}))
-    # class Meta:
-    #     model = Product
-    #     fields = ['name','category','item_type','description']
-
-    # class ProductDetailedDimensionsForm(forms.Form):
 
 class ProductStorageInfoForm(forms.Form):
 
@@ -75,21 +61,15 @@ class ProductStatusForm(forms.Form):
     location = forms.CharField(label="Location",widget=forms.TextInput(attrs={"class": "score form-control"}))
 
 ####### Purchase Order Forms #########
-
 class PurchaseOrderBasicInfo(forms.Form):
     prefix = "po"
     context={
         "class": "form-control",
     }
     product_choices = [(p.id, p.name) for p in Product.objects.all()]
-    # vendor_choices = [(v.id, v.name) for v in Vendor.objects.all()]
     vendor_choices = ((v.id,v.name) for v in Vendor.objects.all())
-    # vendor_choices = Vendor.objects.all()
-
     # Vendor details
-    # vendor = forms.ChoiceField(required=True, choices=vendor_choices, widget=forms.Select(attrs=context))
     vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
-    
     # Order details
     date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}))
     po = forms.IntegerField(label="PO", widget=forms.TextInput(attrs=context))
@@ -110,7 +90,7 @@ class VendorForm(forms.Form):
     }
     name = forms.CharField(widget=forms.TextInput(attrs=context))
     identifier = forms.CharField(widget=forms.TextInput(attrs=context))
-    phone = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    phone = forms.CharField(widget=forms.TextInput(attrs=context))
     address = forms.CharField(widget=forms.Textarea(
         attrs={
             "class": "form-control",

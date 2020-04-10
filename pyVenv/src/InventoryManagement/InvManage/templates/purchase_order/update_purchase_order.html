@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+    
+    {% block title %}
+    <form enctype="multipart/form-data" action="{% url 'purchase_order' %}" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row">
+                <!-- <h2 class="col-sm-6">Create Product</h2> -->
+                <h2 class="col-sm-6 mr-auto label-head">Create Purchase Order</h2>
+                    <div class="float-right">
+                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                    </div>
+            </div>
+              
+    {% endblock %}
+
+    {% block contents %}     
+        <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>Selelct a vendor</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ purchase_form.vendor }}
+                    </div>
+                </div>
+                {% include "vendor/vendor_info.html" %}
+                <!-- {% include "crud/detailed_info.html" %} -->
+            </div>
+            <div class="col-sm-6">
+              {% include "purchase_order/po_pricing_info.html" %}
+            </div>
+        </div>
+        {% include "purchase_order/po_products.html" %}
+      </form>
+      <script>
+        $('#id_po-vendor').val({{ vendor_id }})
+      </script>
+    {% endblock %}

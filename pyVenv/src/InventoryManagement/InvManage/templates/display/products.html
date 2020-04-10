@@ -60,7 +60,7 @@
                 <td>{{ product.identifier }}</td>
                 <td>{{ product.location }}</td>
                 <td><a href="{% url 'update_product' product.id %}" class="btn btn-sm btn-info">Update</a></td>
-                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-prod_name="{{ product.name }}" data-prod_id="{{ product.id }}">Delete</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_product' product.id %}" data-prod_name="{{ product.name }}" data-prod_id="{{ product.id }}">Delete</a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -71,8 +71,8 @@
       <div class="pagination mr-auto">
         <span class="step-links">
           {% if page_obj.has_previous %}
-            <a href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
-            <a href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
+            <a class="btn btn-light btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
           {% endif %}
 
           <span class="current">
@@ -80,8 +80,8 @@
           </span>
 
           {% if page_obj.has_next %}
-            <a href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
-            <a href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
           {% endif %}
         </span>
       </div>
@@ -100,16 +100,16 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{% url 'delete_product' %}" method="POST">
+        <form id="delForm" action="" method="POST">
           {% csrf_token %}
-        <div class="modal-body">
-          Are you sure you want to delete <span id="prod_name" style="font-weight: bold;"></span> !
-        <input type="hidden" name="product_id" id="pro_id" value="">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger">Delete</button>
-        </div>
+            <div class="modal-body">
+              Are you sure you want to delete <span id="prod_name" style="font-weight: bold;"></span> !
+              <input type="hidden" name="product_id" id="pro_id" value="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
       </form>
       </div>
     </div>
@@ -120,9 +120,12 @@
             console.log(button)
             var product_id = button.data('prod_id');
             var product_name = button.data('prod_name');
+            var delete_url = button.data('del_url'); 
+            console.log(delete_url)
             var modal = $(this);
             modal.find('.modal-body #pro_id').val(product_id);
             modal.find('#prod_name').text(product_name);
+            modal.find('#delForm').attr('action',delete_url);
         })
       </script>
   </div>
