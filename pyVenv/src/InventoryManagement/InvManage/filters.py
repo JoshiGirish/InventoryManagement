@@ -7,3 +7,13 @@ class ProductFilter(django_filters.FilterSet):
     class Meta:
         model = Product
         fields = {'name': ['contains']}
+
+class VendorFilter(django_filters.FilterSet):
+    class Meta:
+        model = Vendor
+        fields = {'name': ['contains']}
+
+class PurchaseOrderFilter(django_filters.FilterSet):
+    class Meta:
+        model = PurchaseOrder
+        fields = {'po': ['contains']}

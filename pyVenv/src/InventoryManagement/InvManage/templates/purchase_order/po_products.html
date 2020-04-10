@@ -15,13 +15,9 @@
             </tr>
             </thead>
             <form action="">
+              {{ pentry_formset.management_form }}
               <tbody id="addProduct">
-                {{ pentry_formset.management_form }}
-              </tbody>
-              <!-- <input id="po-subtotal" type="text" hidden="hidden">
-              <input id="po-taxtotal" type="text" hidden="hidden">
-              <input id="po-ordertotal" type="text" hidden="hidden"> -->
-              
+              </tbody>              
             </form> 
         </table>
         <div class="row m-1">
@@ -50,40 +46,66 @@
             </div>
           </div>
         {{ prods|json_script:"product-data" }}
+        {{ ppes|json_script:"ppes-data" }}
        <script>
           var count = 0;
           var data = JSON.parse(document.getElementById('product-data').textContent);
-          var prefix = 'form';
-          var isFirst = true;
+          var ppes = JSON.parse(document.getElementById('ppes-data').textContent);
+          
+          // $('#total_sb').text({{purchase_form.subtotal.value}})
+          // $('#total_tax').text({{purchase_form.taxtotal.value}})
+          // $('#total_amt').text({{purchase_form.ordertotal.value}})
 
+          console.log(ppes)
+          var prefix = 'form';
+          for(var i=0;i<=ppes.length;i++){
+            addRow(ppes[i].product,ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+          }
+          
           document.getElementById('add').onclick = addRow;
-          addRow()
+          addRow(data[0].id,0,0,0,prefix)
           // Add row function
-          function addRow(){
+          function addRow(prod_id,quantity=0,price=0,discount=0,prefix='form'){
             var opt='';
             var i;
             for (i in data){
-              opt += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+              if (data[i].id == prod_id){
+                opt += '<option value="'+data[i].id+'" selected="selected">'+data[i].name+'</option>';
+              }
+              else{
+                opt += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+              }
             }
             var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>';
             var sel = '<td><select onchange="setIdentifier(this)" class="form-control" data-num="'+count+'" name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product">'+opt+'</select></td>';
             var ids = '<td><label name="'+prefix+'-'+count+'-id" id="id_'+prefix+'-'+count+'-id">'+data[0].code+'</label></td>';
-            var qty = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value=0></td>';
-            var pri = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-price" id="id_'+prefix+'-'+count+'-price" value=0></td>';
-            var dis = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-discount" id="id_'+prefix+'-'+count+'-discount" value=0></td>';
-            var sub = '<td class="orderSumLabel"><label name="'+prefix+'-'+count+'-subt" id="id_'+prefix+'-'+count+'-subt">0</label></td>';
+            var qty = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value="'+quantity+'"></td>';
+            var pri = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-price" id="id_'+prefix+'-'+count+'-price" value="'+price+'"></td>';
+            var dis = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-discount" id="id_'+prefix+'-'+count+'-discount" value="'+discount+'"></td>';
+            var sub = '<td class="orderSumLabel"><label name="'+prefix+'-'+count+'-subt" id="id_'+prefix+'-'+count+'-subt">'+(quantity*price-quantity*price*discount/100)+'</label></td>';
             // rows.innerHTML += '<tr><td id="prod'+count+'">'+sel+'</td><td><label name="id'+count+'" id="id'+count+'"></label></td><td><input class="form-control" type="text" name="qty'+count+'" id="qty'+count+'"></td><td><input class="form-control" type="text" name="price'+count+'" id="price'+count+'"></td><td><input class="form-control" type="text" name="dis'+count+'" id="dis'+count+'"></td><td><label name="subt'+count+'" id="subt'+count+'"></label></td></tr>';           
-            var markup ='<tr>'+del+sel+ids+qty+pri+dis+sub+'</tr>';           
+            var markup ='<tr id="id_row-'+count+'">'+del+sel+ids+qty+pri+dis+sub+'</tr>';           
             $('#addProduct').append(markup);
-            count++;
-            if (isFirst != true){ // dont increament if it is the first row as TOTAL_FORMS is already set to 1.
-              var form_idx = $('#id_form-TOTAL_FORMS').val();
-              // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
-              $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-            }
-            isFirst = false;
+            if(prod_id==null){
+              disableRow(count, prefix)
             };
+            count++;
+            var form_idx = $('#id_form-TOTAL_FORMS').val();
+              // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
+            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+            };
+          
+          // Disables rows whose products have been deleted from the database
+          function disableRow(num, prefix){
+            $('#id_'+prefix+'-'+count+'-product').replaceWith( '<div class="danger disabled">Deleted Product</div>' );
+            $('#id_'+prefix+'-'+count+'-quantity').attr('readonly','readonly');
+            $('#id_'+prefix+'-'+count+'-price').attr('readonly','readonly');
+            $('#id_'+prefix+'-'+count+'-discount').attr('readonly','readonly');
+            $('#id_'+prefix+'-'+count+'-id').html('---');
+            $('#id_row-'+count).addClass('disabled');
 
+          }
+          
           // Sets the identifier in the table according to the selected value in the product dropdown menu
           function setIdentifier(tag){
               var ind = data.findIndex(p => p.id == tag.value)
@@ -94,6 +116,8 @@
           function deleteRow(row){
             $(row).parents("tr").remove();
             updateSubTotal(row);
+            var form_idx = $('#id_form-TOTAL_FORMS').val(); 
+            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
           };
 
           // Updates the subtotal cell
