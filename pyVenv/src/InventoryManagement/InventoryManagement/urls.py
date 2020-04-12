@@ -8,6 +8,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from InvManage.views import *
 
 urlpatterns = [
+
+    # Routes for managing company
+    path('company/', create_company_view, name='company'),
+
     # Routes for managing products
     path('product/', create_product_view, name='product'),
     path('products/',display_products_view, name='products'),

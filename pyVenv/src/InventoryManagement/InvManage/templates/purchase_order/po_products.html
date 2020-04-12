@@ -61,7 +61,8 @@
           for(var i=0;i<=ppes.length;i++){
             addRow(ppes[i].product,ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
           }
-          
+
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh
           document.getElementById('add').onclick = addRow;
           addRow(data[0].id,0,0,0,prefix)
           // Add row function

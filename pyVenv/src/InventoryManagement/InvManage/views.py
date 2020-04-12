@@ -12,6 +12,11 @@ from django.contrib import messages
 from django.db import IntegrityError, transaction
 from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer
 
+def create_company_view(request):
+	if request.method == 'GET':
+		pass
+	return
+
 def create_product_view(request):
 	if request.method == 'GET':
 		basic_form = ProductBasicInfoForm()
@@ -212,7 +217,7 @@ def create_purchase_order_view(request):
 				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
 				product.quantity += quantity # Add the purchased quantity to the product stock
 				product.save() # Save the changes to the product instance
-		return redirect('/products')
+		return redirect('/purchase_orders')
 
 def display_purchase_orders_view(request):
 	if request.method == 'GET':

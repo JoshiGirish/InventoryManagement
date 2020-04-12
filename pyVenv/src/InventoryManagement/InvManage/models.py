@@ -5,6 +5,19 @@ class Dashboard(models.Model):
     pass
 
 
+class Company(models.Model):
+    name = models.CharField(null=True,max_length=100)
+    owner = models.CharField(null=True,max_length=100)
+    phone = models.CharField(max_length=100, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    email = models.CharField(null=True, blank=True,max_length=100)
+    location = models.CharField(null=True, blank=True,max_length=100)
+    image = models.ImageField(blank=True,upload_to='images/') 
+
+    def __str__(self):
+        return self.name
+
+
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
