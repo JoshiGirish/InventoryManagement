@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-    
     {% block title %}
     <form enctype="multipart/form-data" action="{% url 'purchase_order' %}" method="POST">
       {% csrf_token %}
@@ -11,7 +10,7 @@
                         <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
                         <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
                         <!-- <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button> -->
-                        <!-- <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</a> -->
+                        <a href="" class="btn btn-light m-1" id="print"><i class="fas fa-print"></i> Print</a>
                     </div>
             </div>
               
@@ -36,4 +35,209 @@
         </div>
         {% include "purchase_order/po_products.html" %}
       </form>
+
+      <Script>
+
+        $('#print').click(function(){
+          var doc = new jsPDF(format='a4');
+
+          margins = {
+                      top: 30,
+                      bottom: 30,
+                      left: 15,
+                      right: 15
+                  };
+            var lineHeight = 3;
+            var atLine = margins.top-10;
+            var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+            var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+            var usableWidth = pageWidth-margins.left-margins.right;
+
+            var img = new Image();
+            img.addEventListener('load', function() {
+                  doc.addImage(img, 'png', margins.left, margins.top,80,40);
+                });
+            img.src = 'G:/InvManage/logo.png'
+
+            // (Original for recepient)
+            let str = "Original for Recepient";
+            doc.setTextColor(100);
+            doc.setFontSize(9);
+            doc.text(str, pageWidth-margins.right, atLine,'right');
+            atLine += lineHeight;
+            
+            
+            // (Purchase Order Number)
+            str = "Purchase Order Number";
+            doc.setFontSize(12);
+            doc.text(str, pageWidth-margins.right, atLine+2,'right');
+            atLine += lineHeight+5;
+            
+              // (Purchase Order Number)
+            str = "352";
+            doc.setTextColor(100);
+            doc.setFontSize(15);
+            doc.text(str, pageWidth-margins.right, atLine,'right');
+            atLine += lineHeight+2;
+            
+            // (Purchase Order Number)
+            str = "Date: September 26, 2017";
+            doc.setFontSize(9);
+            doc.text(str, pageWidth-margins.right, atLine+2,'right');
+            atLine += lineHeight+2;
+            
+            // (Purchase Order Number)
+            str = "Shipping Date: October 10, 2017";
+            doc.text(str, pageWidth-margins.right, atLine+2,'right');
+            atLine += lineHeight+2;
+            
+            // Divider line
+            doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+            atLine += lineHeight+4;
+            
+            // (Invent)
+            var part = usableWidth/3;
+            doc.setFontSize(12)
+            str = 'Invent'
+            doc.text(str,margins.left, atLine);
+            str = 'Vendor'
+            doc.text(str,margins.left+part, atLine,);
+            str = 'Ship To'
+            doc.text(str,margins.left+2*part, atLine);
+            
+            
+            var h = [['Invent']]
+            doc.autoTable({
+              startY: atLine,
+              head: h,
+              body: [
+                ['Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'],
+                ['Mumbai'],
+                ['Maharashtra'],
+                ['02228682378'],
+                ['400067'],
+                ['blahblah@blah.com']
+              ]
+            })
+		
+            ///////////////Invent/////////////////////
+            // Address
+            doc.setFontSize(10)
+            var add = 'Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'
+            var splitTitle = doc.splitTextToSize(add, 50);
+              doc.text(margins.left, atLine, splitTitle);
+              atLine += lineHeight+6;
+                      
+            atLine += lineHeight*14;
+            ///////////////////////////////
+            
+            
+            
+            // Divider line
+            doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+            atLine += lineHeight+3;
+            
+            // (No)
+            var start = margins.left;
+            var one = start+3/60*usableWidth;
+            var two = one +18/60*usableWidth;
+            var three = two +6/60*usableWidth;
+            var four = three+8/60*usableWidth;
+            var five = four+6/60*usableWidth;
+            var six = five+6/60*usableWidth;
+            var seven = six+6/60*usableWidth;
+            
+            doc.setFontSize(10)
+            str = 'No'
+            doc.text(str,start, atLine);
+            str = 'Product'
+            doc.text(str,one, atLine,);
+            str = 'Quantity'
+            doc.text(str,two, atLine);
+            str = 'Rate'
+            doc.text(str,three, atLine);
+            str = 'CGST'
+            doc.text(str,four, atLine,);
+            str = 'SGST'
+            doc.text(str,five, atLine);
+            str = 'IGST'
+            doc.text(str,six, atLine,);
+            str = 'Amount'
+            doc.text(str,seven, atLine);
+            atLine += lineHeight;
+              // Divider line
+            doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+            atLine += lineHeight+4;
+            
+            
+            
+              
+            atLine += lineHeight*30;
+            ///////////////////////////////
+            
+            
+            
+            
+            // Divider line
+            doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+            atLine += lineHeight+4;
+            
+              atLine += lineHeight;
+            ///////////////////////////////
+            
+              // Divider line
+            doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "Authorized Signatory";
+            doc.setFontSize(12);
+            doc.text(str, start, atLine+2);
+            
+            // (Purchase Order Number)
+            str = "SUB TOTAL :";
+            doc.setFontSize(10);
+            doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "TAX AMOUNT :";
+            doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "ROUNDED OFF :";
+            doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "ORDER TOTAL :";
+            doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+            atLine += lineHeight+10;
+            
+            // (Purchase Order Number)
+            str = "Sixteen thousand nine hundred";
+            doc.text(str, pageWidth-margins.right, atLine+2,'right');
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "Only";
+            doc.text(str, pageWidth-margins.right, atLine+2,'right');
+            atLine += lineHeight+5;
+            
+            // (Purchase Order Number)
+            str = "NOTE";
+            doc.text(str, start, atLine+2);
+            atLine += lineHeight+3;
+            
+            // (Purchase Order Number)
+            str = "Please deliver in 14 days maximum.";
+            doc.text(str, start, atLine+2);
+            atLine += lineHeight+3;
+            
+
+            // doc.text(str, pageWidth / 2, pageHeight  - 10, 'center');
+            doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
+        });
+      </Script>
     {% endblock %}

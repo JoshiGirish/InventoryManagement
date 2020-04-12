@@ -16,4 +16,4 @@ class VendorFilter(django_filters.FilterSet):
 class PurchaseOrderFilter(django_filters.FilterSet):
     class Meta:
         model = PurchaseOrder
-        fields = {'po': ['contains']}
+        fields = {'vendor__name': ['contains']}

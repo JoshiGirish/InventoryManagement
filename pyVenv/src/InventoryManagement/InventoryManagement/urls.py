@@ -26,6 +26,7 @@ urlpatterns = [
     path('purchase_orders/',display_purchase_orders_view, name='purchase_orders'),
     path('purchase_order/<str:pk>/update', update_purchase_order_view, name='update_purchase_order'),
     path('purchase_order/<str:pk>/delete', delete_purchase_order_view, name='delete_purchase_order'),
+    path('purchase_order/<str:pk>/print',print_purchase_order_view, name='print_purchase_order'),
 
     path('upload/<data>/',uploadCSV, name='upload'),
     path('admin/', admin.site.urls),
