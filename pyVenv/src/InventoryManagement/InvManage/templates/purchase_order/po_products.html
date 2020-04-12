@@ -52,9 +52,9 @@
           var data = JSON.parse(document.getElementById('product-data').textContent);
           var ppes = JSON.parse(document.getElementById('ppes-data').textContent);
           
-          // $('#total_sb').text({{purchase_form.subtotal.value}})
-          // $('#total_tax').text({{purchase_form.taxtotal.value}})
-          // $('#total_amt').text({{purchase_form.ordertotal.value}})
+          $('#total_sb').text({{purchase_form.subtotal.value}})
+          $('#total_tax').text({{purchase_form.taxtotal.value}})
+          $('#total_amt').text({{purchase_form.ordertotal.value}})
 
           console.log(ppes)
           var prefix = 'form';

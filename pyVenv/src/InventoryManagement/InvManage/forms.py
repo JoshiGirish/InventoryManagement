@@ -1,5 +1,6 @@
 from django import forms
 from .models import Product, Vendor, PurchaseOrder
+from django.utils import timezone
 
 class ProductBasicInfoForm(forms.Form):
     prefix = "basic"
@@ -41,7 +42,7 @@ class ProductStorageInfoForm(forms.Form):
         "class": "form-control",
         "type": "date"
     }
-    expiry = forms.DateField(widget=forms.widgets.DateInput(attrs=context))
+    expiry = forms.DateField(widget=forms.widgets.DateInput(attrs=context),initial=timezone.now)
 
 class ProductPricingForm(forms.Form):
     prefix = "pricing"
@@ -71,16 +72,16 @@ class PurchaseOrderBasicInfo(forms.Form):
     # Vendor details
     vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
     # Order details
-    date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}))
+    date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
     po = forms.IntegerField(label="PO", widget=forms.TextInput(attrs=context))
     # Pricing details
     discount = forms.FloatField(widget=forms.TextInput(attrs=context))
     tax = forms.FloatField(widget=forms.TextInput(attrs=context))
     paid = forms.FloatField(widget=forms.TextInput(attrs=context))
     balance = forms.FloatField(widget=forms.TextInput(attrs=context))
-    subtotal = forms.FloatField(widget=forms.TextInput(attrs=context))
-    taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context))
-    ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context))
+    subtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+    taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+    ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
 
     
 class VendorForm(forms.Form):

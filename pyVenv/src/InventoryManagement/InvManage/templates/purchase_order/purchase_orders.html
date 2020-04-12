@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load template_helpers %}
-
+{% load static %}
 {% block title %}
   <div class="m-2">
     <div class="d-flex align-items-center row">
@@ -47,6 +47,7 @@
             <th scope="col">Total</th>
             <th scope="col">Update</th>
             <th scope="col">Remove</th>
+            <th scope="col">Print</th>
         </tr>
         </thead>
         <tbody>
@@ -61,6 +62,7 @@
                 <td>{{ po.ordertotal }}</td>
                 <td><a href="{% url 'update_purchase_order' po.id %}" class="btn btn-sm btn-info">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_purchase_order' po.id %}" data-vend_name="{{ po.name }}" data-vend_id="{{ po.id }}">Delete</a></td>
+                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' po.id %}" data-po_id="{{ po.id }}"><i class="fas fa-print"></i></a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -126,6 +128,260 @@
             modal.find('#po_name').text(po_name);
             modal.find('#delForm').attr('action',delete_url);
         })
+
+        function printInvoice(tag){
+        console.log(tag)
+        var po_id = tag.dataset.po_id;
+        console.log(po_id)
+        console.log(tag.dataset.print_url)
+        $.ajax({
+            url: tag.dataset.print_url,
+            data: {
+                'po_id': po_id
+            },
+            dataType:'json',
+            success: function(data){
+              generatePDF(data);
+              }
+        });
+    };
+
+    function generatePDF(data){
+        console.log(data)
+        var faker = window.faker
+        // Returns header rows for the main table
+        function headRows() {
+          return [
+            { no: 'No', product: 'Product', quantity: 'Quantity', rate: 'Rate', cgst: 'CGST', sgst:'SGST', igst:'IGST',amount:'Amount' },
+          ]
+        }
+        // Returns body rows for the main table
+        function bodyRows(ppes) {
+          // rowCount = rowCount || 10
+          rowCount = ppes.length;
+          let body = [];
+          for (var j = 0; j < rowCount; j++) {
+            console.log(ppes[j])
+            if(ppes[j].product==null){
+              var product = '--- Deleted Product ---';
+            }
+            else{
+              var product = ppes[j].product.name+'\n'+ppes[j].product.description;
+            }
+            var p = ppes[j].price;
+            var q = ppes[j].quantity;
+            var d = ppes[j].discount;
+            var amt = (p*q)-(p*q*d/100);
+            body.push({
+              no: j+1,
+              product: product,
+              quantity: ppes[j].quantity,
+              rate: ppes[j].price,
+              cgst: 0.00,
+              sgst: 0.00,
+              igst: 0.00,
+              amount: amt,
+            })
+          }
+          return body
+        }
+        // Aligns to right, the monetary columns in main table
+        function alignCol(data){
+          var col = data.column.index;
+          if(col>1){
+              data.cell.styles.halign = 'right';
+            }
+        }
+      // Don't forget, that there are CORS-Restrictions. So if you want to run it without a Server in your Browser you need to transform the image to a dataURL
+      // Use http://dataurl.net/#dataurlmaker
+      var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', lineHeight:1.25, format:'a4' });
+
+      margins = {
+                  top: 15,
+                  bottom: 15,
+                  left: 15,
+                  right: 15
+              };
+        var lineHeight = 3;
+        var atLine = margins.top;
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+        var usableWidth = pageWidth-margins.left-margins.right;
+
+        let str = "Original for Recepient";
+        doc.setFontSize(9);
+        doc.text(str, pageWidth-margins.right, atLine,'right');
+        atLine += lineHeight;
+        
+        str = "Purchase Order Number";
+        doc.setFontSize(12);
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+5;
+        
+        str = String(data.po);
+        doc.setFontSize(15);
+        doc.text(str, pageWidth-margins.right, atLine,'right');
+        atLine += lineHeight+2;
+        
+        str = "Date: "+ moment(data.date).format('MMMM Do YYYY');
+        doc.setFontSize(9);
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+2;
+        
+        str = "Shipping Date: "+ moment(data.date).format('MMMM Do YYYY');
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+2;
+        
+        // Divider line
+        doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+        atLine += lineHeight+4;
+        
+        var part = usableWidth/3;
+        doc.setFontSize(12)
+          
+        var h = [['Invent']]
+        doc.autoTable({
+          startY: atLine-3,
+          theme: 'plain',
+          tableWidth: 60,
+          // styles: { cellPadding: 0.5, fontSize: 10, textColor:100 },
+          styles: { cellPadding: 0.5, fontSize: 10},
+          head: h,
+          headStyles: { fontSize:12 },
+          body: [
+            ['Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'],
+            ['Mumbai, Maharashtra'],
+            ['02228682378'],
+            ['blahblah@blah.com']
+          ]
+        })
+
+        var h = [['Vendor']]
+        doc.autoTable({
+          startY: atLine-3,
+          theme: 'plain',
+          tableWidth: 60,
+          styles: { cellPadding: 0.5, fontSize: 10},
+          margin: { left: margins.left+part },
+          head: h,
+          headStyles: { fontSize:12 },
+          body: [
+            [data.vendor.name+'\n'+data.vendor.address],
+            [data.vendor.location],
+            [data.vendor.phone],
+            [data.vendor.email]
+          ]
+        })
+
+        var h = [['Ship To']]
+        doc.autoTable({
+          startY: atLine-3,
+          theme: 'plain',
+          tableWidth: 60,
+          styles: { cellPadding: 0.5, fontSize: 10},
+          margin: { left: margins.left+2*part },
+          head: h,
+          headStyles: { fontSize:12 },
+          body: [
+            ['Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'],
+            ['Mumbai, Maharashtra'],
+            ['02228682378'],
+            ['blahblah@blah.com']
+          ]
+        })
+
+        atLine += lineHeight+30;    
+
+        // Divider line
+        doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+        atLine += lineHeight;
+        
+        ///////////////MAIN TABLE///////////////////
+
+          let head = headRows()
+          let body = bodyRows(data.ppes)
+          
+          doc.autoTable({
+            theme: 'plain',
+            head: head,
+            body: body,
+            styles: { fontSize: 10},
+            startY: doc.previousAutoTable.finalY + 9,
+            rowPageBreak: 'auto',
+            bodyStyles: { valign: 'top' },
+            didParseCell: function (cell, data) {
+                              alignCol(cell, data);
+                          }
+          })
+
+        var start = margins.left;
+
+        atLine += lineHeight*30;
+
+        // Divider line
+        doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+        atLine += lineHeight+3;
+        
+        atLine += lineHeight;
+        
+        // Divider line
+        doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
+        atLine += lineHeight+4;
+        
+        str = "Authorized Signatory";
+        doc.setFontSize(12);
+        doc.text(str, start, atLine+2);
+        
+        str = "SUB TOTAL :";
+        doc.setFontSize(10);
+        doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+        str = String(data.subtotal)
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+3;
+        
+        str = "TAX AMOUNT :";
+        doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+        str = String(data.taxtotal)
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+3;
+        
+        str = "ROUNDED OFF :";
+        doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+        str = String(data.ordertotal)
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+3;
+        
+        str = "ORDER TOTAL :";
+        doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
+        str = String(data.ordertotal)
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+10;
+        
+        str = "Sixteen thousand nine hundred";
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+3;
+        
+        str = "Only";
+        doc.text(str, pageWidth-margins.right, atLine+2,'right');
+        atLine += lineHeight+5;
+        
+        str = "NOTE";
+        doc.text(str, start, atLine+2);
+        atLine += lineHeight+3;
+        
+        str = "Please deliver in 14 days maximum.";
+        doc.text(str, start, atLine+2);
+        atLine += lineHeight+3;
+        
+        var img = new Image()
+        img.src = '{% static "logo.png" %}'
+        img.onload = function(){
+                  doc.addImage(img, 'png', margins.left, margins.top, 50, 25)
+                  doc.output('datauri');
+                  // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
+                  }
+
+        };
       </script>
   </div>
 {% endblock %}

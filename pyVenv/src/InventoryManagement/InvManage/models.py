@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Dashboard(models.Model):
     pass
@@ -20,16 +21,16 @@ class PurchaseOrder(models.Model):
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     # Order details
-    date = models.DateTimeField(null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now,null=True, blank=True)
     po = models.IntegerField()
     # Pricing information
-    discount = models.FloatField(null=True)
-    tax = models.FloatField(null=True)
-    paid = models.FloatField(null=True)
-    balance = models.FloatField(null=True)
-    subtotal = models.FloatField(null=True)
-    taxtotal = models.FloatField(null=True)
-    ordertotal = models.FloatField(null=True)
+    discount = models.FloatField(default=0,null=True)
+    tax = models.FloatField(default=0,null=True)
+    paid = models.FloatField(default=0,null=True)
+    balance = models.FloatField(default=0,null=True)
+    subtotal = models.FloatField(default=0,null=True)
+    taxtotal = models.FloatField(default=0,null=True)
+    ordertotal = models.FloatField(default=0,null=True)
 
 
 class Product(models.Model):

@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
-from .serializers import VendorSerializer, PPEntrySerializer
+from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer
 
 def create_product_view(request):
 	if request.method == 'GET':
@@ -306,6 +306,12 @@ def update_purchase_order_view(request,pk):
 				product.quantity += quantity # Add the purchased quantity to the product stock
 				product.save() # Save the changes to the product instance
 		return redirect('/products')
+
+def print_purchase_order_view(request,pk):
+	if request.method == 'GET':
+		po = PurchaseOrder.objects.get(id=pk)
+		po_serializer = PurchaseOrderSerializer(po)
+	return JsonResponse(po_serializer.data)
 
 def create_vendor_view(request):
 	if request.method == 'GET':
