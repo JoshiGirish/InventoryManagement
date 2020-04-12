@@ -1,31 +1,160 @@
-<div class="card">
-    <div class="card-body">
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <div class="card-header">
-                <label>Purchase</label>
-            </div>
-                <a class="card-body nav-link btn-light" href="{% url 'vendor' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">Create Vendor</a>
-                <a class="card-body nav-link btn-light" href="{% url 'vendors' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">View Vendor list</a>
-                <a class="card-body nav-link btn-light" href="{% url 'purchase_order' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">Create Purchase Order</a>
-                <a class="card-body nav-link btn-light" href="{% url 'purchase_orders' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">View Purchase Order List</a>
-            <div class="card-header">
-                <label>Inventory</label>
-            </div>
-                <a class="card-body nav-link btn-light" href="{% url 'product' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">Create Product</a>
-                <a class="card-body nav-link btn-light" href="{% url 'products' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">View Product List</a>
-            <div class="card-header">
-                <label>Sales</label>
-            </div>
-                <a class="card-body nav-link btn-light" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Create Sales Quote</a>
-                <a class="card-body nav-link btn-light" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Create Sales Order</a>
-                <a class="card-body nav-link btn-light" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">View Sales Order List</a>
-            <div class="card-header">
-                <label>Reports</label>
-            </div>
-                <a class="card-body nav-link btn-light" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">View Report</a>
-                <a class="card-body nav-link btn-light" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Export</a>
+<div class="card h-100 bg-light">
+<div class="sidebar-menu h-100 bg-light">
+    <ul style="list-style-type:none;">
+      <li class="header-menu border-bottom" style="text-align: center;">
+        <span>Navigation</span>
+      </li>
+      <li class="sidebar-dropdown">
+        <a id="company" href="#">
+          <span>Company</span>
+        </a>
+        <div class="sidebar-submenu menu-items" style="display: none;">
+          <ul style="list-style-type:none;">
+            <li>
+                <a id="create_company" href="#">Create Company</a>
+            </li>
+          </ul>
         </div>
-    </div>
+      </li>
+      <li class="sidebar-dropdown">
+        <a id="purchase" href="#">
+          <span>Purchase</span>
+        </a>
+        <div class="sidebar-submenu menu-items" style="display: none;">
+          <ul style="list-style-type:none;">
+            <li>
+              <a id="create_company" href="{% url 'vendor' %}">Create Vendor</a>
+            </li>
+            <li>
+                <a id="show_vendors" href="{% url 'vendors' %}">Show Vendors</a>
+              </li>
+            <li>
+                <a id="create_purchase_order" href="{% url 'purchase_order' %}">Create Purchase Order</a>
+            </li>
+            <li>
+                <a id="show_purchase_orders" href="{% url 'purchase_orders' %}">Show Purchase Orders</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="sidebar-dropdown">
+        <a id="inventory" href="#">
+          <span>Inventory</span>
+        </a>
+        <div class="sidebar-submenu menu-items" style="display: none;">
+          <ul style="list-style-type:none;">
+            <li>
+              <a id="create_product" href="{% url 'product' %}">Create Product</a>
+            </li>
+            <li>
+                <a id="show_products" href="{% url 'products' %}">Show Products</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="sidebar-dropdown">
+        <a id="sales" href="#">
+          <span>Sales</span>
+        </a>
+        <div class="sidebar-submenu menu-items" style="display: none;">
+          <ul style="list-style-type:none;">           
+            <li>
+                <a id="create_consumer" href="">Create Consumer</a>
+            </li>
+            <li>
+                <a id="show_xonsumers" href="">Show Consumers</a>
+            </li>
+            <li>
+              <a id="create_sales_quote" href="">Create Sales Quote</a>
+            </li>
+            <li>
+                <a id="create_sales_order" href="">Create Sales Order</a>
+              </li>
+            <li>
+                <a id="show_sales_orders" href="">Show Sales Orders</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="sidebar-dropdown">
+        <a id="reports" href="#">
+          <span>Reports</span>
+        </a>
+        <div class="sidebar-submenu menu-items" style="display: none;">
+          <ul style="list-style-type:none;">           
+            <li>
+                <a id="create_report" href="">Create Report</a>
+            </li>
+            <li>
+                <a id="export" href="">Export</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
+  <script>
+        var id = getCookie('activeMenuId');
+        if(id.length != 0){
+            $('#'+id).addClass("active");
+        }
+        $(".active")
+            .next(".sidebar-submenu")
+            .removeAttr("style");
+        // $(".active")
+        //     .next(".sidebar-submenu")
+        //     .slideDown(200);
+        console.log(id)
+
+        function expand(){
+        $(".sidebar-submenu").slideUp(200);
+        if (
+            $(this)
+            .parent()
+            .hasClass("active")
+        ) {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+            .parent()
+            .removeClass("active");
+        } else {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+            .next(".sidebar-submenu")
+            .slideDown(200);
+            $(this)
+            .parent()
+            .addClass("active");
+            var id = $(this).attr('id');
+            setCookie('activeMenuId',id,1)
+            console.log(id)
+        }
+        };
+          $(".sidebar-dropdown > a").click(expand)
+
+          function setCookie(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        function eraseCookie(name) {   
+            document.cookie = name+'=; Max-Age=-99999999;';  
+        }
+  </script>
 
 

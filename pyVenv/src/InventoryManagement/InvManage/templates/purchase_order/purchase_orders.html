@@ -7,7 +7,7 @@
     <div class="d-flex align-items-center row">
         <!-- <h2 class="col-sm-6">Create Product</h2> -->
         <div class="col-sm-4">
-          <h2 style="color: #777777;">Purchase Orders</h2>
+          <h2 class="mr-auto label-head">Purchase Orders</h2>
         </div>
         <div class="col-sm-8">
           <form class="form-inline" id="poFilterForm" action="" method="GET">
@@ -62,7 +62,7 @@
                 <td>{{ po.ordertotal }}</td>
                 <td><a href="{% url 'update_purchase_order' po.id %}" class="btn btn-sm btn-info">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_purchase_order' po.id %}" data-vend_name="{{ po.name }}" data-vend_id="{{ po.id }}">Delete</a></td>
-                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' po.id %}" data-po_id="{{ po.id }}"><i class="fas fa-print"></i></a></td>
+                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' po.id %}" data-po_id="{{ po.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -377,7 +377,7 @@
         img.src = '{% static "logo.png" %}'
         img.onload = function(){
                   doc.addImage(img, 'png', margins.left, margins.top, 50, 25)
-                  doc.output('datauri');
+                  doc.output('dataurlnewwindow');
                   // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
                   }
 
