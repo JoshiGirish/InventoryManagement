@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% load template_helpers %}
+
+{% block title %}
+  <div class="m-2">
+    <div class="d-flex align-items-center row">
+        <!-- <h2 class="col-sm-6">Create Product</h2> -->
+        <div class="">
+          <h2 class="col-sm-6 mr-auto label-head">Companies</h2>
+        </div>
+        <div class="col-sm-10">
+          <form class="form-inline" id="companiesFilterForm" action="" method="GET">
+              <!-- {{ myFilter.form }} -->
+              <div class="col-sm-9">
+              {% for field in myFilter.form %}
+                <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>{{ field.label }}</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ field }}
+                    </div>
+                </div>
+              </div>
+                {% endfor %}
+                  <button class="btn btn-sm btn-light" type="submit">Search</button>
+          </form>
+          <Script>
+           $('#companiesFilterForm input').addClass('form-control')
+          </Script>
+        </div>
+            
+    </div> 
+  </div>
+{% endblock title %}
+
+{% block contents %}
+<table class="table table-sm">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Phone</th>
+        <th scope="col">email</th>
+        <th scope="col">location</th>
+        <th scope="col">Update</th>
+        <th scope="col">Remove</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for company in page_obj %}
+        <tr>
+            <!-- <th scope="row">1</th> -->
+            <td class="company_name">{{ company.name }}</td>
+            <td>{{ company.owner }}</td>
+            <td>{{ company.phone }}</td>
+            <td>{{ company.email }}</td>
+            <td>{{ company.location }}</td>
+            <td><a href="{% url 'update_company' company.id %}" class="btn btn-sm btn-info">Update</a></td>
+            <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_company' company.id %}" data-comp_name="{{ company.name }}" data-comp_id="{{ company.id }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    <!-- Pagination -->
+    <div class="d-flex">
+      <div class="pagination mr-auto">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a class="btn btn-light btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
+          {% endif %}
+
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }},
+          </span>
+
+          {% if page_obj.has_next %}
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      <div>
+        Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
+      </div>
+    </div>
+
+    <!-- Modal -->
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="delForm" action="" method="POST">
+          {% csrf_token %}
+            <div class="modal-body">
+              Are you sure you want to delete <span id="prod_name" style="font-weight: bold;"></span> !
+              <input type="hidden" name="product_id" id="pro_id" value="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+      </form>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#delModal').on('show.bs.modal', function(event){
+            var button = $(event.relatedTarget);
+            console.log(button)
+            var company_id = button.data('comp_id');
+            var company_name = button.data('comp_name');
+            var delete_url = button.data('del_url');
+            var modal = $(this);
+            modal.find('.modal-body #ven_id').val(company_id);
+            modal.find('#vend_name').text(company_name);
+            modal.find('#delForm').attr('action',delete_url);
+        })
+      </script>
+  </div>
+{% endblock %}
