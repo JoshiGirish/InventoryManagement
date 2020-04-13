@@ -1,40 +1,35 @@
 {% load template_helpers %}
 {% load static %}
 
-    <div class="row">
-    <div class="col-4">
-        <div class="card">
-            <div class="card-header" id="headingTwo">
-                <label class="card-text">Snapshot</label>
-            </div>
-            <div class="card-body">
-                <div>
-                    <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Product Thumbnail">
-                </div>
-                <label class="btn btn-light m-1">
-                    <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">
-                </label>
-            </div>
-            <script>
-                function previewFile() {
-                var preview = document.querySelector('#prod_thumbnail');
-                var file    = document.querySelector('#id_thumbnail-image').files[0];
-                var reader  = new FileReader();
 
-                reader.onloadend = function () {
-                    preview.src = reader.result;
-                }
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                } else {
-                    preview.src = "";
-                }
-                }
-            </script>
+<div class="card">
+    <div class="card-header" id="headingTwo">
+        <label class="card-text">Snapshot</label>
+    </div>
+    <div class="card-body">
+        <div>
+            <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Company Thumbnail">
         </div>
+        <label class="btn btn-light m-1">
+            <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">
+        </label>
     </div>
-    <div class="col-8">
-        {% include "crud/variants.html" %}
-    </div>
+    <script>
+        function previewFile() {
+        var preview = document.querySelector('#prod_thumbnail');
+        var file    = document.querySelector('#id_thumbnail-image').files[0];
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+        }
+        }
+    </script>
 </div>
+

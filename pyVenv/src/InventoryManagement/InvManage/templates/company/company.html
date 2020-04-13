@@ -1,0 +1,27 @@
+   {% extends 'base.html' %}
+   {% block title %}
+    <form action="{% url 'company' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row">
+                <h2 class="col-sm-6 mr-auto label-head">Create Company</h2>
+                <div class="float-right">
+                    <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                    <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                    <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                </div>
+            </div>
+    {% endblock title %}
+
+    {% block contents %} 
+      {% block info %}    
+      <div class="row">
+            <div class="col-sm-6">
+                {% include "company/company_info.html" %}
+            </div>
+            <div class="col-sm-6">
+                {% include "crud/thumbnail.html" %}
+            </div>
+          </form>
+      </div>
+    {% endblock info %}
+    {% endblock contents %}

@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
 from django.forms.formsets import formset_factory
-from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry
+from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry, Company
 from django.core.files.storage import FileSystemStorage
 import io,csv
-from .filters import ProductFilter, VendorFilter, PurchaseOrderFilter
+from .filters import ProductFilter, VendorFilter, PurchaseOrderFilter, CompanyFilter
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -14,14 +14,64 @@ from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSeria
 
 def create_company_view(request):
 	if request.method == 'GET':
-		pass
-	return
+		company_form = CompanyForm()
+		thumbnail_form = ThumbnailForm()
+		return render(request, 'company/company.html', {'company_form': company_form,
+												'thumbnail_form': thumbnail_form})
+	if request.method == 'POST':
+		data = {}
+		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
+		thumbnail_form = ThumbnailForm(request.POST,prefix=ThumbnailForm.prefix)
+		if company_form.is_valid():
+			data.update(company_form.cleaned_data)
+		uploaded_file = request.FILES['thumbnail-image']
+		data.update({'image':uploaded_file})
+		Company.objects.create(**data)
+		return redirect('/company')
+
+def update_company_view(request,pk):
+	if request.method == 'GET':
+		company = Company.objects.get(id=pk)
+		data = company.__dict__
+		company_form = CompanyForm(initial=data)
+		thumbnail = company.image.name
+		return render(request, 'company/update_company.html', {'company_form': company_form,
+												'thumbnail': thumbnail})
+	if request.method == 'POST':
+		data = {}
+		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
+		thumbnail_form = ThumbnailForm(request.POST,prefix=ThumbnailForm.prefix)
+		if company_form.is_valid():
+			data.update(company_form.cleaned_data)
+		uploaded_file = request.FILES['thumbnail-image']
+		data.update({'image':uploaded_file})
+		Company.objects.filter(id=pk).update(**data)
+		fs = FileSystemStorage()
+		fs.save(uploaded_file.name,uploaded_file)
+		return redirect('/companies')
+
+def delete_company_view(request,pk):
+	if request.method == 'POST':
+		company = Company.objects.get(id=pk)
+		company.delete()
+		return redirect('/companies')
+
+def display_companies_view(request):
+	if request.method == 'GET':
+		companies = Company.objects.all()
+		myFilter = CompanyFilter(request.GET, queryset=companies)
+		products = myFilter.qs
+		number_of_companies = len(companies)
+		paginator = Paginator(companies,15)
+		page_number = request.GET.get('page')
+		page_obj = paginator.get_page(page_number)
+		return render(request, 'company/companies.html',{'page_obj':page_obj,'myFilter':myFilter, 'n_prod': number_of_companies})
 
 def create_product_view(request):
 	if request.method == 'GET':
 		basic_form = ProductBasicInfoForm()
 		detailed_form = ProductDetailedInfoForm()
-		thumbnail_form = ProductThumbnailForm()
+		thumbnail_form = ThumbnailForm()
 		storage_form = ProductStorageInfoForm()
 		pricing_form = ProductPricingForm()
 		status_form = ProductStatusForm()	
@@ -32,7 +82,7 @@ def create_product_view(request):
 													'pricing_form':pricing_form,
 													'status_form':status_form})
 	if request.method == 'POST':
-		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
+		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
 		data = {}
 		print(request.POST)
@@ -73,7 +123,7 @@ def update_product_view(request,pk):
 		data = product.__dict__
 		basic_form = ProductBasicInfoForm(initial=data)
 		detailed_form = ProductDetailedInfoForm(initial=data)
-		thumnail_form = ProductThumbnailForm(initial=data)
+		thumnail_form = ThumbnailForm(initial=data)
 		storage_form = ProductStorageInfoForm(initial=data)
 		pricing_form = ProductPricingForm(initial=data)
 		status_form = ProductStatusForm(initial=data)
@@ -86,7 +136,7 @@ def update_product_view(request,pk):
 											'status_form':status_form,
 											'thumbnail':thumbnail})
 	if request.method == 'POST':
-		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ProductThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
+		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		data = {}
 		for form_type in types:
 			pre = form_type.prefix
@@ -370,4 +420,7 @@ def update_vendor_view(request,pk):
 		print('Printing DATA:',data)
 		Vendor.objects.filter(id=pk).update(**data)
 		return redirect('/vendors')
+
+
+
 	

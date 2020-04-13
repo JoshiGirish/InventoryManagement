@@ -11,7 +11,10 @@
         <div class="sidebar-submenu menu-items" style="display: none;">
           <ul style="list-style-type:none;">
             <li>
-                <a id="create_company" href="#">Create Company</a>
+                <a id="create_company" href="{% url 'company' %}">Create Company</a>
+            </li>
+            <li>
+              <a id="show_companies" href="{% url 'companies' %}">Show Companies</a>
             </li>
           </ul>
         </div>

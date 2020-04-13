@@ -26,7 +26,14 @@
             <div class="col-sm-6">
                 {% include "crud/status.html" %}
                 {% include "crud/pricing_info.html" %}
-                {% include "crud/thumbnail.html" %}
+                <div class="row">
+                  <div class="col-4">
+                    {% include "crud/thumbnail.html" %}
+                  </div>
+                  <div class="col-8">
+                    {% include "crud/variants.html" %}
+                </div>
+                </div>
             </div>
         </div>
       </form>

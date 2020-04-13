@@ -30,7 +30,7 @@ class ProductDetailedInfoForm(forms.Form):
     weight = forms.CharField(widget=forms.TextInput(attrs=context))
 
 
-class ProductThumbnailForm(forms.Form):
+class ThumbnailForm(forms.Form):
     prefix = "thumbnail"
     image = forms.ImageField(widget=forms.FileInput(attrs={"class": "upload"}))
 
@@ -118,3 +118,19 @@ class ProductPurchaseEntryForm(forms.Form):
     price = forms.FloatField(widget=forms.TextInput(attrs=context))
     discount = forms.FloatField(widget=forms.TextInput(attrs=context))
     
+class CompanyForm(forms.Form):
+    prefix = "comp"
+    context={
+        "class": "form-control",
+    }
+    name = forms.CharField(widget=forms.TextInput(attrs=context))
+    owner = forms.CharField(widget=forms.TextInput(attrs=context))
+    phone = forms.CharField(widget=forms.TextInput(attrs=context))
+    address = forms.CharField(widget=forms.Textarea(
+        attrs={
+            "class": "form-control",
+            "rows": 3
+        }
+    ))
+    email = forms.CharField(widget=forms.TextInput(attrs=context))
+    location = forms.CharField(widget=forms.TextInput(attrs=context))
