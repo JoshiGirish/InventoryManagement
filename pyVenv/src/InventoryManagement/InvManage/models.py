@@ -4,6 +4,13 @@ from django.utils import timezone
 class Dashboard(models.Model):
     pass
 
+class ShippingAddress(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    email = models.CharField(null=True, blank=True,max_length=100)
+    location = models.CharField(null=True, blank=True,max_length=100)
+
 
 class Company(models.Model):
     name = models.CharField(null=True,max_length=100)
@@ -13,6 +20,7 @@ class Company(models.Model):
     email = models.CharField(null=True, blank=True,max_length=100)
     location = models.CharField(null=True, blank=True,max_length=100)
     image = models.ImageField(blank=True,upload_to='images/') 
+    shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return self.name
@@ -80,6 +88,10 @@ class ProductPurchaseEntry(models.Model):
     # subtotal = models.FloatField()
     order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
 
+class Invoice(models.Model):
+    company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
+    po = models.OneToOneField(PurchaseOrder,on_delete=models.SET_NULL,null=True)
+    shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
 
 class Sale(models.Model):
     pass
