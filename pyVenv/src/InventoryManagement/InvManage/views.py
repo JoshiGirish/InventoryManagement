@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
 from django.forms.formsets import formset_factory
-from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry, Company
+from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry, Company, Invoice, ShippingAddress
 from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter, VendorFilter, PurchaseOrderFilter, CompanyFilter
@@ -10,23 +10,30 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
-from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer
+from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer
 
 def create_company_view(request):
 	if request.method == 'GET':
 		company_form = CompanyForm()
 		thumbnail_form = ThumbnailForm()
+		shipping_form = ShippingAddressForm()
 		return render(request, 'company/company.html', {'company_form': company_form,
-												'thumbnail_form': thumbnail_form})
+												'thumbnail_form': thumbnail_form,
+												'shipping_form': shipping_form})
 	if request.method == 'POST':
-		data = {}
+		comp_data = {}
+		ship_data = {}
 		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
 		thumbnail_form = ThumbnailForm(request.POST,prefix=ThumbnailForm.prefix)
-		if company_form.is_valid():
-			data.update(company_form.cleaned_data)
+		shipping_form = ShippingAddressForm(request.POST, prefix= ShippingAddressForm.prefix)
+		if company_form.is_valid() and shipping_form.is_valid():
+			comp_data.update(company_form.cleaned_data)
+			ship_data.update(shipping_form.cleaned_data)
+		shippigaddress = ShippingAddress.objects.create(**ship_data)
+		comp_data.update({'shippingaddress': shippigaddress})
 		uploaded_file = request.FILES['thumbnail-image']
-		data.update({'image':uploaded_file})
-		Company.objects.create(**data)
+		comp_data.update({'image':uploaded_file})
+		Company.objects.create(**comp_data)
 		return redirect('/company')
 
 def update_company_view(request,pk):
@@ -34,18 +41,28 @@ def update_company_view(request,pk):
 		company = Company.objects.get(id=pk)
 		data = company.__dict__
 		company_form = CompanyForm(initial=data)
+		ship = company.shippingaddress.__dict__
+		shipping_form = ShippingAddressForm(initial=ship)
 		thumbnail = company.image.name
 		return render(request, 'company/update_company.html', {'company_form': company_form,
-												'thumbnail': thumbnail})
+												'thumbnail': thumbnail,
+												'shipping_form': shipping_form})
 	if request.method == 'POST':
-		data = {}
+		comp_data = {}
+		ship_data = {}
 		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
 		thumbnail_form = ThumbnailForm(request.POST,prefix=ThumbnailForm.prefix)
+		shipping_form = ShippingAddressForm(request.POST, prefix= ShippingAddressForm.prefix)
+		print(company_form.is_valid())
+		print(shipping_form.is_valid())
 		if company_form.is_valid():
-			data.update(company_form.cleaned_data)
+			comp_data.update(company_form.cleaned_data)
+			ship_data.update(shipping_form.cleaned_data)
+		shippigaddress = ShippingAddress.objects.create(**ship_data)
+		comp_data.update({'shippingaddress': shippigaddress})
 		uploaded_file = request.FILES['thumbnail-image']
-		data.update({'image':uploaded_file})
-		Company.objects.filter(id=pk).update(**data)
+		comp_data.update({'image':uploaded_file})
+		Company.objects.filter(id=pk).update(**comp_data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
 		return redirect('/companies')
@@ -211,6 +228,7 @@ def create_purchase_order_view(request):
 		}
 	pentry_formset = ProductPurchaseEntryFormset(data)
 	pentry_form = ProductPurchaseEntryForm()
+	shipping_form = ShippingAddressForm()
 	if request.method == 'GET':
 		purchase_form = PurchaseOrderBasicInfo()
 		vendor_form = VendorForm()
@@ -228,6 +246,7 @@ def create_purchase_order_view(request):
 			'vendor_form': vendor_form,
 			'pentry_formset': pentry_formset,
 			'ppes': {},
+			'shipping_form': shipping_form,
 		}	
 		return render(request, 'purchase_order.html',context)
 	if request.method == 'POST':
@@ -365,8 +384,11 @@ def update_purchase_order_view(request,pk):
 def print_purchase_order_view(request,pk):
 	if request.method == 'GET':
 		po = PurchaseOrder.objects.get(id=pk)
-		po_serializer = PurchaseOrderSerializer(po)
-	return JsonResponse(po_serializer.data)
+		company = Company.objects.all().last()
+		shippingaddress = company.shippingaddress
+		print(shippingaddress)
+		invoice_serializer = InvoiceSerializer(Invoice(company=company,po=po,shippingaddress=shippingaddress))
+	return JsonResponse(invoice_serializer.data)
 
 def create_vendor_view(request):
 	if request.method == 'GET':

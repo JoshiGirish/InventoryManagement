@@ -146,6 +146,37 @@
         });
     };
 
+    // Convert order amount to words
+    const a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen ']
+    const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+
+    const regex = /^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/
+
+    function numWords (num) {
+      if ((num = num.toString()).length > 9) {
+        throw new Error('overflow') // Does not support converting more than 9 digits yet
+      }
+
+      const n = ('000000000' + num).substr(-9).match(regex)
+      if (!n) return
+
+      let str = ''
+      str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : ''
+      str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : ''
+      str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : ''
+      str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : ''
+      str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : ''
+
+      return str.trim()
+    }
+
+    // To capital case
+    function toTitleCase(aString) {
+      return aString.replace(/(?:^|\s)\w/g, function(match) {
+          return match.toUpperCase();
+      });
+    }
+
     function generatePDF(data){
         console.log(data)
         var faker = window.faker
@@ -176,15 +207,16 @@
               no: j+1,
               product: product,
               quantity: ppes[j].quantity,
-              rate: ppes[j].price,
-              cgst: 0.00,
-              sgst: 0.00,
-              igst: 0.00,
-              amount: amt,
+              rate: String(Math.round((ppes[j].price * 100) / 100).toFixed(2)),
+              cgst: String(Math.round((0 * 100) / 100).toFixed(2)),
+              sgst: String(Math.round((0 * 100) / 100).toFixed(2)),
+              igst: String(Math.round((0 * 100) / 100).toFixed(2)),
+              amount: String(Math.round((amt * 100) / 100).toFixed(2))
             })
           }
           return body
         }
+
         // Aligns to right, the monetary columns in main table
         function alignCol(data){
           var col = data.column.index;
@@ -192,6 +224,7 @@
               data.cell.styles.halign = 'right';
             }
         }
+
       // Don't forget, that there are CORS-Restrictions. So if you want to run it without a Server in your Browser you need to transform the image to a dataURL
       // Use http://dataurl.net/#dataurlmaker
       var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', lineHeight:1.25, format:'a4' });
@@ -218,17 +251,17 @@
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+5;
         
-        str = String(data.po);
+        str = String(data.po.po);
         doc.setFontSize(15);
         doc.text(str, pageWidth-margins.right, atLine,'right');
         atLine += lineHeight+2;
         
-        str = "Date: "+ moment(data.date).format('MMMM Do YYYY');
+        str = "Date: "+ moment(data.po.date).format('MMMM Do YYYY');
         doc.setFontSize(9);
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+2;
         
-        str = "Shipping Date: "+ moment(data.date).format('MMMM Do YYYY');
+        str = "Shipping Date: "+ moment(data.po.date).format('MMMM Do YYYY');
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+2;
         
@@ -239,20 +272,20 @@
         var part = usableWidth/3;
         doc.setFontSize(12)
           
-        var h = [['Invent']]
+        var h = [[data.company.name]]
         doc.autoTable({
           startY: atLine-3,
           theme: 'plain',
-          tableWidth: 60,
+          tableWidth: 55,
           // styles: { cellPadding: 0.5, fontSize: 10, textColor:100 },
           styles: { cellPadding: 0.5, fontSize: 10},
           head: h,
           headStyles: { fontSize:12 },
           body: [
-            ['Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'],
-            ['Mumbai, Maharashtra'],
-            ['02228682378'],
-            ['blahblah@blah.com']
+            [data.company.owner+'\n'+data.company.address],
+            [data.company.location],
+            [data.company.phone],
+            [data.company.email]
           ]
         })
 
@@ -260,16 +293,16 @@
         doc.autoTable({
           startY: atLine-3,
           theme: 'plain',
-          tableWidth: 60,
+          tableWidth: 55,
           styles: { cellPadding: 0.5, fontSize: 10},
           margin: { left: margins.left+part },
           head: h,
           headStyles: { fontSize:12 },
           body: [
-            [data.vendor.name+'\n'+data.vendor.address],
-            [data.vendor.location],
-            [data.vendor.phone],
-            [data.vendor.email]
+            [data.po.vendor.name+'\n'+data.po.vendor.address],
+            [data.po.vendor.location],
+            [data.po.vendor.phone],
+            [data.po.vendor.email]
           ]
         })
 
@@ -277,16 +310,16 @@
         doc.autoTable({
           startY: atLine-3,
           theme: 'plain',
-          tableWidth: 60,
+          tableWidth: 55,
           styles: { cellPadding: 0.5, fontSize: 10},
           margin: { left: margins.left+2*part },
           head: h,
           headStyles: { fontSize:12 },
           body: [
-            ['Plot No 111 D, Govt Indl Est, Charcop, Kandivali (west)'],
-            ['Mumbai, Maharashtra'],
-            ['02228682378'],
-            ['blahblah@blah.com']
+            [data.shippingaddress.name+'\n'+data.shippingaddress.address],
+            [data.shippingaddress.location],
+            [data.shippingaddress.phone],
+            [data.shippingaddress.email]
           ]
         })
 
@@ -299,7 +332,7 @@
         ///////////////MAIN TABLE///////////////////
 
           let head = headRows()
-          let body = bodyRows(data.ppes)
+          let body = bodyRows(data.po.ppes)
           
           doc.autoTable({
             theme: 'plain',
@@ -335,29 +368,29 @@
         str = "SUB TOTAL :";
         doc.setFontSize(10);
         doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
-        str = String(data.subtotal)
+        str = String(Math.round((data.po.subtotal * 100) / 100).toFixed(2));
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+3;
         
         str = "TAX AMOUNT :";
         doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
-        str = String(data.taxtotal)
+        str = String(Math.round((data.po.taxtotal * 100) / 100).toFixed(2));
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+3;
         
         str = "ROUNDED OFF :";
         doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
-        str = String(data.ordertotal)
+        str = String(Math.round((data.po.ordertotal * 100) / 100).toFixed(2));
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+3;
         
         str = "ORDER TOTAL :";
         doc.text(str, pageWidth-margins.right-40, atLine+2,'right');
-        str = String(data.ordertotal)
+        str = String(Math.round((data.po.ordertotal * 100) / 100).toFixed(2));
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+10;
         
-        str = "Sixteen thousand nine hundred";
+        str = toTitleCase(numWords(Math.round(data.po.ordertotal)));
         doc.text(str, pageWidth-margins.right, atLine+2,'right');
         atLine += lineHeight+3;
         
@@ -374,9 +407,11 @@
         atLine += lineHeight+3;
         
         var img = new Image()
-        img.src = '{% static "logo.png" %}'
+        img.src = data.company.image
+        console.log(img.src)
         img.onload = function(){
-                  doc.addImage(img, 'png', margins.left, margins.top, 50, 25)
+                  var imageHeightInPdf = 20;
+                  doc.addImage(img, 'png', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf)
                   doc.output('dataurlnewwindow');
                   // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
                   }

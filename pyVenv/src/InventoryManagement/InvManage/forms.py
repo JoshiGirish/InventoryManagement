@@ -134,3 +134,19 @@ class CompanyForm(forms.Form):
     ))
     email = forms.CharField(widget=forms.TextInput(attrs=context))
     location = forms.CharField(widget=forms.TextInput(attrs=context))
+
+class ShippingAddressForm(forms.Form):
+    prefix = "ship"
+    context={
+        "class": "form-control",
+    }
+    name = forms.CharField(widget=forms.TextInput(attrs=context))
+    phone = forms.CharField(widget=forms.TextInput(attrs=context))
+    address = forms.CharField(widget=forms.Textarea(
+        attrs={
+            "class": "form-control",
+            "rows": 3
+        }
+    ))
+    email = forms.CharField(widget=forms.TextInput(attrs=context))
+    location = forms.CharField(widget=forms.TextInput(attrs=context))
