@@ -36,6 +36,6 @@
         {% include "purchase_order/po_products.html" %}
       </form>
       <script>
-        $('#id_po-vendor').val({{ vendor_id }})
+        $('#id_po-vendor').val({{ purchase_form.vendor_id }})
       </script>
     {% endblock %}

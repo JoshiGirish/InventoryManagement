@@ -117,6 +117,7 @@
     </div>
 
      <script type="text/javascript">
+     $('#id_po-vendor').val({{purchase_form.vendor_id}})
         $('#delModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget);
             console.log(button)
@@ -277,7 +278,6 @@
           startY: atLine-3,
           theme: 'plain',
           tableWidth: 55,
-          // styles: { cellPadding: 0.5, fontSize: 10, textColor:100 },
           styles: { cellPadding: 0.5, fontSize: 10},
           head: h,
           headStyles: { fontSize:12 },
@@ -349,7 +349,7 @@
 
         var start = margins.left;
 
-        atLine += lineHeight*30;
+        atLine = 220;
 
         // Divider line
         doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
