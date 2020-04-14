@@ -5,7 +5,7 @@ from .models import Product, Vendor, ProductPurchaseEntry, PurchaseOrder, Compan
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('name','category','quantity','identifier','location','description')
+        fields = ('pk','name','category','quantity','identifier','location','description')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

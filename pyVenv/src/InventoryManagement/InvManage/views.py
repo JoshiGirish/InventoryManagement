@@ -325,6 +325,7 @@ def update_purchase_order_view(request,pk):
 		pentry_formset = ProductPurchaseEntryFormset(data,initial=ppes)
 		pentry_form = ProductPurchaseEntryForm()
 		purchase_form = PurchaseOrderBasicInfo(initial=po_data)
+		print(purchase_form)
 		vendor_form = VendorForm(initial=ven_data)
 		prods = []
 		for i,prod in enumerate(Product.objects.all()):
@@ -336,6 +337,7 @@ def update_purchase_order_view(request,pk):
 			'purchase_form': purchase_form,
 			'pentry_form': pentry_form,
 			'prods': prods,
+			'vendor_id': vendor.pk,
 			'vendors': vendors,
 			'vendor_form': vendor_form,
 			'pentry_formset': pentry_formset,
