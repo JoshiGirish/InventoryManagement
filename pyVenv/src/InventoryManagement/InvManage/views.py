@@ -310,6 +310,8 @@ def update_purchase_order_view(request,pk):
 	po_data = po.__dict__
 	vendor = po.vendor
 	ven_data = vendor.__dict__
+	company = Company.objects.all().last()
+	ship_data = company.shippingaddress.__dict__
 	if request.method == 'GET':
 		ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm)
 		ppes = PurchaseOrder.objects.get(id=pk).productpurchaseentry_set.all()
@@ -327,6 +329,7 @@ def update_purchase_order_view(request,pk):
 		purchase_form = PurchaseOrderBasicInfo(initial=po_data)
 		print(purchase_form)
 		vendor_form = VendorForm(initial=ven_data)
+		shipping_form = ShippingAddressForm(initial=ship_data)
 		prods = []
 		for i,prod in enumerate(Product.objects.all()):
 			prods.append({'id':prod.id,'name':prod.name,'code':prod.identifier})
@@ -342,6 +345,7 @@ def update_purchase_order_view(request,pk):
 			'vendor_form': vendor_form,
 			'pentry_formset': pentry_formset,
 			'ppes': ppes_serialized,
+			'shipping_form':shipping_form,
 		}	
 		return render(request, 'purchase_order/update_purchase_order.html',context)
 	if request.method == 'POST':
