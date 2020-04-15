@@ -5,6 +5,7 @@
 	<title>Inventory Management</title>
 
 		<link rel="stylesheet" href="{% static 'sidebar.css' %}">
+		<link rel="stylesheet" href="{% static 'main.css' %}">
 
 		<!-- Bootstrap -->
 		<script src="{% static 'jquery.js' %}"></script> 
@@ -20,21 +21,23 @@
 				font-size: 1.5em;
 			}
 			
-			body{
-				font-family: 'Comfortaa', cursive;
-				font-size: 1em;
-			}
 
 			div.card{
-				background-color: #ffffff;
-				border-radius: 5px;
-				-webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
-				box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+				background-color: #FFFFFF;
+				padding:0;
 				border: none;
-				margin-bottom: 30px;
-				-webkit-transition: all 0.3s ease-in-out;
-				transition: all 0.3s ease-in-out;
-				font-family: 'Comfortaa', cursive;
+				/* -webkit-border-radius: 15px;
+				-moz-border-radius: 15px;
+				border-radius:15px; */
+				/* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
+				/* box-shadow:
+					0 10px 80px rgba(0, 0, 0, 0.034),
+					0 10px 80px rgba(0, 0, 0, 0.048),
+					0 10px 80px rgba(0, 0, 0, 0.06),
+					0 10px 80px rgba(0, 0, 0, 0.072),
+					0 10px 80px rgba(0, 0, 0, 0.086),
+					0 10px 80px rgba(0, 0, 0, 0.12); */
+				margin: 1em;
 			}
 	
 			.bg-c-blue {
@@ -48,20 +51,32 @@
 			.bg-c-yellow {
 				background: linear-gradient(45deg,#FFB64D,#ffcb80);
 			}
-	
+
+			body{
+				font-family: 'Comfortaa', cursive;
+				font-size: 1em;
+				background-color: #f8f8f8;
+			}
+
 			/* .bg-c-pink { */
 			.card{
 				background: linear-gradient(45deg,#ffffff,#ffffff);
 			}
 	
 			.card-header{
-				background-color: #eeeeee;
-				font-family: 'Baloo 2', cursive;
+				background: linear-gradient(180deg,#f8f8f8,#f8f8f8,#f8f8f8);
+				color: aliceblue;
+				
+			}
+
+			.card-header *{
+				color: #3f3f3f;
+				font-family: Verdana, Geneva, Tahoma, sans-serif;
 			}
 	
 			.card-body{
-				background-color: #fefefe;
-				padding: 2em;
+				background-color: #f8f8f8;
+				padding: 1em;
 			}
 	
 			ul {
@@ -70,12 +85,12 @@
 			}
 
 			.label-head{
-				color: #252525;
-				font-family: 'Baloo 2', cursive;
+				color: #666666;
+				font-family: Verdana, Geneva, Tahoma, sans-serif;
 				font-size: 1.5em;
 			}
 			input.score{
-				color: #252525;
+				color: #5a5a5a;
 				font-size: 2em;
 				background-color: none;
 				text-align: center;
@@ -83,9 +98,9 @@
 			}
 			label, .collapsable_card_header{
 				margin: 0;
-				color: #252525;
+				color: #3f3f3f;
 				font-size: 1em;
-				font-family: 'Comfortaa', cursive;
+				font-family: Verdana, Geneva, Tahoma, sans-serif;
 			}
 			div.icon>img{
 				height: 30px;
@@ -113,14 +128,14 @@
 			.table td, .table th, .table input {
 				text-align: center;
 				vertical-align: middle;   
-				font-family: 'Comfortaa', cursive;
+				font-family: Verdana, Geneva, Tahoma, sans-serif;
 			}
 	
 			table#order_total td{
 				text-align: left;
 				vertical-align: middle;  
 				border: none;
-				font-family: 'Comfortaa', cursive;
+				font-family: Verdana, Geneva, Tahoma, sans-serif;
 				padding-left: 2em;
 				padding-right: 2em;
 			}
@@ -167,13 +182,15 @@
 			{% block contents %}
 			{% endblock %}
 		</div>
-
-		<div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 	
 	<!-- FontAwesome -->
 	<script src="{% static '76f5eda5f3.js' %}"></script> 
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
-
+	<!-- Dropzone -->
 	<script src="{% static 'dropzone.js' %}"></script>
 	<script src="{% static 'popper.min.js' %}"></script>
 	<script src="{% static 'moment-with-locales.js' %}"></script>
@@ -187,9 +204,5 @@
 	<script src="{% static 'addimage.js' %}"></script>
 	<script src="{% static 'faker.min.js' %}"></script>
 	
-	<!-- Fonts -->
-	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
-	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
-	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 </body>
 </html>

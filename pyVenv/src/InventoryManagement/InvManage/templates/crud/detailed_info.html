@@ -1,20 +1,8 @@
 {% load static %}
       <div class="card">
-        <div class="card-header" id="headingOne">
-          <div class="row">
-            <div class="icon col-1">
-              <img src="{% static 'inv/research.png' %}" alt="Storage">
-            </div>
-            <div class="col-11">
-            <h5 class="m-0">
-              <label>
-                Dimensions
-              </label>
-            </h5>
-            </div>
-          </div>
+        <div class="card-header" id="headingTwo">
+          <label class="card-text">Dimensions</label>
         </div>
-
         <div class="card-body">
           {% for field in detailed_form %}
           <div class="form-group form-row m-1">
@@ -31,17 +19,7 @@
 
       <div class="card">
         <div class="card-header" id="headingTwo">
-          <div class="row">
-            <div class="icon col-1">
-              <img src="{% static 'inv/013-inventory.png' %}" alt="Storage">
-            </div>
-            <div class="col-11">
-              <h5 class="mb-0">
-                <label>Storage Information
-                </label>
-              </h5>
-            </div>
-          </div>
+          <label class="card-text">Storage Information</label>
         </div>
           <div class="card-body">
             {% for field in storage_form %}

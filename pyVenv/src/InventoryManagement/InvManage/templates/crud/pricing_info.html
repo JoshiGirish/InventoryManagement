@@ -1,18 +1,7 @@
 {% load static %}
     <div class="card">
         <div class="card-header" id="headingTwo">
-            <div class="row">
-                <div class="icon col-1">
-                    <img src="{% static 'inv/006-purchase.png' %}" alt="Storage">
-                </div>
-                <div class="col-11">
-                    <h5 class="mb-0">
-                        <label class="collapsable_card_header">
-                        Pricing
-                        </label>
-                    </h5>
-                </div>
-            </div>
+            <label class="card-text">Snapshot</label>
         </div>
     <div class="card-body">
     {% for field in pricing_form %}
