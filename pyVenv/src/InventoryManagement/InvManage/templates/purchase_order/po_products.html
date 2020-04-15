@@ -57,18 +57,26 @@
           $('#total_sb').text({{purchase_form.subtotal.value}})
           $('#total_tax').text({{purchase_form.taxtotal.value}})
           $('#total_amt').text({{purchase_form.ordertotal.value}})
-
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh  
+          {% if request == "create" %}
+            addRow(data[0].id,data[0].code,0,0,0,prefix)
+          {% endif %}
           console.log(ppes)
           var prefix = 'form';
-          for(var i=0;i<ppes.length;i++){
-            addRow(ppes[i].product.pk,ppes[i].product.identifier, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix,data)
-          }
+          {% if request == "update" %}
+            for(var i=0;i<ppes.length;i++){
+              if(ppes[i].product == null){ // If the product is deleted from the database
+                addRow(null,'---', ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+              }
+              else{
+                addRow(ppes[i].product.pk,ppes[i].product.identifier, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+              }
+            }
+          {% endif %}
 
-          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh  
           document.getElementById('add').onclick = addRow;
-          addRow(data[0].id,data[0].code,0,0,0,prefix,data)
           // Add row function
-          function addRow(prod_id,identifier,quantity=0,price=0,discount=0,prefix='form',data){
+          function addRow(prod_id=data[0].id,identifier=data[0].code,quantity=0,price=0,discount=0,prefix='form'){
             var opt='';
             var i;
             for (var i=0; i<data.length;i++){

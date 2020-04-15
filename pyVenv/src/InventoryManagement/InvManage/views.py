@@ -247,6 +247,7 @@ def create_purchase_order_view(request):
 			'pentry_formset': pentry_formset,
 			'ppes': {},
 			'shipping_form': shipping_form,
+			'request': 'create',
 		}	
 		return render(request, 'purchase_order.html',context)
 	if request.method == 'POST':
@@ -346,6 +347,7 @@ def update_purchase_order_view(request,pk):
 			'pentry_formset': pentry_formset,
 			'ppes': ppes_serialized,
 			'shipping_form':shipping_form,
+			'request': 'update',
 		}	
 		return render(request, 'purchase_order/update_purchase_order.html',context)
 	if request.method == 'POST':
