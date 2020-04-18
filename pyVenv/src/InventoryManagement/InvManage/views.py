@@ -10,8 +10,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
-from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer
-
+from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer, ProductSerializer
 def create_company_view(request):
 	if request.method == 'GET':
 		company_form = CompanyForm()
@@ -229,7 +228,10 @@ def create_purchase_order_view(request):
 	pentry_formset = ProductPurchaseEntryFormset(data)
 	pentry_form = ProductPurchaseEntryForm()
 	shipping_form = ShippingAddressForm()
+	company = Company.objects.all().last()
+	ship_data = company.shippingaddress.__dict__
 	if request.method == 'GET':
+		shipping_form = ShippingAddressForm(initial=ship_data)
 		purchase_form = PurchaseOrderBasicInfo()
 		vendor_form = VendorForm()
 		prods = []
@@ -251,10 +253,14 @@ def create_purchase_order_view(request):
 		}	
 		return render(request, 'purchase_order.html',context)
 	if request.method == 'POST':
+		ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm,can_delete=True)
 		purchase_form = PurchaseOrderBasicInfo(request.POST, prefix='po')
 		pentry_formset = ProductPurchaseEntryFormset(request.POST,prefix = 'form')
 		data = {}
-		if purchase_form.is_valid() and pentry_formset.is_valid():
+		print(purchase_form.is_valid())
+		print(pentry_formset.is_valid())
+		print(pentry_formset.errors)
+		if purchase_form.is_valid():
 			vendor = purchase_form.cleaned_data.get('vendor')
 			po = purchase_form.cleaned_data.get('po')
 			date = purchase_form.cleaned_data.get('date')
@@ -279,14 +285,28 @@ def create_purchase_order_view(request):
 			}
 			new_po = PurchaseOrder.objects.create(**data)
 			for ppeform in pentry_formset:
-				product = ppeform.cleaned_data.get('product')
-				quantity = ppeform.cleaned_data.get('quantity')
-				price = ppeform.cleaned_data.get('price')
-				discount = ppeform.cleaned_data.get('discount')
-				order = new_po
-				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
-				product.quantity += quantity # Add the purchased quantity to the product stock
-				product.save() # Save the changes to the product instance
+				if ppeform.is_valid():
+					ppe_id = ppeform.cleaned_data.get('ppe_id')
+					product = ppeform.cleaned_data.get('product')
+					quantity = ppeform.cleaned_data.get('quantity')
+					price = ppeform.cleaned_data.get('price')
+					discount = ppeform.cleaned_data.get('discount')
+					order = PurchaseOrder.objects.get(id=new_po.pk)
+					print(ppe_id)
+					validated_data = { 	'ppe_id': ppe_id,
+										'product': product.pk,
+										'quantity':quantity,
+										'price':price,
+										'discount':discount,
+										'order':new_po.pk,
+									}
+					if ppe_id == -1: # new ppe to be created if id is -1
+						pentry = PPEntrySerializer(data = validated_data)
+						if pentry.is_valid():
+							pentry.save()
+							product.quantity += quantity # Add the quantity to the product stock as it is new ppe
+						else:
+							print(pentry.errors)
 		return redirect('/purchase_orders')
 
 def display_purchase_orders_view(request):
@@ -314,7 +334,7 @@ def update_purchase_order_view(request,pk):
 	company = Company.objects.all().last()
 	ship_data = company.shippingaddress.__dict__
 	if request.method == 'GET':
-		ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm)
+		ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm,can_delete=True)
 		ppes = PurchaseOrder.objects.get(id=pk).productpurchaseentry_set.all()
 		ppes_serialized = []
 		for ppe in ppes:
@@ -351,10 +371,14 @@ def update_purchase_order_view(request,pk):
 		}	
 		return render(request, 'purchase_order/update_purchase_order.html',context)
 	if request.method == 'POST':
+		ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm,can_delete=True)
 		purchase_form = PurchaseOrderBasicInfo(request.POST, prefix='po')
 		pentry_formset = ProductPurchaseEntryFormset(request.POST,prefix = 'form')
 		data = {}
-		if purchase_form.is_valid() and pentry_formset.is_valid():
+		print(purchase_form.is_valid())
+		print(pentry_formset.is_valid())
+		# print(pentry_formset)
+		if purchase_form.is_valid():
 			vendor = purchase_form.cleaned_data.get('vendor')
 			po = purchase_form.cleaned_data.get('po')
 			date = purchase_form.cleaned_data.get('date')
@@ -377,17 +401,56 @@ def update_purchase_order_view(request,pk):
 				'taxtotal':taxtotal,
 				'ordertotal':ordertotal
 			}
-			new_po = PurchaseOrder.objects.create(**data)
+			PurchaseOrder.objects.filter(id=pk).update(**data)
 			for ppeform in pentry_formset:
+				if ppeform.is_valid():
+					ppe_id = ppeform.cleaned_data.get('ppe_id')
+					product = ppeform.cleaned_data.get('product')
+					quantity = ppeform.cleaned_data.get('quantity')
+					price = ppeform.cleaned_data.get('price')
+					discount = ppeform.cleaned_data.get('discount')
+					order = PurchaseOrder.objects.get(id=pk)
+					print(ppe_id)
+					validated_data = { 	'ppe_id': ppe_id,
+										'product': product.pk,
+										'quantity':quantity,
+										'price':price,
+										'discount':discount,
+										'order':pk,
+									}
+					if ppe_id == -1: # new ppe to be created if id is -1
+						pentry = PPEntrySerializer(data = validated_data)
+						if pentry.is_valid():
+							pentry.save()
+							product.quantity += quantity # Add the quantity to the product stock as it is new ppe
+						else:
+							print(pentry.errors)
+					else:
+						ppe=ProductPurchaseEntry.objects.get(id=ppe_id)
+						print(ppe)
+						old_quantity = ppe.quantity
+						# ppeform.cleaned_data.update({'order':order})
+						# validated_data.update({'ppe_id': ppe_id})
+						print(validated_data)
+						pentry = PPEntrySerializer(ppe,data = validated_data)
+						if pentry.is_valid():
+							pentry.save()
+							# ProductPurchaseEntry.objects.filter(id=ppe_id).update(product=product,quantity=quantity,price=price,discount=discount,order=order)
+							product.quantity += quantity-old_quantity # Add the difference of quantity to the product stock as it is updated ppe
+							product.save() # Save the changes to the product instance
+						else:
+							print(pentry.errors)
+			for ppeform in pentry_formset.deleted_forms:
+				print(ppeform.is_valid())
+				ppe_id = ppeform.cleaned_data.get('ppe_id')
+				print(ppe_id)
 				product = ppeform.cleaned_data.get('product')
 				quantity = ppeform.cleaned_data.get('quantity')
-				price = ppeform.cleaned_data.get('price')
-				discount = ppeform.cleaned_data.get('discount')
-				order = new_po
-				ProductPurchaseEntry.objects.create(product=product,quantity=quantity,price=price,discount=discount,order=order)
-				product.quantity += quantity # Add the purchased quantity to the product stock
-				product.save() # Save the changes to the product instance
-		return redirect('/products')
+				if ppe_id != -1:
+					ppe = ProductPurchaseEntry.objects.get(id=ppe_id)
+					product.quantity -= quantity
+					ppe.delete()
+		return redirect('/purchase_orders')
 
 def print_purchase_order_view(request,pk):
 	if request.method == 'GET':

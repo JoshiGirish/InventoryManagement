@@ -53,32 +53,34 @@
           var data = JSON.parse(document.getElementById('product-data').textContent);
           console.log(data)
           var ppes = JSON.parse(document.getElementById('ppes-data').textContent);
-          
-          $('#total_sb').text({{purchase_form.subtotal.value}})
-          $('#total_tax').text({{purchase_form.taxtotal.value}})
-          $('#total_amt').text({{purchase_form.ordertotal.value}})
+          var p_id = -1;
+          $('#total_sb').text({{purchase_form.subtotal.value}}.toFixed(2))
+          $('#total_tax').text({{purchase_form.taxtotal.value}}.toFixed(2))
+          $('#total_amt').text({{purchase_form.ordertotal.value}}.toFixed(2))
           $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh  
           {% if request == "create" %}
-            addRow(data[0].id,data[0].code,0,0,0,prefix)
+            addRow(null,-1,data[0].id,data[0].code,0,0,0,prefix)
           {% endif %}
           console.log(ppes)
           var prefix = 'form';
           {% if request == "update" %}
             for(var i=0;i<ppes.length;i++){
               if(ppes[i].product == null){ // If the product is deleted from the database
-                addRow(null,'---', ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+                addRow(null,ppes[i].ppe_id,null,'---', ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
               }
               else{
-                addRow(ppes[i].product.pk,ppes[i].product.identifier, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+                var ind = data.findIndex(p => p.id == ppes[i].product) // Index of product element in data dictionary
+                addRow(null,ppes[i].ppe_id,ppes[i].product,data[ind].code, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
               }
             }
           {% endif %}
 
           document.getElementById('add').onclick = addRow;
           // Add row function
-          function addRow(prod_id=data[0].id,identifier=data[0].code,quantity=0,price=0,discount=0,prefix='form'){
+          function addRow(tag,ppe_id=-1,prod_id=data[0].id,identifier=data[0].code,quantity=0,price=0,discount=0,prefix='form'){
             var opt='';
             var i;
+            console.log(ppe_id)
             for (var i=0; i<data.length;i++){
               if (data[i].id == prod_id){
                 opt += '<option value="'+data[i].id+'" selected="selected">'+data[i].name+'</option>';
@@ -87,15 +89,21 @@
                 opt += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
               }
             }
+            // var ppe = ''
+            // if (ppe_id != ""){
+            //   ppe = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-ppe_id" id="id_'+prefix+'-'+count+'-ppe_id" value="'+ppe_id+'"></td>';
+            // }
+            ppe = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-ppe_id" id="id_'+prefix+'-'+count+'-ppe_id" value="'+ppe_id+'"></td>';
+            var xxx = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-DELETE" id="id_'+prefix+'-'+count+'-DELETE" value=""></td>';
             var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>';
             var sel = '<td><select onchange="setIdentifier(this)" class="form-control" data-num="'+count+'" name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product">'+opt+'</select></td>';
             var ids = '<td><label name="'+prefix+'-'+count+'-id" id="id_'+prefix+'-'+count+'-id">'+identifier+'</label></td>';
             var qty = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value="'+quantity+'"></td>';
-            var pri = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-price" id="id_'+prefix+'-'+count+'-price" value="'+price+'"></td>';
+            var pri = '<td><input class="form-control" data-num='+  count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-price" id="id_'+prefix+'-'+count+'-price" value="'+price+'"></td>';
             var dis = '<td><input class="form-control" data-num='+count+' oninput="updateSubTotal(this)" type="text" name="'+prefix+'-'+count+'-discount" id="id_'+prefix+'-'+count+'-discount" value="'+discount+'"></td>';
-            var sub = '<td class="orderSumLabel"><label name="'+prefix+'-'+count+'-subt" id="id_'+prefix+'-'+count+'-subt">'+(quantity*price-quantity*price*discount/100)+'</label></td>';
+            var sub = '<td class="orderSumLabel"><label name="'+prefix+'-'+count+'-subt" id="id_'+prefix+'-'+count+'-subt">'+(quantity*price-quantity*price*discount/100).toFixed(2)+'</label></td>';
             // rows.innerHTML += '<tr><td id="prod'+count+'">'+sel+'</td><td><label name="id'+count+'" id="id'+count+'"></label></td><td><input class="form-control" type="text" name="qty'+count+'" id="qty'+count+'"></td><td><input class="form-control" type="text" name="price'+count+'" id="price'+count+'"></td><td><input class="form-control" type="text" name="dis'+count+'" id="dis'+count+'"></td><td><label name="subt'+count+'" id="subt'+count+'"></label></td></tr>';           
-            var markup ='<tr id="id_row-'+count+'">'+del+sel+ids+qty+pri+dis+sub+'</tr>';           
+            var markup ='<tr id="id_row-'+count+'" data-num="'+count+'">'+del+sel+ids+qty+pri+dis+sub+xxx+ppe+'</tr>';           
             $('#addProduct').append(markup);
             if(prod_id==null){
               disableRow(count, prefix)
@@ -104,6 +112,9 @@
             var form_idx = $('#id_form-TOTAL_FORMS').val();
               // $('#form_set').a'+prefix+'nd($('#empty_form').html().replace(/__prefix__/g, form_idx));
             $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+            // $('#id_'+prefix+'-'+count+'-ppe_id').val(ppe_id);
+            //Add the delete field for the form
+
 
             };
           
@@ -125,11 +136,16 @@
             };
 
           // Deletes the table row
-          function deleteRow(row){
-            $(row).parents("tr").remove();
-            updateSubTotal(row);
-            var form_idx = $('#id_form-TOTAL_FORMS').val(); 
-            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
+          function deleteRow(delTag){
+            // $(row).parents("tr").remove();
+            $(delTag).parents("tr").attr('hidden','hidden');
+            var num = $(delTag).parents("tr").data('num'); // row number
+            console.log(num)
+            $('#id_'+prefix+'-'+num+'-DELETE').val("on");
+
+            updateSubTotal(delTag);
+            // var form_idx = $('#id_form-TOTAL_FORMS').val(); 
+            // $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
           };
 
           // Updates the subtotal cell
@@ -141,10 +157,12 @@
             var subtotal = p*q-(p*q*d/100);
             $('#id_'+prefix+'-'+num+'-subt').html(subtotal.toFixed(2));
             // Calculate subtotals
-            var subTags = $('label[id*="subt"]');
+            var subTags = $('label[id*="subt"]'); // Fetch all subtotal from table rows
             var s = 0;
-            for(var i=0;i<subTags.length;i++){
-              s += parseFloat(subTags[i].textContent);
+            for(var i=0;i<subTags.length;i++){ // Iterate over every row subtotal
+              if($(subTags[i]).parents("tr").attr('hidden')!="hidden"){ // Don't consider hidden(deleted) rows
+                s += parseFloat(subTags[i].textContent); // add subtotal if row is valid
+              }
             };
             $('#total_sb').html(s.toFixed(2));
             // Calculate tax
