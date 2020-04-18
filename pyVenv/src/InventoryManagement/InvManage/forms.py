@@ -108,6 +108,7 @@ class ProductPurchaseEntryForm(forms.Form):
         "class": "form-control",
     }
     # product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    ppe_id = forms.IntegerField(widget=forms.TextInput(attrs={"value":""}))
     product = forms.ModelChoiceField(
                     queryset= Product.objects.all(),
                     widget=forms.Select(attrs={

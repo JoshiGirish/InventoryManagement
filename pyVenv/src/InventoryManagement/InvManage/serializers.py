@@ -21,19 +21,30 @@ class VendorSerializer(serializers.ModelSerializer):
         return data
 
 class PPEntrySerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
+    # product = ProductSerializer()
+    ppe_id = serializers.IntegerField(source='pk')
     class Meta:
         model = ProductPurchaseEntry
-        fields = ('product','quantity','price', 'discount')
+        fields = ('ppe_id','product','quantity','price', 'discount','order')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ('name','owner','phone','address','email','location','image')
+    def create(self, validated_data):
+        validated_data.pop('pk')
+        print(validated_data)
+        return ProductPurchaseEntry.objects.create(**validated_data)
+
+    def update(self, instance,validated_data):
+        print(validated_data)
+        instance.product = validated_data.get('product', instance.product)
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.price = validated_data.get('price', instance.price)
+        instance.discount = validated_data.get('discount', instance.discount)
+        instance.order = validated_data.get('order',instance.order)
+        instance.save()
+        return instance
 
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer()
@@ -46,6 +57,11 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('name','owner','phone','address','email','location','image')
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
