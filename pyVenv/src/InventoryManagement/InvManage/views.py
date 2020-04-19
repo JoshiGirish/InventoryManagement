@@ -11,6 +11,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer, ProductSerializer
+
+
 def create_company_view(request):
 	if request.method == 'GET':
 		company_form = CompanyForm()
@@ -124,14 +126,33 @@ def delete_product_view(request,pk):
 
 def display_products_view(request):
 	if request.method == 'GET':
-		products = Product.objects.all()
+		# Get queryset depeding on the sorting preference of a column
+		try:
+			if request.GET.get('sort')=='ascend': 
+				products = Product.objects.all().order_by(request.GET.get('column'))
+			else:
+				products = Product.objects.all().order_by("-"+request.GET.get('column'))
+		except TypeError:
+			products = Product.objects.all()
+		# products = Product.objects.all()
 		myFilter = ProductFilter(request.GET, queryset=products)
+		filterState = {	
+				'name':{'label': 'Name', 'order': 0,'active': True},
+				'category':{'label': 'Category', 'order': 1,'active': True},
+				'quantity':{'label': 'Quantity', 'order': 2,'active': True},
+				'price':{'label': 'Price', 'order': 3,'active': True},
+				'identifier':{'label': 'Identifier', 'order': 4,'active': True},
+				'location':{'label': 'Location', 'order': 5,'active': True}
+				}
 		products = myFilter.qs
 		number_of_products = len(products)
 		paginator = Paginator(products,15)
 		page_number = request.GET.get('page')
 		page_obj = paginator.get_page(page_number)
-		return render(request, 'display/products.html',{'page_obj':page_obj,'myFilter':myFilter, 'n_prod': number_of_products})
+		return render(request, 'display/products.html',{'page_obj':page_obj,
+														'myFilter':myFilter,
+														'n_prod': number_of_products,
+														'filterState': filterState})
 
 def update_product_view(request,pk):
 	if request.method == 'GET':
