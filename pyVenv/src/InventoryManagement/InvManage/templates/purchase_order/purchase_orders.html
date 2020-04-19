@@ -13,17 +13,7 @@
           <form class="form-inline" id="poFilterForm" action="" method="GET">
               <!-- {{ myFilter.form }} -->
               <div class="col-sm-9">
-              {% for field in myFilter.form %}
-                <div class="form-group form-row m-1">
-                    <div class="col-sm-4">
-                        <label>{{ field.label }}</label>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ field }}
-                    </div>
-                </div>
-              </div>
-                {% endfor %}
+
                   <button class="btn btn-sm btn-light" type="submit">Search</button>
           </form>
           <Script>
@@ -51,6 +41,14 @@
         </tr>
         </thead>
         <tbody>
+          <tr>
+            {% for field in myFilter.form %}
+              <td>{{field}}</td>
+            {% endfor %}
+            <td>Update</td>
+            <td>Remove</td>
+            <td>Print</td>
+        </tr>
             {% for po in page_obj %}
             <tr>
                 <!-- <th scope="row">1</th> -->
@@ -115,7 +113,7 @@
       </form>
       </div>
     </div>
-
+    
      <script type="text/javascript">
      $('#id_po-vendor').val({{purchase_form.vendor_id}})
         $('#delModal').on('show.bs.modal', function(event){

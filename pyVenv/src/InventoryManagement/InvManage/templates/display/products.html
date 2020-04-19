@@ -9,47 +9,59 @@
         <div class="">
           <h2 class="col-sm-6 mr-auto label-head">Products</h2>
         </div>
-        <div class="col-sm-10">
-          <form class="form-inline" id="productsFilterForm" action="" method="GET">
-              <!-- {{ myFilter.form }} -->
-              <div class="col-sm-9">
-              {% for field in myFilter.form %}
-                <div class="form-group form-row m-1">
-                    <div class="col-sm-4">
-                        <label>{{ field.label }}</label>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ field }}
-                    </div>
-                </div>
-              </div>
-                {% endfor %}
-                  <button class="btn btn-sm btn-light" type="submit">Search</button>
-          </form>
-          <Script>
-           $('#productsFilterForm input').addClass('form-control')
-          </Script>
-        </div>
-            
     </div> 
   </div>
 {% endblock title %}
 
 {% block contents %}
-    <table class="table table-sm">
+<form action="" method="GET">
+<div id="tableData">
+    <table id="productsTable" class="table table-sm table-striped">
         <thead class="thead-light">
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Price</th>
-            <th scope="col">Identifier</th>
-            <th scope="col">Location</th>
+          {% for key,value in filterState.items %}
+            <th scope="col">
+              <div class="flex row">
+                <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ value.label }}</div>
+                <div class="col-sm-3 head-cell-content filter-icons">
+                  <div class="flex row end-xs">
+                    <div style="display:flex;justify-content:flex-start;align-items:center;">
+                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ key }}">
+                        <i class="fas fa-caret-left"></i>
+                      </span>
+                    </div>
+                    <div style="display:flex;padding:0em; flex-flow: column;">
+                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ key }}">
+                        <i class="fas fa-caret-up"></i>
+                      </span>
+                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ key }}">
+                        <i class="fas fa-caret-down"></i>
+                      </span>
+                    </div>
+                    <div style="display:flex;justify-content:flex-start;align-items:center;">
+                      <span style="cursor: pointer;">
+                        <i class="fas fa-caret-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+            </th>
+          {% endfor %}
             <th scope="col">Update</th>
             <th scope="col">Remove</th>
         </tr>
         </thead>
-        <tbody>
+
+        <tbody id="tableBody">
+            <tr id="productsFilterForm">
+              <td hidden></td>
+              {% for field in myFilter.form %}
+                <td>{{field}}</td>
+              {% endfor %}
+              <td></td>
+              <td></td>
+              <td hidden><button class="btn btn-sm btn-info" type="submit" hidden>Search</button></td>
+            </tr>
             {% for product in page_obj %}
             <tr>
                 <!-- <th scope="row">1</th> -->
@@ -65,23 +77,24 @@
             {% endfor %}
         </tbody>
     </table>
+  </form>
 
     <!-- Pagination -->
     <div class="d-flex">
       <div class="pagination mr-auto">
         <span class="step-links">
           {% if page_obj.has_previous %}
-            <a class="btn btn-light btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
-            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
+            <a class="btn btn-warning btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+            <a class="btn btn-warning btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
           {% endif %}
 
-          <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }},
+          <span class="btn btn-warning btn-sm current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
           </span>
 
           {% if page_obj.has_next %}
-            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
-            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+            <a class="btn btn-warning btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
+            <a class="btn btn-warning btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
           {% endif %}
         </span>
       </div>
@@ -89,6 +102,7 @@
         Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
       </div>
     </div>
+  </div>
 
     <!-- Modal -->
   <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -127,6 +141,24 @@
             modal.find('#prod_name').text(product_name);
             modal.find('#delForm').attr('action',delete_url);
         })
+
+        // Function for sorting products (ascending or descending)
+        function sort(tag){
+          var column = $(tag).data('column');
+          var sort = $(tag).data('sort');
+          var searchParams = new URLSearchParams(window.location.search)
+          searchParams.append("column",column);
+          searchParams.append("sort", sort);
+          console.log(searchParams)
+          // $('#productsFilterForm').find('input').addClass('form-control')
+          // $.get("{% url 'products' %}",searchParams.toString(),function( data ) {$("body").html(data);})
+          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
+          // $('#ajaxTargetTag').load("{% url 'products' %} #ajaxSourceTag", searchParams.toString());
+
+          // window.location.reload();
+        }
+        $('#productsFilterForm').find('input').addClass('form-control')
       </script>
+
   </div>
 {% endblock %}
