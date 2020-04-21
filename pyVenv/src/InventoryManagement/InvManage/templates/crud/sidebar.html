@@ -99,6 +99,9 @@
 </div>
   <script>
         var id = getCookie('activeMenuId');
+        if(id == null){ // When cookie expires give a random active sidebar menu item
+          id = 'create_purchase_order';
+        }
         if(id.length != 0){
             $('#'+id).addClass("active");
         }
