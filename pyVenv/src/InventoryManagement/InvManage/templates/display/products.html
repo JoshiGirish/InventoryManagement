@@ -15,7 +15,7 @@
 
 {% block contents %}
 <form action="" method="GET">
-<div id="tableData">
+  <div id="tableData">
     <table id="productsTable" class="table table-sm table-striped">
         <thead class="thead-light">
         <tr>
@@ -76,8 +76,9 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
-  </form>
+      </table>
+    </div>
+</form>
 
     <!-- Pagination -->
     <div class="d-flex">
@@ -102,7 +103,6 @@
         Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
       </div>
     </div>
-  </div>
 
     <!-- Modal -->
   <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

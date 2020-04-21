@@ -137,12 +137,12 @@ def display_products_view(request):
 		# products = Product.objects.all()
 		myFilter = ProductFilter(request.GET, queryset=products)
 		filterState = {	
-				'name':{'label': 'Name', 'order': 0,'active': True},
-				'category':{'label': 'Category', 'order': 1,'active': True},
-				'quantity':{'label': 'Quantity', 'order': 2,'active': True},
-				'price':{'label': 'Price', 'order': 3,'active': True},
-				'identifier':{'label': 'Identifier', 'order': 4,'active': True},
-				'location':{'label': 'Location', 'order': 5,'active': True}
+				'name':{'label': 'Name', 'order': 0,'visible': True},
+				'category':{'label': 'Category', 'order': 1,'visible': True},
+				'quantity':{'label': 'Quantity', 'order': 2,'visible': True},
+				'price':{'label': 'Price', 'order': 3,'visible': True},
+				'identifier':{'label': 'Identifier', 'order': 4,'visible': True},
+				'location':{'label': 'Location', 'order': 5,'visible': True}
 				}
 		products = myFilter.qs
 		number_of_products = len(products)
