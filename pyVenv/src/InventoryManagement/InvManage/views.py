@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
 from django.forms.formsets import formset_factory
-from .models import Product, Vendor, PurchaseOrder, ProductPurchaseEntry, Company, Invoice, ShippingAddress
+from .models import *
 from django.core.files.storage import FileSystemStorage
 import io,csv
 from .filters import ProductFilter, VendorFilter, PurchaseOrderFilter, CompanyFilter
@@ -11,6 +11,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from .serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer, ProductSerializer
+from .scripts.filters import getColumns
 
 
 def create_company_view(request):
@@ -126,7 +127,7 @@ def delete_product_view(request,pk):
 
 def display_products_view(request):
 	if request.method == 'GET':
-		# Get queryset depeding on the sorting preference of a column
+		# Get queryset depending on the sorting preference of a column
 		try:
 			if request.GET.get('sort')=='ascend': 
 				products = Product.objects.all().order_by(request.GET.get('column'))
@@ -134,25 +135,79 @@ def display_products_view(request):
 				products = Product.objects.all().order_by("-"+request.GET.get('column'))
 		except TypeError:
 			products = Product.objects.all()
-		# products = Product.objects.all()
+
+		# Get filter state
+		state = ProductFilterState.objects.all().first()
+		column_list = getColumns(state) # get list of columns
+		print(column_list)
+
+		# Edit column order according the column position request
+		try:
+			if request.GET.get('direction') != None and request.GET.get('column') != None:
+				if request.GET.get('direction')=='left': 
+					# Edit the column list
+					col = request.GET.get('column')
+					print(col)
+					old_index = column_list.index(col)
+					if old_index == 0:
+						new_index = old_index
+					else:
+						new_index = old_index - 1
+					column_list.insert(new_index, column_list.pop(old_index))
+					print(column_list)
+
+					# Save this change to the filter state
+					master_col_name = column_list[new_index]
+					slave_col_name = column_list[old_index]
+					master_col = state.productfiltercolumn_set.get(name=master_col_name)
+					slave_col = state.productfiltercolumn_set.get(name=slave_col_name)
+
+					temp_pos = master_col.position
+					master_col.position = slave_col.position
+					master_col.save()
+					slave_col.position = temp_pos
+					slave_col.save()
+
+				else:
+					col = request.GET.get('column')
+					print(col)
+					old_index = column_list.index(col)
+					if old_index == len(column_list)-1:
+						new_index = old_index
+					else:
+						new_index = old_index + 1
+					column_list.insert(new_index, column_list.pop(old_index))
+					print(column_list)
+
+					# Save this change to the filter state
+					master_col_name = column_list[new_index]
+					slave_col_name = column_list[old_index]
+					master_col = state.productfiltercolumn_set.get(name=master_col_name)
+					slave_col = state.productfiltercolumn_set.get(name=slave_col_name)
+
+					temp_pos = master_col.position
+					master_col.position = slave_col.position
+					master_col.save()
+					slave_col.position = temp_pos
+					slave_col.save()
+		except ValueError:
+			pass
+
+		# Filter according to the search queries
 		myFilter = ProductFilter(request.GET, queryset=products)
-		filterState = {	
-				'name':{'label': 'Name', 'order': 0,'visible': True},
-				'category':{'label': 'Category', 'order': 1,'visible': True},
-				'quantity':{'label': 'Quantity', 'order': 2,'visible': True},
-				'price':{'label': 'Price', 'order': 3,'visible': True},
-				'identifier':{'label': 'Identifier', 'order': 4,'visible': True},
-				'location':{'label': 'Location', 'order': 5,'visible': True}
-				}
 		products = myFilter.qs
 		number_of_products = len(products)
 		paginator = Paginator(products,15)
 		page_number = request.GET.get('page')
 		page_obj = paginator.get_page(page_number)
+		page_obj_dicts = []
+		for prod in page_obj: 
+			page_obj_dicts.append(prod.__dict__) 
 		return render(request, 'display/products.html',{'page_obj':page_obj,
 														'myFilter':myFilter,
 														'n_prod': number_of_products,
-														'filterState': filterState})
+														'columns': column_list,
+														'dicts': page_obj_dicts})
 
 def update_product_view(request,pk):
 	if request.method == 'GET':

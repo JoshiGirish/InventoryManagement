@@ -7,6 +7,6 @@ class ProductFilterState(models.Model):
 class ProductFilterColumn(models.Model):
     name = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(null=True,default=True)
     position = models.IntegerField()
     state = models.ForeignKey(ProductFilterState,on_delete=models.CASCADE)

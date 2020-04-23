@@ -19,27 +19,27 @@
     <table id="productsTable" class="table table-sm table-striped">
         <thead class="thead-light">
         <tr>
-          {% for key,value in filterState.items %}
+          {% for column in columns %}
             <th scope="col">
               <div class="flex row">
-                <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ value.label }}</div>
+                <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ column|title }}</div>
                 <div class="col-sm-3 head-cell-content filter-icons">
                   <div class="flex row end-xs">
                     <div style="display:flex;justify-content:flex-start;align-items:center;">
-                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ key }}">
+                      <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="left" data-column="{{ column }}">
                         <i class="fas fa-caret-left"></i>
                       </span>
                     </div>
                     <div style="display:flex;padding:0em; flex-flow: column;">
-                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ key }}">
+                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ column }}">
                         <i class="fas fa-caret-up"></i>
                       </span>
-                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ key }}">
+                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ column }}">
                         <i class="fas fa-caret-down"></i>
                       </span>
                     </div>
                     <div style="display:flex;justify-content:flex-start;align-items:center;">
-                      <span style="cursor: pointer;">
+                      <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="right" data-column="{{ column }}">
                         <i class="fas fa-caret-right"></i>
                       </span>
                     </div>
@@ -54,25 +54,28 @@
 
         <tbody id="tableBody">
             <tr id="productsFilterForm">
-              <td hidden></td>
-              {% for field in myFilter.form %}
-                <td>{{field}}</td>
+              {% for column in columns %}
+                {% for field in myFilter.form %}
+                  {% if field.name == column %}
+                    <td>{{field}}</td>
+                  {% endif %}
+                {% endfor %}
               {% endfor %}
               <td></td>
               <td></td>
               <td hidden><button class="btn btn-sm btn-info" type="submit" hidden>Search</button></td>
             </tr>
-            {% for product in page_obj %}
+            {% for dict in dicts %}
             <tr>
-                <!-- <th scope="row">1</th> -->
-                <td class="product_name">{{ product.name }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.identifier }}</td>
-                <td>{{ product.location }}</td>
-                <td><a href="{% url 'update_product' product.id %}" class="btn btn-sm btn-info">Update</a></td>
-                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_product' product.id %}" data-prod_name="{{ product.name }}" data-prod_id="{{ product.id }}">Delete</a></td>
+              {% for column in columns %}
+                {% for key,value in dict.items %}
+                    {% if key == column %}
+                      <td>{{ value }}</td>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+                <td><a href="{% url 'update_product' dict.id %}" class="btn btn-sm btn-info">Update</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_product' dict.id %}" data-prod_name="{{ dict.name }}" data-prod_id="{{ dict.id }}">Delete</a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -149,6 +152,23 @@
           var searchParams = new URLSearchParams(window.location.search)
           searchParams.append("column",column);
           searchParams.append("sort", sort);
+          console.log(searchParams)
+          // $('#productsFilterForm').find('input').addClass('form-control')
+          // $.get("{% url 'products' %}",searchParams.toString(),function( data ) {$("body").html(data);})
+          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
+          // $('#ajaxTargetTag').load("{% url 'products' %} #ajaxSourceTag", searchParams.toString());
+
+          // window.location.reload();
+        }
+        // Function for sorting products (ascending or descending)
+        function moveColumn(tag){
+          var column = $(tag).data('column');
+          console.log(column)
+          var direction = $(tag).data('move');
+          console.log(direction)
+          var searchParams = new URLSearchParams(window.location.search)
+          searchParams.append("column",column);
+          searchParams.append("direction", direction);
           console.log(searchParams)
           // $('#productsFilterForm').find('input').addClass('form-control')
           // $.get("{% url 'products' %}",searchParams.toString(),function( data ) {$("body").html(data);})
