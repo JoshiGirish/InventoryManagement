@@ -1,132 +1,123 @@
 {% extends "base.html" %}
-    
-    {% block title %}
-    <form enctype="multipart/form-data" action="" method="POST">
-      {% csrf_token %}
-            <div class="m-2 d-flex align-items-center row">
-                <!-- <h2 class="col-sm-6">Create Product</h2> -->
-                <h2 class="col-sm-6 mr-auto label-head">Create Product</h2>
-                    <div class="float-right">
-                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
-                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
-                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
-                        <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button>
-                        <!-- <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</a> -->
-                    </div>
-            </div>
-              
-    {% endblock %}
 
-    {% block contents %}     
-        <div class="row">
-            <div class="col-sm-6">
-                {% include "crud/basic_info.html" %}
-                {% include "crud/detailed_info.html" %}
-            </div>
-            <div class="col-sm-6">
-                {% include "crud/status.html" %}
-                {% include "crud/pricing_info.html" %}
-                <div class="row">
-                  <div class="col-4">
-                    {% include "crud/thumbnail.html" %}
-                  </div>
-                  <div class="col-8">
-                    {% include "crud/variants.html" %}
-                </div>
-                </div>
-            </div>
+{% block title %}
+{% endblock %}
+
+{% block contents %}
+<!-- <div>
+  <a href="#productCorousel" role="button" data-slide="prev" onclick="getProducts(); toggleCorouselCookie();">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+  </a>
+</div> -->
+<div>
+<div id="productCorousel" class="carousel slide" data-ride="carousel" data-interval="false">
+  <div class="carousel-inner">
+    <div id="createCorousel" class="carousel-item active">
+      <div class="d-flex flex-row" style="height: 900px;">
+        {% if requested_view_type == 'create' %}
+          {% include "display/product_create.html" %}
+        {% elif requested_view_type == 'update' %}
+          {% include "display/product_update.html" %}
+        {% endif %}
+      <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+        <div class="divider"></div>
+        <a class="" href="#productCorousel" role="button" data-slide="next" onclick="getProducts(); toggleCorouselCookie();">
+          <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+          <span style="color: gray;"><i class="fas fa-angle-left fa-lg circle-icon"></i></span>
+          <!-- <span class="sr-only">Next</span> -->
+        </a>
+        <div class="divider"></div>
+      </div>
+      
+    </div>
+    </div>
+    <div id="displayCorousel" class="carousel-item">
+      <div class="d-flex flex-row" style="height: 900px;">
+        <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+          <div class="divider"></div>
+          <a class="" href="#productCorousel" role="button" data-slide="prev" onclick="getProducts(); toggleCorouselCookie();">
+            <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+            <span style="color: gray;"><i class="fas fa-angle-right fa-lg circle-icon"></i></span>
+            <!-- <span class="sr-only">Next</span> -->
+          </a>
+          <div class="divider"></div>
         </div>
-      </form>
-       <!-- Modal -->
-  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form id="csvDrop" class="dropzone needsclick dz-clickable modal-body">
-          <form class="dropzone needsclick dz-clickable"  id="myAwesomeDropzone" action="{% url 'upload' 'products' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-                <div class="dz-message needsclick row">
-                  <div class="col-sm-5">
-                    {% load static %}
-                    <img style="max-height: 100px;" src="{% static 'file-csv-solid.svg' %}" alt="">
-                  </div>
-                  <div class="col-sm-7">
-                    <button type="button" class="dz-button">Drop files here or click to upload.</button><br />
-                  </div>
-                </div>
-              </form>
-          <div class="modal-footer">
-            <button type="button" id="closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="uploadBtn" class="btn btn-success">Upload</button>
-          </div>
-        </form>
+        {% include "display/product_contents.html" %}
       </div>
     </div>
+    </div>
   </div>
-  {% load static %}
-      <script src="{% static 'bootstrap.min.js' %}"></script>
-     <script type="text/javascript">
-          $('#delModal').on('show.bs.modal', function(event){
-            var button = $(event.relatedTarget);
-            console.log(button)
-            var product_id = button.data('prod_id');
-            var product_name = button.data('prod_name');
-            var modal = $(this);
-            modal.find('.modal-body #pro_id').val(product_id);
-            modal.find('#prod_name').text(product_name);
-            // alert("you are here")
-          //   document.getElementById('pro_id').value = 10;
-        })
-      </script>
-      <script>
-     var myDropzone = new Dropzone(document.querySelector('#csvDrop'), { // Make the whole body a dropzone
-      url: "{% url 'upload' 'products' %}", // Set the url
-      thumbnailWidth: 80,
-      thumbnailHeight: 80,
-      parallelUploads: 20,
-      // previewTemplate: previewTemplate,
-      autoQueue: false, // Make sure the files aren't queued until manually added
-      // previewsContainer: "#previews", // Define the container to display the previews
-      // clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-    });
+</div>
 
-    myDropzone.on("addedfile", function(file) {
-      // Hookup the start button
-      document.getElementById("uploadBtn").onclick = function() { myDropzone.enqueueFile(file); };
-    });
 
-    document.getElementById("uploadBtn").onclick = function() {
-      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-    };
-    document.getElementById("closeBtn").onclick = function() {
-      myDropzone.removeAllFiles(true);
-    };
-    </script>
-      <style>
-          .main-section{
-            margin:0 auto;
-            padding: 20px;
-            margin-top: 100px;
-            background-color: #fff;
-            box-shadow: 0px 0px 20px #c1c1c1;
-            }
-            .fileinput-remove,
-            .fileinput-upload{
-                display: none;
-            }
-      </style>
-    {% endblock %}
-    
-
-    <script>
-        function add_class(){
-            document.getElementById('id_thumbnail-image').classList.add('btn');
+  <script>
+        // Set the corousel from the cookie
+        var corouselState = getCookie('activeProductCorousel');
+        if (corouselState=='create'){
+          $('#displayCorousel').removeClass('active')
+          $('#createCorousel').addClass('active')
+          }
+        else{
+          $('#createCorousel').removeClass('active')
+          $('#displayCorousel').addClass('active')
         }
-        
-        add_class();
-    </script>
+        getProducts()
+        function setCookie(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        function eraseCookie(name) {   
+            document.cookie = name+'=; Max-Age=-99999999;';  
+        }
+
+        // Toggle the cookie
+        function toggleCorouselCookie(){
+          var corouselState = getCookie('activeProductCorousel');          
+          if (corouselState=='create'){
+            setCookie('activeProductCorousel','display',1)
+          }
+          else{
+            setCookie('activeProductCorousel','create',1)
+          }
+        }
+
+        // Toogle the corousel
+        function toggleCorousel(){
+          var corouselState = getCookie('activeProductCorousel');          
+          if (corouselState=='create'){
+            setCookie('activeProductCorousel','display',1)
+            $('#productCorousel').carousel("next")
+            // $('#createCorousel').removeClass('active')
+            // $('#displayCorousel').addClass('active')
+          }
+          else{
+            setCookie('activeProductCorousel','create',1)
+            $('#productCorousel').carousel("prev")
+            // $('#displayCorousel').removeClass('active')
+            // $('#createCorousel').addClass('active')
+          }
+        }
+
+        function getProducts(){
+          var searchParams = new URLSearchParams(window.location.search)
+          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
+        }
+
+  </script>
+{% endblock %}

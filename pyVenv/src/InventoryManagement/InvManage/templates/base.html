@@ -11,6 +11,12 @@
 		<script src="{% static 'jquery.js' %}"></script> 
 		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 		<script src="{% static 'bootstrap.min.js' %}"></script>
+
+		<!-- Dropzone -->
+		<script src="{% static 'dropzone.js' %}"></script>
+		<script src="{% static 'popper.min.js' %}"></script>
+		<script src="{% static 'moment-with-locales.js' %}"></script>
+
 		<style>		
 			/* div {
 				border: 1px solid violet;
@@ -21,10 +27,10 @@
 				font-size: 1.5em;
 			}
 			
-
 			div.card{
 				background-color: #FFFFFF;
 				padding:0;
+				/* border-style: groove; */
 				border: none;
 				/* -webkit-border-radius: 15px;
 				-moz-border-radius: 15px;
@@ -40,7 +46,7 @@
 				margin: 1em;
 			}
 			
-			.d-flex{
+			.view-title{
 				border-bottom: 2px solid #e0e0e0;
 				margin-bottom: 1.5em;
 			}
@@ -66,6 +72,7 @@
 			/* .bg-c-pink { */
 			.card{
 				background: linear-gradient(45deg,#ffffff,#ffffff);
+				border-style: groove;
 			}
 	
 			.card-header{
@@ -179,23 +186,38 @@
 				opacity: 1;
 				color: gray;
 			}
-	
+			
+			/* .divider {
+				height: 120px;
+				background: linear-gradient(90deg,#f8f8f8, #f8f8f8,#ebebeb);
+			} */
+
+			.circle-icon {
+				background: #ebebeb;
+				padding:10px;
+				border-radius: 20px;
+			}
+			/* .carousel-item.active i:after {
+				transform: rotate(180deg);
+				right: 17px;
+				} */
+
 		</style>
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'dropzone.css' %}">
 </head>
 <body>
-	<div class="container col-sm-12">
+	<div class="col-sm-12">
 		{% include "navbar/navbar.html" %}
 	</div>
 
-	<div class="container col-sm-12 row">
+	<div class="container col-sm-12 d-flex flex-row">
 
 		<div class="col-sm-3 sidebar">
 			{% include "crud/sidebar.html" %}
 		</div>
 
-		<div class="col-sm-9 workarea">
+		<div class="col-sm-9 workarea d-flex flex-row align-items-start">
 			{% block title %}
 			{% endblock %}
 
@@ -209,11 +231,6 @@
 	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-
-	<!-- Dropzone -->
-	<script src="{% static 'dropzone.js' %}"></script>
-	<script src="{% static 'popper.min.js' %}"></script>
-	<script src="{% static 'moment-with-locales.js' %}"></script>
 
 	<!-- JSpdf dependencies -->
 	<script src="{% static 'jspdf.min.js' %}"></script>
