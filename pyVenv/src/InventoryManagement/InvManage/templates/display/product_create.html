@@ -1,0 +1,127 @@
+<div id="productData">
+  <div id="updatedData">
+    <form enctype="multipart/form-data" action="" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center flex-row view-title">
+                <!-- <h2 class="col-sm-6">Create Product</h2> -->
+                <h2 class="col-sm-6 mr-auto label-head">Create Product</h2>
+                    <div class="float-right">
+                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button>
+                        <!-- <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</a> -->
+                    </div>
+            </div>
+
+
+
+        <div class="d-flex flex-row">
+            <div class="col-sm-6">
+                {% include "crud/basic_info.html" %}
+                {% include "crud/detailed_info.html" %}
+            </div>
+            <div>
+                {% include "crud/status.html" %}
+                {% include "crud/pricing_info.html" %}
+                <div class="d-flex flex-row">
+                  <div class="col-4">
+                    {% include "crud/thumbnail.html" %}
+                  </div>
+                  <div>
+                    {% include "crud/variants.html" %}
+                </div>
+                </div>
+            </div>
+        </div>
+     </form>
+       <!-- Modal -->
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="csvDrop" class="needsclick dz-clickable modal-body">
+          <!-- <form class="dropzone needsclick dz-clickable"  id="myAwesomeDropzone" action="{% url 'upload' 'products' %}" method="POST" enctype="multipart/form-data"> -->
+            {% csrf_token %}
+                <div class="dz-message needsclick row">
+                  <div class="col-sm-5">
+                    {% load static %}
+                    <img style="max-height: 100px;" src="{% static 'file-csv-solid.svg' %}" alt="">
+                  </div>
+                  <div class="col-sm-7">
+                    <button type="button" class="dz-button">Drop files here or click to upload.</button><br />
+                  </div>
+                </div>
+              <!-- </form> -->
+          <div class="modal-footer">
+            <button type="button" id="closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="uploadBtn" class="btn btn-success">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% load static %}
+      <script src="{% static 'bootstrap.min.js' %}"></script>
+     <script type="text/javascript">
+          $('#delModal').on('show.bs.modal', function(event){
+            var button = $(event.relatedTarget);
+            console.log(button)
+            var product_id = button.data('prod_id');
+            var product_name = button.data('prod_name');
+            var modal = $(this);
+            modal.find('.modal-body #pro_id').val(product_id);
+            modal.find('#prod_name').text(product_name);
+            // alert("you are here")
+          //   document.getElementById('pro_id').value = 10;
+        })
+      </script>
+      <script>
+    $(function(){
+        var myDropzone = new Dropzone(document.querySelector('#csvDrop'), { // Make the whole body a dropzone
+        // Dropzone.options.csvDrop = {
+        url: "{% url 'upload' 'products' %}", // Set the url
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 20,
+        // previewTemplate: previewTemplate,
+        autoQueue: false, // Make sure the files aren't queued until manually added
+        // previewsContainer: "#previews", // Define the container to display the previews
+        // clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        });
+
+        myDropzone.on("addedfile", function(file) {
+        // Hookup the start button
+        document.getElementById("uploadBtn").onclick = function() { myDropzone.enqueueFile(file); };
+        });
+
+        document.getElementById("uploadBtn").onclick = function() {
+        myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+        };
+        document.getElementById("closeBtn").onclick = function() {
+        myDropzone.removeAllFiles(true);
+        }; 
+    });
+     
+
+    </script>
+      <style>
+          .main-section{
+            margin:0 auto;
+            padding: 20px;
+            margin-top: 100px;
+            background-color: #fff;
+            box-shadow: 0px 0px 20px #c1c1c1;
+            }
+            .fileinput-remove,
+            .fileinput-upload{
+                display: none;
+            }
+      </style>
+    </div>
+</div>

@@ -99,7 +99,8 @@ def create_product_view(request):
 													'detailed_form':detailed_form,
 													'storage_form':storage_form,
 													'pricing_form':pricing_form,
-													'status_form':status_form})
+													'status_form':status_form,
+													'requested_view_type':'create'})
 	if request.method == 'POST':
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		# types = [basic_form, detailed_form, thumnail_form, storage_form, pricing_form]
@@ -203,14 +204,15 @@ def display_products_view(request):
 		page_obj_dicts = []
 		for prod in page_obj: 
 			page_obj_dicts.append(prod.__dict__) 
-		return render(request, 'display/products.html',{'page_obj':page_obj,
+		return render(request, 'display/product_contents.html',{'page_obj':page_obj,
 														'myFilter':myFilter,
 														'n_prod': number_of_products,
 														'columns': column_list,
 														'dicts': page_obj_dicts})
 
-def update_product_view(request,pk):
+def update_product_view(request):
 	if request.method == 'GET':
+		pk = request.GET.get('pk')
 		product = Product.objects.get(id=pk)
 		data = product.__dict__
 		basic_form = ProductBasicInfoForm(initial=data)
@@ -226,8 +228,11 @@ def update_product_view(request,pk):
 											'storage_form':storage_form,
 											'pricing_form':pricing_form,
 											'status_form':status_form,
-											'thumbnail':thumbnail})
+											'thumbnail':thumbnail,
+											'requested_view_type':'update',
+											'pk':pk})
 	if request.method == 'POST':
+		pk = request.POST.get('pk')
 		types = [ProductBasicInfoForm, ProductDetailedInfoForm, ThumbnailForm, ProductStorageInfoForm, ProductPricingForm, ProductStatusForm]
 		data = {}
 		for form_type in types:
@@ -241,7 +246,7 @@ def update_product_view(request,pk):
 		Product.objects.filter(id=pk).update(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-		return redirect('/products')
+		return redirect('/product')
 
 def uploadCSV(request,data):
 	return_url = '/products'

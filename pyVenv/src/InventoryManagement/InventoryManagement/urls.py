@@ -18,7 +18,7 @@ urlpatterns = [
     # Routes for managing products
     path('product/', create_product_view, name='product'),
     path('products/',display_products_view, name='products'),
-    path('product/<str:pk>/update', update_product_view, name='update_product'),
+    path('product/update', update_product_view, name='update_product'),
     path('product/<str:pk>/delete', delete_product_view, name='delete_product'),
 
     # Routes for managing vendors

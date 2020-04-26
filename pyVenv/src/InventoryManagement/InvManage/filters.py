@@ -5,7 +5,7 @@ from django import forms
 
 class ProductFilter(django_filters.FilterSet):
     # desc = CharFilter(field_name='description', lookup_expr='icontains')
-    context = {'class':'form-control form-control-sm'}
+    context = {'class':'form-control form-control-sm','onchange':'fetchData()'}
     name = django_filters.CharFilter(field_name='name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     category = django_filters.CharFilter(field_name='category',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     quantity = django_filters.CharFilter(field_name='quantity',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
