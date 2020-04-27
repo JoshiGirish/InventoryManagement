@@ -103,14 +103,10 @@
           if (corouselState=='create'){
             setCookie('activeProductCorousel','display',1)
             $('#productCorousel').carousel("next")
-            // $('#createCorousel').removeClass('active')
-            // $('#displayCorousel').addClass('active')
           }
           else{
             setCookie('activeProductCorousel','create',1)
             $('#productCorousel').carousel("prev")
-            // $('#displayCorousel').removeClass('active')
-            // $('#createCorousel').addClass('active')
           }
         }
 
@@ -118,6 +114,22 @@
           var searchParams = new URLSearchParams(window.location.search)
           $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
         }
+
+        $(document).keyup(function(e){
+          var code = e.code || e.which;
+          console.log(code)
+          var corouselState = getCookie('activeProductCorousel');
+          if (code == 'ArrowRight'){// left arrow key is pressed
+            if(corouselState=='display'){
+              toggleCorousel();
+            }
+          }
+          else if (code=='ArrowLeft'){// right arrow key is pressed
+            if(corouselState=='create'){
+              toggleCorousel();
+            }
+          }
+        });
 
   </script>
 {% endblock %}
