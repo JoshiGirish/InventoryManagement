@@ -266,4 +266,5 @@ def print_purchase_order_view(request,pk):
 		shippingaddress = company.shippingaddress
 		print(shippingaddress)
 		invoice_serializer = InvoiceSerializer(Invoice(company=company,po=po,shippingaddress=shippingaddress))
+		print(invoice_serializer.data)
 	return JsonResponse(invoice_serializer.data)

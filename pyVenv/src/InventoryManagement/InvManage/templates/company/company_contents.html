@@ -1,0 +1,210 @@
+{% load template_helpers %}
+<div class="d-flex flex-grow-1 flex-column">
+  <div class="m-2">
+    <div class="d-flex align-items-center row">
+        <div class="col-sm-4">
+          <h2 class="mr-auto label-head">Companies</h2>
+        </div>
+    </div> 
+  </div>
+
+<div id="tableData">
+  <div id="objTable">
+  <table class="table table-sm table-striped">
+        <thead class="thead-light">
+         <tr>
+            {% for column in columns %}
+              <th scope="col">
+                <div class="flex row">
+                  <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ column|title }}</div>
+                  <div class="col-sm-3 head-cell-content filter-icons">
+                    <div class="flex row end-xs">
+                      <div style="display:flex;justify-content:flex-start;align-items:center;">
+                        <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="left" data-column="{{ column }}">
+                          <i class="fas fa-caret-left"></i>
+                        </span>
+                      </div>
+                      <div style="display:flex;padding:0em; flex-flow: column;">
+                        <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ column }}">
+                          <i class="fas fa-caret-up"></i>
+                        </span>
+                        <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ column }}">
+                          <i class="fas fa-caret-down"></i>
+                        </span>
+                      </div>
+                      <div style="display:flex;justify-content:flex-start;align-items:center;">
+                        <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="right" data-column="{{ column }}">
+                          <i class="fas fa-caret-right"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              </th>
+            {% endfor %}
+              <th scope="col">Update</th>
+              <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="objectFilterForm">
+            {% for column in columns %}
+              {% for field in myFilter.form %}
+                {% if field.name == column %}
+                  <td>{{field}}</td>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            <td></td>
+            <td></td>
+            <td hidden><button class="btn btn-sm btn-info" type="submit" hidden>Search</button></td>
+          </tr>
+          {% for dict in dicts %}
+            <tr>
+              {% for column in columns %}
+              {% for key,value in dict.items %}
+                  {% if key == column %}
+                    <td>{{ value }}</td>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_company' dict.id %}" data-object_name="{{ dict.name }}" data-object_id="{{ dict.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Pagination -->
+    <div class="d-flex">
+      <div class="pagination mr-auto">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a class="btn btn-light btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
+          {% endif %}
+
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+
+          {% if page_obj.has_next %}
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      <div>
+        Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+
+    <!-- Modal -->
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="delForm" action="" method="POST">
+          {% csrf_token %}
+            <div class="modal-body">
+              Are you sure you want to delete <span id="object_name" style="font-weight: bold;"></span> !
+              <input type="hidden" name="object_id" id="object_id" value="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+      </form>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+            $('#delModal').on('show.bs.modal', function(event){
+            var button = $(event.relatedTarget);
+            console.log(button)
+            var obj_id = button.data('object_id');
+            var obj_name = button.data('object_name');
+            var delete_url = button.data('del_url');
+            var modal = $(this);
+            console.log(obj_name)
+            modal.find('.modal-body #object_id').val(obj_id);
+            modal.find('.modal-body #object_name').text(obj_name);
+            modal.find('#delForm').attr('action',delete_url);
+        })
+
+          // Function for sorting products (ascending or descending)
+          function sort(tag){
+            var column = $(tag).data('column');
+            var sort = $(tag).data('sort');
+            var searchParams = new URLSearchParams(window.location.search)
+            searchParams.append("column",column);
+            searchParams.append("sort", sort);
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+            $('#tableData').load("{% url 'companies' %} #objTable", searchParams.toString());
+
+          }
+          // Function for moving columns to left or right
+          function moveColumn(tag){
+            var column = $(tag).data('column');
+            console.log(column)
+            var direction = $(tag).data('move');
+            console.log(direction)
+            var searchParams = new URLSearchParams(window.location.search)
+            searchParams.append("column",column);
+            searchParams.append("direction", direction);
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+            $('#tableData').load("{% url 'companies' %} #objTable", searchParams.toString());
+          }
+          $('#objectFilterForm').find('input').addClass('form-control')
+
+          
+        // Get filter data
+        function getFilterData(){
+          var data = {}
+          $('#objectFilterForm input').each(function(index, value) {
+            var key = $(value).attr('name');
+            var val = $(value).val();
+            data[key] = val
+          });
+          return data      
+        }
+
+        function fetchData(){
+          var searchParams = new URLSearchParams(window.location.search)
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+          $('#tableData').load("{% url 'companies'%} #objTable", searchParams.toString());
+        }
+
+        // Function for fetching product to be updated using AJAX
+        function updateData(tag){
+          var id = $(tag).data('id');
+          console.log(id)
+        $.ajax({
+            url: "{% url 'update_company' %}",
+            data: {
+                'pk': id
+            },
+            dataType:'html',
+            success: function(data){
+              $('#data').html($('#updatedData',data).html())
+            }
+        });
+      };
+      </script>
+ </div>

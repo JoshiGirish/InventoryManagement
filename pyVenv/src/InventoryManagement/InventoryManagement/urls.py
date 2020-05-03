@@ -12,7 +12,7 @@ urlpatterns = [
     # Routes for managing company
     path('company/', create_company_view, name='company'),
     path('companies/', display_companies_view, name='companies'),
-    path('company/<str:pk>/update', update_company_view, name='update_company'),
+    path('company/update', update_company_view, name='update_company'),
     path('company/<str:pk>/delete', delete_company_view, name='delete_company'),
 
     # Routes for managing products

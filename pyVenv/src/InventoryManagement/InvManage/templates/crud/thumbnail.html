@@ -8,7 +8,7 @@
     </div>
     <div class="card-body">
         <div>
-            <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Company Thumbnail">
+            <img id="prod_thumbnail" class="card-img-top w-100" src="{% get_media_prefix %}{{ thumbnail }}" alt="Company Thumbnail"  style="  display: block; max-width:500px; max-height:200px; width: auto; height: auto;">
         </div>
         <label class="btn btn-light m-1">
             <i class="fas fa-upload"></i> Browse <input type="file" name="thumbnail-image" class="upload" accept="image/*" required="" id="id_thumbnail-image" style="display: none;" onchange="previewFile()">

@@ -23,6 +23,7 @@ class VendorSerializer(serializers.ModelSerializer):
 class PPEntrySerializer(serializers.ModelSerializer):
     # product = ProductSerializer()
     ppe_id = serializers.IntegerField(source='pk')
+    product = ProductSerializer()
     class Meta:
         model = ProductPurchaseEntry
         fields = ('ppe_id','product','quantity','price', 'discount','order')
