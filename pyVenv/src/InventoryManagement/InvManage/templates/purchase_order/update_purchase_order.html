@@ -3,7 +3,7 @@
   <div id="updatedData">
     <form enctype="multipart/form-data" action="{% url 'update_purchase_order' %}" method="POST">
       {% csrf_token %}
-            <div class="m-2 d-flex align-items-center row">
+            <div class="m-2 d-flex align-items-center row view-title">
                 <h2 class="col-sm-6 mr-auto label-head">Update Purchase Order</h2>
                     <div class="float-right">
                         <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>

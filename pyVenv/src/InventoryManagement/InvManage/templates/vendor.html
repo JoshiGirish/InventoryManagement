@@ -1,29 +1,126 @@
 {% extends "base.html" %}
 
     {% block title %}
-    <form action="{% url 'vendor' %}" method="POST">
-      {% csrf_token %}
-            <div class="m-2 d-flex align-items-center row">
-                <!-- <h2 class="col-sm-6">Create Product</h2> -->
-                <h2 class="col-sm-6 mr-auto label-head">Create Vendor</h2>
-                    <div class="float-right">
-                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
-                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
-                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
-                        <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button>
-                        <!-- <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</a> -->
-                    </div>
-            </div>
-    {% endblock title %}
+    {% endblock %}
 
-    {% block contents %} 
-      {% block info %}    
-      <div class="row">
-              <div class="col-sm-6">
-                  {% include "vendor/vendor_info.html" %}
-                  <button class="btn btn-sm btn-light" type="Submit">Submit</button>
-              </div>
-          </form>
+    {% block contents %}
+<div class="col-sm-12">
+    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+      <div class="carousel-inner">
+        <div id="createCorousel" class="carousel-item active">
+          <div class="d-flex flex-row" style="height: 900px;">
+            {% if requested_view_type == 'create' %}
+              {% include "vendor/create_vendor.html" %}
+            {% elif requested_view_type == 'update' %}
+              {% include "vendor/update_vendor.html" %}
+            {% endif %}
+          <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+            <div class="divider"></div>
+            <a class="" href="#carousel" role="button" data-slide="next" onclick="getObjects(); toggleCorouselCookie();">
+              <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+              <span style="color: gray;"><i class="fas fa-angle-left fa-lg circle-icon"></i></span>
+              <!-- <span class="sr-only">Next</span> -->
+            </a>
+            <div class="divider"></div>
+          </div>
+        </div>
+        </div>
+        <div id="displayCorousel" class="carousel-item">
+          <div class="d-flex flex-row" style="height: 900px;">
+            <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+              <div class="divider"></div>
+              <a class="" href="#carousel" role="button" data-slide="prev" onclick="getObjects(); toggleCorouselCookie();">
+                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+                <span style="color: gray;"><i class="fas fa-angle-right fa-lg circle-icon"></i></span>
+                <!-- <span class="sr-only">Next</span> -->
+              </a>
+              <div class="divider"></div>
+            </div>
+            {% include "vendor/vendor_contents.html" %}
+          </div>
+        </div>
+        </div>
       </div>
-      {% endblock info %}
-    {% endblock contents%}
+    </div>
+    
+      <script>
+            // Set the corousel from the cookie
+            var corouselState = getCookie('activeProductCorousel');
+            if (corouselState=='create'){
+              $('#displayCorousel').removeClass('active')
+              $('#createCorousel').addClass('active')
+              }
+            else{
+              $('#createCorousel').removeClass('active')
+              $('#displayCorousel').addClass('active')
+            }
+            getObjects()
+            function setCookie(name,value,days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
+            function eraseCookie(name) {   
+                document.cookie = name+'=; Max-Age=-99999999;';  
+            }
+    
+            // Toggle the cookie
+            function toggleCorouselCookie(){
+              var corouselState = getCookie('activeProductCorousel');          
+              if (corouselState=='create'){
+                setCookie('activeProductCorousel','display',1)
+              }
+              else{
+                setCookie('activeProductCorousel','create', 1)
+              }
+            }
+    
+            // Toogle the corousel
+            function toggleCorousel(){
+              var corouselState = getCookie('activeProductCorousel');          
+              if (corouselState=='create'){
+                setCookie('activeProductCorousel','display',1)
+                $('#carousel').carousel("next")
+              }
+              else{
+                setCookie('activeProductCorousel','create',1)
+                $('#carousel').carousel("prev")
+              }
+            }
+    
+            function getObjects(){
+              var searchParams = new URLSearchParams(window.location.search)
+              $('#tableData').load("{% url 'vendors' %} #objTable", searchParams.toString());
+            }
+    
+            $(document).keyup(function(e){
+              var code = e.code || e.which;
+              console.log(code)
+              var corouselState = getCookie('activeProductCorousel');
+              if (code == 'ArrowRight'){// left arrow key is pressed
+                if(corouselState=='display'){
+                  toggleCorousel();
+                }
+              }
+              else if (code=='ArrowLeft'){// right arrow key is pressed
+                if(corouselState=='create'){
+                  toggleCorousel();
+                }
+              }
+            });
+      </script>
+    {% endblock %}
