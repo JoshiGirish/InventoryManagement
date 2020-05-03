@@ -58,12 +58,12 @@
           $('#total_tax').text({{purchase_form.taxtotal.value}}.toFixed(2))
           $('#total_amt').text({{purchase_form.ordertotal.value}}.toFixed(2))
           $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh  
-          {% if request == "create" %}
+          {% if requested_view_type == "create" %}
             addRow(null,-1,data[0].id,data[0].code,0,0,0,prefix)
           {% endif %}
           console.log(ppes)
           var prefix = 'form';
-          {% if request == "update" %}
+          {% if requested_view_type == "update" %}
             for(var i=0;i<ppes.length;i++){
               if(ppes[i].product == null){ // If the product is deleted from the database
                 addRow(null,ppes[i].ppe_id,null,'---', ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)

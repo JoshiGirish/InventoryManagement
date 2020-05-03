@@ -1,29 +1,18 @@
 
 {% load template_helpers %}
 {% load static %}
-{% block title %}
+<div>
   <div class="m-2">
     <div class="d-flex align-items-center row">
         <div class="col-sm-4">
           <h2 class="mr-auto label-head">Purchase Orders</h2>
         </div>
-        <div class="col-sm-8">
-          <form class="form-inline" id="poFilterForm" action="" method="GET">
-              <div class="col-sm-9">
-                  <button class="btn btn-sm btn-light" type="submit">Search</button>
-          </form>
-          <Script>
-           $('#poFilterForm input').addClass('form-control')
-          </Script>
-        </div>
-            
     </div> 
   </div>
-{% endblock title %}
 
-{% block contents %}
 <div id="tableData">
-  <table id="poTable" class="table table-sm table-striped">
+  <div id="objTable">
+  <table class="table table-sm table-striped">
         <thead class="thead-light">
          <tr>
             {% for column in columns %}
@@ -60,7 +49,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="productsFilterForm">
+          <tr id="objectFilterForm">
             {% for column in columns %}
               {% for field in myFilter.form %}
                 {% if field.name == column %}
@@ -82,15 +71,13 @@
                   {% endif %}
                 {% endfor %}
               {% endfor %}
-                <td><a href="{% url 'update_purchase_order' po.id %}" class="btn btn-sm btn-info">Update</a></td>
-                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_purchase_order' po.id %}" data-vend_name="{{ po.name }}" data-vend_id="{{ po.id }}">Delete</a></td>
-                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' po.id %}" data-po_id="{{ po.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
+                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_purchase_order' dict.id %}" data-object_name="{{ dict.po }}" data-object_id="{{ dict.id }}">Delete</a></td>
+                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' dict.id %}" data-po_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    </div>
-
     <!-- Pagination -->
     <div class="d-flex">
       <div class="pagination mr-auto">
@@ -101,7 +88,7 @@
           {% endif %}
 
           <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }},
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
           </span>
 
           {% if page_obj.has_next %}
@@ -114,6 +101,11 @@
         Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
       </div>
     </div>
+
+    </div>
+  </div>
+
+
 
     <!-- Modal -->
   <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -128,8 +120,8 @@
         <form id="delForm" action="" method="POST">
           {% csrf_token %}
         <div class="modal-body">
-          Are you sure you want to delete <span id="po_name" style="font-weight: bold;"></span> !
-        <input type="hidden" name="po_id" id="po_id" value="">
+          Are you sure you want to delete purchase order <span id="object_name" style="font-weight: bold;"></span> !
+        <input type="hidden" name="object_id" id="object_id" value="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -144,12 +136,13 @@
         $('#delModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget);
             console.log(button)
-            var po_id = button.data('po_id');
-            var po_name = button.data('po_name');
+            var obj_id = button.data('object_id');
+            var obj_name = button.data('object_name');
             var delete_url = button.data('del_url');
             var modal = $(this);
-            modal.find('.modal-body #po_id').val(po_id);
-            modal.find('#po_name').text(po_name);
+            console.log(obj_name)
+            modal.find('.modal-body #object_id').val(obj_id);
+            modal.find('.modal-body #object_name').text(obj_name);
             modal.find('#delForm').attr('action',delete_url);
         })
 
@@ -160,15 +153,14 @@
             var searchParams = new URLSearchParams(window.location.search)
             searchParams.append("column",column);
             searchParams.append("sort", sort);
-            console.log(searchParams)
-            // $('#productsFilterForm').find('input').addClass('form-control')
-            // $.get("{% url 'products' %}",searchParams.toString(),function( data ) {$("body").html(data);})
-            $('#tableData').load("{% url 'purchase_orders' %} #poTable", searchParams.toString());
-            // $('#ajaxTargetTag').load("{% url 'products' %} #ajaxSourceTag", searchParams.toString());
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+            $('#tableData').load("{% url 'purchase_orders' %} #objTable", searchParams.toString());
 
-            // window.location.reload();
           }
-          // Function for sorting products (ascending or descending)
+          // Function for moving columns to left or right
           function moveColumn(tag){
             var column = $(tag).data('column');
             console.log(column)
@@ -177,15 +169,50 @@
             var searchParams = new URLSearchParams(window.location.search)
             searchParams.append("column",column);
             searchParams.append("direction", direction);
-            console.log(searchParams)
-            // $('#productsFilterForm').find('input').addClass('form-control')
-            // $.get("{% url 'products' %}",searchParams.toString(),function( data ) {$("body").html(data);})
-            $('#tableData').load("{% url 'purchase_orders' %} #poTable", searchParams.toString());
-            // $('#ajaxTargetTag').load("{% url 'products' %} #ajaxSourceTag", searchParams.toString());
-
-            // window.location.reload();
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+            $('#tableData').load("{% url 'purchase_orders' %} #objTable", searchParams.toString());
           }
-          $('#productsFilterForm').find('input').addClass('form-control')
+          $('#objectFilterForm').find('input').addClass('form-control')
+
+          
+        // Get filter data
+        function getFilterData(){
+          var data = {}
+          $('#objectFilterForm input').each(function(index, value) {
+            var key = $(value).attr('name');
+            var val = $(value).val();
+            data[key] = val
+          });
+          return data      
+        }
+
+        function fetchData(){
+          var searchParams = new URLSearchParams(window.location.search)
+            var data = getFilterData();
+            for(var key in data){
+              searchParams.append(key,data[key]);
+            }
+          $('#tableData').load("{% url 'purchase_orders'%} #objTable", searchParams.toString());
+        }
+
+        // Function for fetching product to be updated using AJAX
+        function updateData(tag){
+          var id = $(tag).data('id');
+          console.log(id)
+        $.ajax({
+            url: "{% url 'update_purchase_order' %}",
+            data: {
+                'pk': id
+            },
+            dataType:'html',
+            success: function(data){
+              $('#data').html($('#updatedData',data).html())
+            }
+        });
+      };
       </script>
   </div>
-{% endblock %}
+</div>
