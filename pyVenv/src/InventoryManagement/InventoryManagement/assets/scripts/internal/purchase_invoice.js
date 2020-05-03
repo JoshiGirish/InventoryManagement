@@ -72,6 +72,7 @@ function generatePDF(data){
         }
         else{
           var product = ppes[j].product.name+'\n'+ppes[j].product.description;
+          console.log(product)
         }
         var p = ppes[j].price;
         var q = ppes[j].quantity;

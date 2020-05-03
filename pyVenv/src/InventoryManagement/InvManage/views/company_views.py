@@ -20,7 +20,8 @@ def create_company_view(request):
 		shipping_form = ShippingAddressForm()
 		return render(request, 'company/company.html', {'company_form': company_form,
 												'thumbnail_form': thumbnail_form,
-												'shipping_form': shipping_form})
+												'shipping_form': shipping_form,
+												'requested_view_type': 'create'})		
 	if request.method == 'POST':
 		comp_data = {}
 		ship_data = {}
@@ -35,10 +36,11 @@ def create_company_view(request):
 		uploaded_file = request.FILES['thumbnail-image']
 		comp_data.update({'image':uploaded_file})
 		Company.objects.create(**comp_data)
-		return redirect('/company')
+		return redirect('company')
 
-def update_company_view(request,pk):
+def update_company_view(request):
 	if request.method == 'GET':
+		pk = request.GET.get('pk')
 		company = Company.objects.get(id=pk)
 		data = company.__dict__
 		company_form = CompanyForm(initial=data)
@@ -47,8 +49,11 @@ def update_company_view(request,pk):
 		thumbnail = company.image.name
 		return render(request, 'company/update_company.html', {'company_form': company_form,
 												'thumbnail': thumbnail,
-												'shipping_form': shipping_form})
+												'shipping_form': shipping_form,
+            									'requested_view_type':'update',
+                     							'pk':pk	})
 	if request.method == 'POST':
+		pk = request.POST.get('pk')
 		comp_data = {}
 		ship_data = {}
 		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
@@ -66,21 +71,30 @@ def update_company_view(request,pk):
 		Company.objects.filter(id=pk).update(**comp_data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-		return redirect('/companies')
+		return redirect('company')
 
 def delete_company_view(request,pk):
 	if request.method == 'POST':
 		company = Company.objects.get(id=pk)
 		company.delete()
-		return redirect('/companies')
+		return redirect('company')
 
 def display_companies_view(request):
-	if request.method == 'GET':
-		companies = Company.objects.all()
-		myFilter = CompanyFilter(request.GET, queryset=companies)
-		products = myFilter.qs
-		number_of_companies = len(companies)
-		paginator = Paginator(companies,15)
-		page_number = request.GET.get('page')
-		page_obj = paginator.get_page(page_number)
-		return render(request, 'company/companies.html',{'page_obj':page_obj,'myFilter':myFilter, 'n_prod': number_of_companies})
+    if request.method == 'GET':
+        companies = sort_ascending_descending(request, Company)
+        state = FilterState.objects.get(name='Companies_basic')
+        column_list = change_column_position(request, state)
+        myFilter = CompanyFilter(request.GET, queryset=companies)
+        queryset = myFilter.qs
+        number_of_objects = len(queryset)
+        page_number = request.GET.get('page')
+        print(number_of_objects)
+        page_obj, dictionaries = paginate(queryset, myFilter, page_number)
+        return render(request, 'company/company_contents.html', {'page_obj': page_obj,
+                                                               'myFilter': myFilter,
+                                                               'n_prod': number_of_objects,
+                                                               'columns': column_list,
+                                                               'dicts': dictionaries})
+
+		
+	

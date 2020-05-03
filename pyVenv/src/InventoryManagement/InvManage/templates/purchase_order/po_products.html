@@ -69,8 +69,8 @@
                 addRow(null,ppes[i].ppe_id,null,'---', ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
               }
               else{
-                var ind = data.findIndex(p => p.id == ppes[i].product) // Index of product element in data dictionary
-                addRow(null,ppes[i].ppe_id,ppes[i].product,data[ind].code, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
+                var ind = data.findIndex(p => p.id == ppes[i].product.pk) // Index of product element in data dictionary
+                addRow(null,ppes[i].ppe_id,ppes[i].product.pk,data[ind].code, ppes[i].quantity,ppes[i].price,ppes[i].discount,prefix)
               }
             }
           {% endif %}
