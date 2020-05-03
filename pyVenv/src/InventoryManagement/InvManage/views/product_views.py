@@ -37,7 +37,7 @@ def create_product_view(request):
 		Product.objects.create(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-		return redirect('/products')
+		return redirect('product')
 
 def delete_product_view(request,pk):
 	if request.method == 'POST':
@@ -102,13 +102,13 @@ def update_product_view(request):
 		return redirect('/product')
 
 def uploadCSV(request,data):
-	return_url = '/products'
+	return_url = 'product'
 	if request.method == "POST":
 		# Decides which fucntion needs to be called to handle the upload
 		def upload_router(data):
 			route = {
-				'products': (create_products,'/products'),
-				'vendors': (create_vendors,'/products')
+				'products': (create_products,'/product'),
+				'vendors': (create_vendors,'/vendor')
 			}
 			return route.get(data)
 		# Function which creates products from the uploaded file

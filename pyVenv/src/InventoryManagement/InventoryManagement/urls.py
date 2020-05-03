@@ -24,7 +24,7 @@ urlpatterns = [
     # Routes for managing vendors
     path('vendor/', create_vendor_view, name='vendor'),
     path('vendors/', display_vendors_view, name='vendors'),
-    path('vendor/<str:pk>/update', update_vendor_view, name='update_vendor'),
+    path('vendor/update', update_vendor_view, name='update_vendor'),
     path('vendor/<str:pk>/delete', delete_vendor_view, name='delete_vendor'),
     path('get_vendor/', get_vendor, name ='get_vendor'), # ajax call in create puchase order on vendor dropdown
     

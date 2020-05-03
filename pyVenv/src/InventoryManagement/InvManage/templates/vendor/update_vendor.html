@@ -1,23 +1,37 @@
-{% extends "vendor.html" %}
-
-    {% block title %}
-    <form action="" method="POST">
-      {% csrf_token %}
-            <div class="m-2 d-flex align-items-center row">
+<div id="data" class="flex-grow-1">
+    <div id="updatedData">
+        <form action="{% url 'update_vendor' %}" method="POST">
+            {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row view-title">
                 <h2 class="col-sm-6 mr-auto label-head">Update Vendor</h2>
                 <div class="float-right">
+                    <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
+                    <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
                     <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                    <input type="text" hidden name="pk" value="{{ pk }}">
                 </div>
             </div>
-    {% endblock title %}
 
-    {% block contents %} 
-      {% block info %}    
+  
       <div class="row">
               <div class="col-sm-6">
                   {% include "vendor/vendor_info.html" %}
               </div>
-          </form>
       </div>
-      {% endblock info %}
-    {% endblock contents%}
+        </form>
+
+        <script>
+            // Function for fetching product to be updated using AJAX
+            function changeView(){
+            $.ajax({
+                url: "{% url 'vendor' %}",
+                data: {},
+                dataType:'html',
+                success: function(data){
+                    $('#data').html($('#updatedData',data).html())
+                }
+              });
+            };
+          </script>
+    </div>
+</div>

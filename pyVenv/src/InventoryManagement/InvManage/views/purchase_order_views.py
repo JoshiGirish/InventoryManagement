@@ -127,7 +127,7 @@ def delete_purchase_order_view(request,pk):
 	if request.method == 'POST':
 		po = PurchaseOrder.objects.get(id=pk)
 		po.delete()
-		return redirect('purchase_order/purchase_order_contents.html')
+		return redirect('purchase_order')
 
 def update_purchase_order_view(request):
 	if request.method == 'GET':
