@@ -22,14 +22,14 @@ class VendorFilter(django_filters.FilterSet):
         fields = {'name': ['contains']}
 
 class PurchaseOrderFilter(django_filters.FilterSet):
+    context = {'class':'form-control form-control-sm','onchange':'fetchData()'}
+    vendor = django_filters.CharFilter(field_name='vendor__name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    po = django_filters.CharFilter(field_name='po',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    ordertotal = django_filters.CharFilter(field_name='ordertotal',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     class Meta:
         model = PurchaseOrder
-        fields = {  'po': ['contains'],
-                    'vendor__name': ['contains'],
-                    'date':['contains'],
-                    'subtotal':['contains'],
-                    'taxtotal':['contains'],
-                    'ordertotal':['contains']}
+        fields = {}
 
 class CompanyFilter(django_filters.FilterSet):
     class Meta:

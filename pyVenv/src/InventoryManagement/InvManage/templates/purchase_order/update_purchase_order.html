@@ -1,21 +1,18 @@
-{% extends "base.html" %}
-    
-    {% block title %}
-    <form enctype="multipart/form-data" action="" method="POST">
+
+<div id="data">
+  <div id="updatedData">
+    <form enctype="multipart/form-data" action="{% url 'update_purchase_order' %}" method="POST">
       {% csrf_token %}
             <div class="m-2 d-flex align-items-center row">
-                <!-- <h2 class="col-sm-6">Create Product</h2> -->
                 <h2 class="col-sm-6 mr-auto label-head">Update Purchase Order</h2>
                     <div class="float-right">
-                        <div class="btn btn-light m-1"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
                         <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
                         <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
-                    </div>
+                        <input type="text" hidden name="pk" value="{{ pk }}">
+                      </div>
             </div>
-              
-    {% endblock %}
-
-    {% block contents %}     
+    
         <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group form-row m-1">
@@ -27,7 +24,6 @@
                     </div>
                 </div>
                 {% include "vendor/vendor_info.html" %}
-                <!-- {% include "crud/detailed_info.html" %} -->
             </div>
             <div class="col-sm-6">
               {% include "purchase_order/po_pricing_info.html" %}
@@ -37,5 +33,17 @@
       </form>
       <script>
         $('#id_po-vendor').val({{ purchase_form.vendor_id }})
+        // Function for fetching product to be updated using AJAX
+        function changeView(){
+        $.ajax({
+            url: "{% url 'purchase_order' %}",
+            data: {},
+            dataType:'html',
+            success: function(data){
+                $('#data').html($('#updatedData',data).html())
+            }
+          });
+        };
       </script>
-    {% endblock %}
+</div>
+</div>
