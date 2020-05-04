@@ -3,9 +3,10 @@ from rest_framework import serializers
 from .models import Product, Vendor, ProductPurchaseEntry, PurchaseOrder, Company, Invoice, ShippingAddress
 
 class ProductSerializer(serializers.ModelSerializer):
+    prod_id = serializers.IntegerField(source='pk')
     class Meta:
         model = Product
-        fields = ('pk','name','category','quantity','identifier','location','description')
+        fields = ('pk','name','category','quantity','identifier','location','description','prod_id')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -21,7 +22,6 @@ class VendorSerializer(serializers.ModelSerializer):
         return data
 
 class PPEntrySerializer(serializers.ModelSerializer):
-    # product = ProductSerializer()
     ppe_id = serializers.IntegerField(source='pk')
     product = ProductSerializer()
     class Meta:
@@ -34,12 +34,17 @@ class PPEntrySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('pk')
-        print(validated_data)
+        # print(self.data)
+        prod = Product.objects.get(id=self.data['product']['prod_id'])
+        validated_data['product']=prod
         return ProductPurchaseEntry.objects.create(**validated_data)
 
     def update(self, instance,validated_data):
-        print(validated_data)
-        instance.product = validated_data.get('product', instance.product)
+        # print(instance)
+        prod = Product.objects.get(id=validated_data['product']['pk'])
+        instance.product = prod
+        # print(validated_data)
+        # instance.product = validated_data.get('product', validated_data['product'])
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.price = validated_data.get('price', instance.price)
         instance.discount = validated_data.get('discount', instance.discount)
