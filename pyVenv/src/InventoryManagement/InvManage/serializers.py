@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Product, Vendor, ProductPurchaseEntry, PurchaseOrder, Company, Invoice, ShippingAddress
+from .models import Product, Consumer, Vendor, ProductPurchaseEntry, PurchaseOrder, Company, Invoice, ShippingAddress
 
 class ProductSerializer(serializers.ModelSerializer):
     prod_id = serializers.IntegerField(source='pk')
@@ -12,6 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         return data
 
+
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
@@ -20,6 +21,16 @@ class VendorSerializer(serializers.ModelSerializer):
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
+
+class ConsumerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consumer
+        fields = ('name','identifier','phone','address','email','location')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data
+
 
 class PPEntrySerializer(serializers.ModelSerializer):
     ppe_id = serializers.IntegerField(source='pk')
@@ -52,6 +63,7 @@ class PPEntrySerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer()
     ppes = PPEntrySerializer(source='productpurchaseentry_set', many=True) 
@@ -64,10 +76,12 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         return data
 
+
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ('name','owner','phone','address','email','location','image')
+
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:

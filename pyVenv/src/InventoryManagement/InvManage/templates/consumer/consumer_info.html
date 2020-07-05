@@ -1,0 +1,79 @@
+
+<div class="card">
+    <div class="card-body">
+    <!-- consumer name field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.name.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.name }}
+        </div>
+    </div>
+    <!-- consumer identifier field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.identifier.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.identifier }}
+        </div>
+    </div>
+    <!-- consumer phone field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.phone.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.phone }}
+        </div>
+        </div>
+    <!-- consumer address field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.address.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.address }}
+        </div>
+        </div>
+    <!-- consumer email field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.email.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.email }}
+        </div>
+        </div>
+    <!-- consumer location field -->
+    <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>{{ consumer_form.location.label }}</label>
+        </div>
+        <div class="col-sm-8">
+            {{ consumer_form.location }}
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#id_po-consumer').change(function(){
+        var consumer_id = $('#id_po-consumer option:selected').val();
+        $.ajax({
+            url: "{% url 'get_consumer' %}",
+            data: {
+                'consumer_id': consumer_id
+            },
+            dataType:'json',
+            success: function(data){
+                $('#id_consumer-name').val(data.name);
+                $('#id_consumer-identifier').val(data.identifier);
+                $('#id_consumer-phone').val(data.phone);
+                $('#id_consumer-address').val(data.address);
+                $('#id_consumer-email').val(data.email);
+                $('#id_consumer-location').val(data.location);
+            }
+        });
+    });
+</script>

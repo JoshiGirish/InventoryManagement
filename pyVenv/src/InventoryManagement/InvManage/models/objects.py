@@ -37,6 +37,16 @@ class Vendor(models.Model):
     def __str__(self):
         return self.name
 
+class Consumer(models.Model):
+    name = models.CharField(max_length=100)
+    identifier = models.CharField(null=True, blank=True,max_length=100)
+    phone = models.CharField(max_length=100, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    email = models.CharField(null=True, blank=True,max_length=100)
+    location = models.CharField(null=True, blank=True,max_length=100)
+
+    def __str__(self):
+        return self.name
 
 class PurchaseOrder(models.Model):
     # Vendor details

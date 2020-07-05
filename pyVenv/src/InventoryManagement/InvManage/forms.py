@@ -35,7 +35,6 @@ class ThumbnailForm(forms.Form):
     image = forms.ImageField(widget=forms.FileInput(attrs={"class": "upload"}))
 
 class ProductStorageInfoForm(forms.Form):
-
     prefix = "storage"
     barcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
     context={
@@ -86,6 +85,24 @@ class PurchaseOrderBasicInfo(forms.Form):
     
 class VendorForm(forms.Form):
     prefix = "vend"
+    context={
+        "class": "form-control",
+    }
+    name = forms.CharField(widget=forms.TextInput(attrs=context))
+    identifier = forms.CharField(widget=forms.TextInput(attrs=context))
+    phone = forms.CharField(widget=forms.TextInput(attrs=context))
+    address = forms.CharField(widget=forms.Textarea(
+        attrs={
+            "class": "form-control",
+            "rows": 3
+        }
+    ))
+    email = forms.CharField(widget=forms.TextInput(attrs=context))
+    location = forms.CharField(widget=forms.TextInput(attrs=context))
+
+
+class ConsumerForm(forms.Form):
+    prefix = "consumer"
     context={
         "class": "form-control",
     }

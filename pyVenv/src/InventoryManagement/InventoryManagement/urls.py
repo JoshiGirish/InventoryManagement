@@ -28,6 +28,13 @@ urlpatterns = [
     path('vendor/<str:pk>/delete', delete_vendor_view, name='delete_vendor'),
     path('get_vendor/', get_vendor, name ='get_vendor'), # ajax call in create puchase order on vendor dropdown
     
+    # Routes for managing consumers
+    path('consumer/', create_consumer_view, name='consumer'),
+    path('consumers/', display_consumers_view, name='consumers'),
+    path('consumer/update', update_consumer_view, name='update_consumer'),
+    path('consumer/<str:pk>/delete', delete_consumer_view, name='delete_consumer'),
+    path('get_consumer/', get_consumer, name ='get_consumer'), # ajax call in create sales order on consumer dropdown
+    
     # Routes for managing POs
     path('purchase_order/', create_purchase_order_view, name='purchase_order'),
     path('purchase_orders/',display_purchase_orders_view, name='purchase_orders'),

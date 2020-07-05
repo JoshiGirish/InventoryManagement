@@ -88,7 +88,7 @@ def create_purchase_order_view(request):
                     order = PurchaseOrder.objects.get(id=new_po.pk)
                     print(ppe_id)
                     validated_data = {'ppe_id': ppe_id,
-                                      'product': product.pk,
+                                      'product': ProductSerializer(product).data,
                                       'quantity': quantity,
                                       'price': price,
                                       'discount': discount,
@@ -155,6 +155,7 @@ def update_purchase_order_view(request):
             'form-INITIAL_FORMS': len(ppes),
             'form-MAX_NUM_FORMS': '',
         }
+        print(ppes_serialized)
         pentry_formset = ProductPurchaseEntryFormset(data, initial=ppes)
         pentry_form = ProductPurchaseEntryForm()
         purchase_form = PurchaseOrderBasicInfo(initial=po_data)
