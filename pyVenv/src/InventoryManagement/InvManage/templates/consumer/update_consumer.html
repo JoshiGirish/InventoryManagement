@@ -1,0 +1,37 @@
+<div id="data" class="flex-grow-1">
+    <div id="updatedData">
+        <form action="{% url 'update_consumer' %}" method="POST">
+            {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row view-title">
+                <h2 class="col-sm-6 mr-auto label-head">Update consumer</h2>
+                <div class="float-right">
+                    <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
+                    <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                    <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                    <input type="text" hidden name="pk" value="{{ pk }}">
+                </div>
+            </div>
+
+  
+      <div class="row">
+              <div class="col-sm-6">
+                  {% include "consumer/consumer_info.html" %}
+              </div>
+      </div>
+        </form>
+
+        <script>
+            // Function for fetching product to be updated using AJAX
+            function changeView(){
+            $.ajax({
+                url: "{% url 'consumer' %}",
+                data: {},
+                dataType:'html',
+                success: function(data){
+                    $('#data').html($('#updatedData',data).html())
+                }
+              });
+            };
+          </script>
+    </div>
+</div>

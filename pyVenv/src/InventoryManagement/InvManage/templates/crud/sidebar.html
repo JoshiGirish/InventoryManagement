@@ -23,7 +23,7 @@
         <div class="sidebar-submenu menu-items" style="display: none;">
           <ul style="list-style-type:none;">
             <li>
-              <a id="create_company" href="{% url 'vendor' %}">Create Vendor</a>
+              <a id="create_vendor" href="{% url 'vendor' %}">Create Vendor</a>
             </li>
             <li>
                 <a id="create_purchase_order" href="{% url 'purchase_order' %}">Create Purchase Order</a>
@@ -50,10 +50,10 @@
         <div class="sidebar-submenu menu-items" style="display: none;">
           <ul style="list-style-type:none;">           
             <li>
-                <a id="create_consumer" href="">Create Consumer</a>
+                <a id="create_consumer" href="{% url 'consumer' %}">Create Consumer</a>
             </li>
             <li>
-                <a id="show_xonsumers" href="">Show Consumers</a>
+                <a id="show_consumers" href="">Show Consumers</a>
             </li>
             <li>
               <a id="create_sales_quote" href="">Create Sales Quote</a>
