@@ -41,6 +41,13 @@ urlpatterns = [
     path('purchase_order/update', update_purchase_order_view, name='update_purchase_order'),
     path('purchase_order/<str:pk>/delete', delete_purchase_order_view, name='delete_purchase_order'),
     path('purchase_order/<str:pk>/print',print_purchase_order_view, name='print_purchase_order'),
+    
+    # Routes for managing SOs
+    path('sales_order/', create_sales_order_view, name='sales_order'),
+    path('sales_orders/',display_sales_orders_view, name='sales_orders'),
+    path('sales_order/update', update_sales_order_view, name='update_sales_order'),
+    path('sales_order/<str:pk>/delete', delete_sales_order_view, name='delete_sales_order'),
+    path('sales_order/<str:pk>/print',print_sales_order_view, name='print_sales_order'),
 
     path('upload/<data>/',uploadCSV, name='upload'),
     path('admin/', admin.site.urls),
