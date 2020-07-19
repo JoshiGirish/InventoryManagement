@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Product, Consumer, Vendor, ProductPurchaseEntry, PurchaseOrder, Company, Invoice, ShippingAddress
+from .models import Product, Consumer, Vendor, ProductPurchaseEntry, PurchaseOrder, ProductSalesEntry, SalesOrder, Company, PurchaseInvoice, SalesInvoice, ShippingAddress
 
 class ProductSerializer(serializers.ModelSerializer):
     prod_id = serializers.IntegerField(source='pk')
@@ -77,6 +77,51 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         return data
 
 
+class PSEntrySerializer(serializers.ModelSerializer):
+    pse_id = serializers.IntegerField(source='pk')
+    product = ProductSerializer()
+    class Meta:
+        model = ProductSalesEntry
+        fields = ('pse_id','product','quantity','price', 'discount','order')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('pk')
+        # print(self.data)
+        prod = Product.objects.get(id=self.data['product']['prod_id'])
+        validated_data['product']=prod
+        return ProductSalesEntry.objects.create(**validated_data)
+
+    def update(self, instance,validated_data):
+        # print(instance)
+        prod = Product.objects.get(id=validated_data['product']['pk'])
+        instance.product = prod
+        # print(validated_data)
+        # instance.product = validated_data.get('product', validated_data['product'])
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.price = validated_data.get('price', instance.price)
+        instance.discount = validated_data.get('discount', instance.discount)
+        instance.order = validated_data.get('order',instance.order)
+        instance.save()
+        return instance
+    
+    
+class SalesOrderSerializer(serializers.ModelSerializer):
+    consumer = ConsumerSerializer()
+    pses = PSEntrySerializer(source='productsalesentry_set', many=True) 
+
+    class Meta:
+        model = SalesOrder
+        fields = ('consumer','date','so','subtotal','taxtotal','ordertotal','pses')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data   
+    
+    
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
@@ -89,11 +134,21 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
         fields = ('name','address','phone','email','location')
 
 
-class InvoiceSerializer(serializers.ModelSerializer):
+class PurchaseInvoiceSerializer(serializers.ModelSerializer):
     company = CompanySerializer()
     po = PurchaseOrderSerializer()
     shippingaddress = ShippingAddressSerializer()
 
     class Meta:
-        model = Invoice
+        model = PurchaseInvoice
         fields = ('company','po','shippingaddress')
+        
+
+class SalesInvoiceSerializer(serializers.ModelSerializer):
+    company = CompanySerializer()
+    so = SalesOrderSerializer()
+    shippingaddress = ShippingAddressSerializer()
+
+    class Meta:
+        model = SalesInvoice
+        fields = ('company','so','shippingaddress')

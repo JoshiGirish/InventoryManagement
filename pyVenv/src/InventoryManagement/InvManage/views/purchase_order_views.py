@@ -5,7 +5,7 @@ from django.forms.formsets import formset_factory
 from InvManage.models import *
 from InvManage.filters import PurchaseOrderFilter
 from django.http import JsonResponse
-from InvManage.serializers import ProductSerializer, PPEntrySerializer, InvoiceSerializer
+from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
 
 
@@ -278,7 +278,7 @@ def print_purchase_order_view(request, pk):
         company = Company.objects.all().last()
         shippingaddress = company.shippingaddress
         print(shippingaddress)
-        invoice_serializer = InvoiceSerializer(
+        invoice_serializer = PurchaseInvoiceSerializer(
             Invoice(company=company, po=po, shippingaddress=shippingaddress))
         print(invoice_serializer.data)
     return JsonResponse(invoice_serializer.data)

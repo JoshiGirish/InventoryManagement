@@ -1,16 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from InvManage.forms import *
-from django.forms.formsets import formset_factory
 from InvManage.models import *
-from django.core.files.storage import FileSystemStorage
-import io
-import csv
-from InvManage.filters import ProductFilter, ConsumerFilter, VendorFilter, PurchaseOrderFilter, CompanyFilter
-from django.http import HttpResponse, JsonResponse
-from django.contrib import messages
-from django.db import IntegrityError, transaction
-from InvManage.serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer, ProductSerializer
+from InvManage.filters import ConsumerFilter
+from django.http import JsonResponse
 from InvManage.scripts.filters import *
 
 

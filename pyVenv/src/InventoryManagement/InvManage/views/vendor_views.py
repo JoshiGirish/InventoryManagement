@@ -1,25 +1,22 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from InvManage.forms import *
-from django.forms.formsets import formset_factory
 from InvManage.models import *
-from django.core.files.storage import FileSystemStorage
-import io
-import csv
-from InvManage.filters import ProductFilter, VendorFilter, PurchaseOrderFilter, CompanyFilter
-from django.http import HttpResponse, JsonResponse
-from django.contrib import messages
-from django.db import IntegrityError, transaction
-from InvManage.serializers import VendorSerializer, PPEntrySerializer, PurchaseOrderSerializer, InvoiceSerializer, ProductSerializer
+from InvManage.filters import VendorFilter
+from django.http import JsonResponse
+from InvManage.serializers import VendorSerializer
 from InvManage.scripts.filters import *
 
 
 def create_vendor_view(request):
+    """ Creates the vendor creation view. """
     if request.method == 'GET':
+        # Create a list of vendors
         vendors = []
         for i, vend in enumerate(Vendor.objects.all()):
             vendors.append(
                 {'id': vend.id, 'name': vend.name, 'code': vend.identifier})
+        # Send a blank vendor form to the view
         vendor_form = VendorForm()
         return render(request, 'vendor.html', {'vendor_form': vendor_form, 'vendors': vendors, 'requested_view_type': 'create'})
     if request.method == 'POST':
@@ -30,20 +27,17 @@ def create_vendor_view(request):
         Vendor.objects.create(**data)
         return redirect('vendor')
 
-
 def delete_vendor_view(request, pk):
     if request.method == 'POST':
         vendor = Vendor.objects.get(id=pk)
         vendor.delete()
         return redirect('vendor')
 
-
 def get_vendor(request):
     if request.method == 'GET':
         vendor_id = request.GET.get('vendor_id')
         vendor = VendorSerializer(Vendor.objects.get(id=vendor_id))
         return JsonResponse(vendor.data)
-
 
 def display_vendors_view(request):
     if request.method == 'GET':

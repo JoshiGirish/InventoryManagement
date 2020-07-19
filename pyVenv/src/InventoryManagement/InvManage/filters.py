@@ -47,6 +47,18 @@ class PurchaseOrderFilter(django_filters.FilterSet):
     class Meta:
         model = PurchaseOrder
         fields = {}
+        
+
+class SalesOrderFilter(django_filters.FilterSet):
+    context = {'class':'form-control form-control-sm','onchange':'fetchData()'}
+    consumer = django_filters.CharFilter(field_name='consumer__name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    so = django_filters.CharFilter(field_name='so',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    ordertotal = django_filters.CharFilter(field_name='ordertotal',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    class Meta:
+        model = SalesOrder
+        fields = {}
+
 
 class CompanyFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onchange':'fetchData()'}

@@ -2,14 +2,15 @@
 from django.core.paginator import Paginator
 
 
-"""
+
+def get_columns(state):
+    """
     This function takes a filter state and returns an array of column names that are
     ordered depending on the position attribute of the columns. This order is important 
     as the queryset will be rendered in the display table according to the column order
     in this returned array.
 
-"""
-def get_columns(state):
+    """
     a=[]
     b=[]
     c=[]
@@ -32,11 +33,11 @@ def get_columns(state):
     return a
 
 
-"""
+def sort_ascending_descending(request,model):
+    """
     This function takes a request, finds which column needs to sorted in ascending/descending
     order, and returns the sorted queryset
-"""
-def sort_ascending_descending(request,model):
+    """
     try:
         if request.GET.get('sort')=='ascend': 
             queryset = model.objects.all().order_by(request.GET.get('column'))
@@ -48,15 +49,15 @@ def sort_ascending_descending(request,model):
     return queryset
 
 
-"""
+def change_column_position(request,state):
+    """
     This function:
         - Takes a filter state
         - Extracts the column names into an order array
         - Modifies the column order in the array depending on user input direction (left/right)
         - Saves this modified state of columns into the database
         - Returns the modified column names array
-"""
-def change_column_position(request,state):
+    """
 
     def modify_column_list(request,column_list):
         col = request.GET.get('column')
@@ -98,11 +99,11 @@ def change_column_position(request,state):
     return column_list
 
 
-"""
+def paginate(queryset,filter,page_number):
+    """
     This function takes the entire queryset and filters out only objects belonging to the
     request page
-"""
-def paginate(queryset,filter,page_number):
+    """
     paginator = Paginator(queryset,15)
     page_obj = paginator.get_page(page_number)
     page_obj_dicts = []

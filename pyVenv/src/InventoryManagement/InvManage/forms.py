@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Vendor, PurchaseOrder
+from .models import Product, Vendor, PurchaseOrder, Consumer
 from django.utils import timezone
 
 class ProductBasicInfoForm(forms.Form):
@@ -82,6 +82,28 @@ class PurchaseOrderBasicInfo(forms.Form):
     taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
     ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
 
+####### Sales Order Forms #########
+class SalesOrderBasicInfo(forms.Form):
+    prefix = "so"
+    context={
+        "class": "form-control",
+    }
+    product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    consumer_choices = ((c.id,c.name) for c in Consumer.objects.all())
+    # Vendor details
+    consumer = forms.ModelChoiceField(queryset= Consumer.objects.all(),required=True, widget=forms.Select(attrs=context))
+    # Order details
+    date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
+    so = forms.IntegerField(label="SO", widget=forms.TextInput(attrs=context))
+    # Pricing details
+    discount = forms.FloatField(widget=forms.TextInput(attrs=context))
+    tax = forms.FloatField(widget=forms.TextInput(attrs=context))
+    paid = forms.FloatField(widget=forms.TextInput(attrs=context))
+    balance = forms.FloatField(widget=forms.TextInput(attrs=context))
+    subtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+    taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+    ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+
     
 class VendorForm(forms.Form):
     prefix = "vend"
@@ -136,6 +158,25 @@ class ProductPurchaseEntryForm(forms.Form):
     price = forms.FloatField(widget=forms.TextInput(attrs=context))
     discount = forms.FloatField(widget=forms.TextInput(attrs=context))
     
+    
+class ProductSalesEntryForm(forms.Form):
+    prefix = "form"
+    context={
+        "class": "form-control",
+    }
+    # product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    pse_id = forms.IntegerField(widget=forms.TextInput(attrs={"value":""}))
+    product = forms.ModelChoiceField(
+                    queryset= Product.objects.all(),
+                    widget=forms.Select(attrs={
+                                            "class": "form-control",
+                                            "onchange":"setIdentifier(this)"}))
+    # identifier = forms.CharField(widget=forms.)
+    quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    price = forms.FloatField(widget=forms.TextInput(attrs=context))
+    discount = forms.FloatField(widget=forms.TextInput(attrs=context))
+    
+
 class CompanyForm(forms.Form):
     prefix = "comp"
     context={

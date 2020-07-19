@@ -1,0 +1,49 @@
+
+<div id="data">
+  <div id="updatedData">
+    <form enctype="multipart/form-data" action="{% url 'update_sales_order' %}" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row view-title">
+                <h2 class="col-sm-6 mr-auto label-head">Update Sales Order</h2>
+                    <div class="float-right">
+                        <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                        <input type="text" hidden name="pk" value="{{ pk }}">
+                      </div>
+            </div>
+    
+        <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>Selelct a consumer</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ sales_form.consumer }}
+                    </div>
+                </div>
+                {% include "consumer/consumer_info.html" %}
+            </div>
+            <div class="col-sm-6">
+              {% include "sales_order/so_pricing_info.html" %}
+            </div>
+        </div>
+        {% include "sales_order/so_products.html" %}
+      </form>
+      <script>
+        $('#id_so-consumer').val({{ sales_form.consumer_id }})
+        // Function for fetching product to be updated using AJAX
+        function changeView(){
+        $.ajax({
+            url: "{% url 'sales_order' %}",
+            data: {},
+            dataType:'html',
+            success: function(data){
+                $('#data').html($('#updatedData',data).html())
+            }
+          });
+        };
+      </script>
+</div>
+</div>
