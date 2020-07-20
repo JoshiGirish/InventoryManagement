@@ -11,6 +11,9 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'company' %}">Company</a>
+      </li>
       {% include "navbar/purchase.html" %}
       {% include "navbar/storage.html" %}
       {% include "navbar/sales.html" %}
@@ -31,9 +34,12 @@
       background: linear-gradient(180deg,#3c6faa,#457fc2,#3c6faa);
       color: white;
     }
-    .navbar * {
-    color: rgb(255, 255, 255);
+    .navbar a {
+    color: white;
     }
 
+    .dropdown-menu {
+    background: #143d6b;
+    }
 
   </style>

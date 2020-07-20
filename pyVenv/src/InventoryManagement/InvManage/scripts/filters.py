@@ -2,7 +2,6 @@
 from django.core.paginator import Paginator
 
 
-
 def get_columns(state):
     """
     This function takes a filter state and returns an array of column names that are
