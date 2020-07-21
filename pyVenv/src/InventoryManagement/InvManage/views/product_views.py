@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 import io,csv
 from InvManage.filters import ProductFilter
 from InvManage.scripts.filters import *
+from InvManage.scripts.helpers import create_event
 
 def create_product_view(request):
 	if request.method == 'GET':
@@ -34,9 +35,10 @@ def create_product_view(request):
 				data.update(form.cleaned_data)
 		uploaded_file = request.FILES['thumbnail-image']
 		data.update({'image':uploaded_file})
-		Product.objects.create(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
+		new_prod = Product.objects.create(**data)
+		event = create_event(new_prod,'create')
 		return redirect('product')
 
 def delete_product_view(request,pk):

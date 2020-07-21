@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from InvManage.forms import *
 from InvManage.models import *
 from InvManage.filters import ConsumerFilter
+from InvManage.serializers import ConsumerSerializer
 from django.http import JsonResponse
 from InvManage.scripts.filters import *
 
