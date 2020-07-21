@@ -58,8 +58,8 @@
     </div>
 </div>
 <script>
-    $('#id_po-consumer').change(function(){
-        var consumer_id = $('#id_po-consumer option:selected').val();
+    $('#id_so-consumer').change(function(){
+        var consumer_id = $('#id_so-consumer option:selected').val();
         $.ajax({
             url: "{% url 'get_consumer' %}",
             data: {

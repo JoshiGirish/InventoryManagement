@@ -34,7 +34,7 @@ def get_columns(state):
 
 def sort_ascending_descending(request,model):
     """
-    This function takes a request, finds which column needs to sorted in ascending/descending
+    This function takes a request, finds which column needs to be sorted in ascending/descending
     order, and returns the sorted queryset
     """
     try:
