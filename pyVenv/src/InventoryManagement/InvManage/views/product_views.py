@@ -7,6 +7,7 @@ import io,csv
 from InvManage.filters import ProductFilter
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event
+from InvManage.scripts.helpers import create_event
 
 def create_product_view(request):
 	if request.method == 'GET':
@@ -38,7 +39,7 @@ def create_product_view(request):
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
 		new_prod = Product.objects.create(**data)
-		event = create_event(new_prod,'create')
+		create_event(new_prod,'Create')
 		return redirect('product')
 
 def delete_product_view(request,pk):
@@ -46,6 +47,7 @@ def delete_product_view(request,pk):
 		prod_id = pk
 		# prod_id = request.POST.get('product_id')
 		prod = Product.objects.get(id=prod_id)
+		create_event(prod,'Delete')
 		prod.delete()
 		return redirect('/product')
 
@@ -101,6 +103,7 @@ def update_product_view(request):
 		Product.objects.filter(id=pk).update(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
+		create_event(Product.objects.get(id=pk),'Update')
 		return redirect('/product')
 
 def uploadCSV(request,data):

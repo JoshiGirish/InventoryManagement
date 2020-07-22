@@ -7,6 +7,7 @@ from InvManage.filters import PurchaseOrderFilter
 from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
+from InvManage.scripts.helpers import create_event
 
 
 def create_purchase_order_view(request):
@@ -101,6 +102,7 @@ def create_purchase_order_view(request):
                             product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
                         else:
                             print(pentry.errors)
+        create_event(new_po,'Create')
         return redirect('purchase_order')
 
 
@@ -129,6 +131,7 @@ def display_purchase_orders_view(request):
 def delete_purchase_order_view(request, pk):
     if request.method == 'POST':
         po = PurchaseOrder.objects.get(id=pk)
+        create_event(po,'Delete')
         po.delete()
         return redirect('purchase_order')
 
@@ -269,6 +272,7 @@ def update_purchase_order_view(request):
                     ppe = ProductPurchaseEntry.objects.get(id=ppe_id)
                     product.quantity -= quantity
                     ppe.delete()
+        create_event(PurchaseOrder.objects.get(id=pk),'Update')
         return redirect('purchase_order')
 
 

@@ -4,7 +4,7 @@ from InvManage.models import EventCard
 
 def display_history_view(request):
     if request.method == 'GET':
-        events = EventCard.objects.all()
+        events = EventCard.objects.all().order_by('-date')
         dictionaries = []
         for event in events: 
             dictionaries.append(event.__dict__)

@@ -5,6 +5,7 @@ from InvManage.models import *
 from django.core.files.storage import FileSystemStorage
 from InvManage.filters import CompanyFilter
 from InvManage.scripts.filters import *
+from InvManage.scripts.helpers import create_event
 
 
 def create_company_view(request):
@@ -29,7 +30,8 @@ def create_company_view(request):
 		comp_data.update({'shippingaddress': shippigaddress})
 		uploaded_file = request.FILES['thumbnail-image']
 		comp_data.update({'image':uploaded_file})
-		Company.objects.create(**comp_data)
+		new_comp = Company.objects.create(**comp_data)
+		create_event(new_comp,'Create')
 		return redirect('company')
 
 def update_company_view(request):
@@ -65,11 +67,13 @@ def update_company_view(request):
 		Company.objects.filter(id=pk).update(**comp_data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
+		create_event(Company.objects.get(id=pk),'Update')
 		return redirect('company')
 
 def delete_company_view(request,pk):
 	if request.method == 'POST':
 		company = Company.objects.get(id=pk)
+		create_event(company,'Delete')
 		company.delete()
 		return redirect('company')
 
