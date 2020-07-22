@@ -6,6 +6,7 @@ from InvManage.filters import VendorFilter
 from django.http import JsonResponse
 from InvManage.serializers import VendorSerializer
 from InvManage.scripts.filters import *
+from InvManage.scripts.helpers import create_event
 
 
 def create_vendor_view(request):
@@ -24,12 +25,14 @@ def create_vendor_view(request):
         form = VendorForm(request.POST, prefix='vend')
         if form.is_valid():
             data.update(form.cleaned_data)
-        Vendor.objects.create(**data)
+        new_vendor = Vendor.objects.create(**data)
+        create_event(new_vendor,'Create')
         return redirect('vendor')
 
 def delete_vendor_view(request, pk):
     if request.method == 'POST':
         vendor = Vendor.objects.get(id=pk)
+        create_event(vendor,'Delete')
         vendor.delete()
         return redirect('vendor')
 
@@ -72,4 +75,5 @@ def update_vendor_view(request):
             data.update(form.cleaned_data)
         print('Printing DATA:', data)
         Vendor.objects.filter(id=pk).update(**data)
+        create_event(Vendor.objects.get(id=pk),'Update')
         return redirect('vendor')

@@ -52,6 +52,9 @@ urlpatterns = [
     path('upload/<data>/',uploadCSV, name='upload'),
     path('admin/', admin.site.urls),
 
+    # Route for history
+    path('history/', display_history_view, name='history'),
+
     url(r'^api-auth/', include('rest_framework.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

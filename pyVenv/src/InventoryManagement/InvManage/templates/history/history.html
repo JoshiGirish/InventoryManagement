@@ -4,13 +4,56 @@
       <li class="header-menu border-bottom" style="text-align: center;">
         <span>History</span>
       </li>
+      <div id="historydata">
+        <div id="eventlist">
+          {% for event in dicts %}
+          <div id="history-card" class="card bg-light" >
+              <h6 class="card-title">{{event.objname}}</h6>
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
+                  {% if event.operation == "Create" %}
+                    <span class="badge badge-success">{{event.operation}}d</span>
+                  {% elif event.operation == "Update" %}
+                    <span class="badge badge-primary">{{event.operation}}d</span>
+                  {% elif event.operation == "Delete" %}
+                    <span class="badge badge-danger">{{event.operation}}d</span>
+                  {% endif %}
+                </h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{event.date}}</h6>
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </ul>
   </div>
 </div>
-  <script>
-    $(document).ready(function(){
-      
-    }
-  </script>
-
-
+<script>
+  $(document).ready(function(){
+    $.ajax({
+            url: "{% url 'history' %}",
+            data: {},
+            dataType:'html',
+            success: function(data){
+                $('#historydata').html($('#eventlist',data).html())
+            }
+          });
+  })
+</script>
+<style>
+  #history-card {
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    position: relative;
+    /* padding: 8px 30px 8px 20px; */
+    padding: 8px 8px 8px 8px;
+    margin: 1px;
+    color: #252525;
+    font-family: 'Comfortaa', cursive;
+	  list-style-type: none;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(46, 49, 50, 0.16) 0px 1px 2.94px 0.06px;
+    border-color: currentcolor;
+}
+</style>

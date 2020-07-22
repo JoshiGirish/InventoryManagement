@@ -7,6 +7,7 @@ from InvManage.filters import SalesOrderFilter
 from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PSEntrySerializer, SalesInvoiceSerializer
 from InvManage.scripts.filters import *
+from InvManage.scripts.helpers import create_event
 
 
 def create_sales_order_view(request):
@@ -104,6 +105,7 @@ def create_sales_order_view(request):
                             product.save()
                         else:
                             print(pentry.errors)
+        create_event(new_so,'Create')
         return redirect('sales_order')
 
 
@@ -132,6 +134,7 @@ def display_sales_orders_view(request):
 def delete_sales_order_view(request, pk):
     if request.method == 'POST':
         so = SalesOrder.objects.get(id=pk)
+        create_event(so,'Delete')
         so.delete()
         return redirect('sales_order')
 
@@ -274,6 +277,7 @@ def update_sales_order_view(request):
                     pse = ProductSalesEntry.objects.get(id=pse_id)
                     product.quantity -= quantity
                     pse.delete()
+        create_event(SalesOrder.objects.get(id=pk),'Update')
         return redirect('sales_order')
 
 
