@@ -5,24 +5,28 @@
         <span>History</span>
       </li>
       <div id="historydata">
-        <div id="eventlist">
-          {% for event in dicts %}
-          <div id="history-card" class="card bg-light" >
-              <h6 class="card-title">{{event.objname}}</h6>
-              <div class="d-flex justify-content-between align-items-center">
-                <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
-                  {% if event.operation == "Create" %}
-                    <span class="badge badge-success">{{event.operation}}d</span>
-                  {% elif event.operation == "Update" %}
-                    <span class="badge badge-primary">{{event.operation}}d</span>
-                  {% elif event.operation == "Delete" %}
-                    <span class="badge badge-danger">{{event.operation}}d</span>
-                  {% endif %}
-                </h6>
-                <h6 class="card-subtitle mb-2 text-muted">{{event.date}}</h6>
-              </div>
-          </div>
-          {% endfor %}
+        <div id="eventlist" >
+          <ul class="scroller">
+            {% for event in dicts %}
+              <li>
+                <div id="history-card" class="card bg-light" >
+                    <h6 class="card-title">{{event.objname}}</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
+                        {% if event.operation == "Create" %}
+                          <span class="badge badge-success">{{event.operation}}d</span>
+                        {% elif event.operation == "Update" %}
+                          <span class="badge badge-primary">{{event.operation}}d</span>
+                        {% elif event.operation == "Delete" %}
+                          <span class="badge badge-danger">{{event.operation}}d</span>
+                        {% endif %}
+                      </h6>
+                      <h6 class="card-subtitle mb-2 text-muted">{{event.date}}</h6>
+                    </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
         </div>
       </div>
     </ul>
@@ -56,4 +60,11 @@
     box-shadow: rgba(46, 49, 50, 0.16) 0px 1px 2.94px 0.06px;
     border-color: currentcolor;
 }
+
+.scroller {
+    height: 500px;
+    overflow: auto;
+    scrollbar-width: none;  /* Firefox */
+}
+
 </style>
