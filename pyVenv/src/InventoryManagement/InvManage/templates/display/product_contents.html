@@ -192,13 +192,6 @@
           $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
         }
 
-        // function updateData(tag){
-        //   console.log(tag)
-        //   var id = $(tag).data('id');
-        //   console.log(id)
-        //   $('#productData').load("{% url 'update_product' %} #updatedData", {pk:id});
-        // }
-
         // Function for fetching product to be updated using AJAX
         function updateData(tag){
           var id = $(tag).data('id');
@@ -210,7 +203,7 @@
             },
             dataType:'html',
             success: function(data){
-              $('#productData').html($('#updatedData',data).html())
+              $('#data').html($('#updatedData',data).html())
             }
         });
       };

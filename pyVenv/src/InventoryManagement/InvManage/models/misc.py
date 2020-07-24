@@ -10,6 +10,7 @@ class Object(models.Model):
 
 class EventCard(models.Model):
     obj = models.OneToOneField(Object,on_delete=models.SET_NULL,null=True)
+    objId = models.CharField(null=True,max_length=100)
     objname = models.CharField(null=True,max_length=100)
     objmodel = models.CharField(null=True,max_length=100)
     date = models.TextField(null=True, blank=True)

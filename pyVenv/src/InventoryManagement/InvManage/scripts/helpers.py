@@ -15,8 +15,10 @@ def create_event(obj,event):
                                     model=type(obj).__name__)
     # Create event card
     newCard = EventCard.objects.create(obj=newObj, 
+                                        objId=obj.id,
                                         objname=objName, 
                                         objmodel=type(obj).__name__, 
                                         date=datetime.datetime.now().strftime("%d/%m, %H:%M:%S"), 
                                         operation=event)
-    
+
+            

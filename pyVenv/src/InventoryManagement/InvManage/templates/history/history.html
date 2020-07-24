@@ -1,3 +1,4 @@
+{% load template_helpers %}
 <div id="history-pane" class="card bg-light">
 <div class="sidebar-menu bg-light">
     <ul style="list-style-type:none;">
@@ -9,7 +10,7 @@
           <ul class="scroller">
             {% for event in dicts %}
               <li>
-                <div id="history-card" class="card bg-light" >
+                <div id="history-card" class="card bg-light" onclick="updateHistoryObject(this)" data-id={{event.objId}} data-route={{lookupRoute|lookup:event.objmodel}}>
                     <h6 class="card-title">{{event.objname}}</h6>
                     <div class="d-flex justify-content-between align-items-center">
                       <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
@@ -43,6 +44,29 @@
             }
           });
   })
+
+    // Function for fetching data to be updated using AJAX
+      function updateHistoryObject(tag){
+          var id = $(tag).data('id');
+          var route = $(tag).data("route");
+          var baseUrl = document.location.origin;
+          var url = baseUrl + route;
+          console.log(id);
+          console.log(url);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                'pk': id
+            },
+            dataType:'html',
+            success: function(data){
+              $('#data').html($('#updatedData',data).html()); // fetch and update the view
+              $('#displayCorousel').removeClass('active'); // if the display corousel is active, de-activate it
+              $('#createCorousel').addClass('active'); // set the create corousel as active
+            }
+        });
+      };
 </script>
 <style>
   #history-card {
@@ -59,10 +83,11 @@
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(46, 49, 50, 0.16) 0px 1px 2.94px 0.06px;
     border-color: currentcolor;
+    cursor: pointer;
 }
 
 .scroller {
-    height: 500px;
+    height: 400px;
     overflow: auto;
     scrollbar-width: none;  /* Firefox */
 }

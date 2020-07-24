@@ -22,3 +22,7 @@ def thumbnail_url(urlencode=None):
     url = id
     print(url)
     return url
+
+@register.filter(name='lookup')
+def lookup(dictionary, key):
+    return dictionary.get(key)

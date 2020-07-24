@@ -1,4 +1,4 @@
-<div id="productData">
+<div id="data">
     <div id="updatedData">
       <form enctype="multipart/form-data" action="{% url 'update_product' %}" method="POST">
         {% csrf_token %}
@@ -115,7 +115,7 @@
                     data: {},
                     dataType:'html',
                     success: function(data){
-                        $('#productData').html($('#updatedData',data).html())
+                        $('#data').html($('#updatedData',data).html())
                     }
                 });
             };
