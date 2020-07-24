@@ -11,15 +11,11 @@
                     <input type="text" hidden name="pk" value="{{ pk }}">
                 </div>
             </div>
-
-  
-      <div class="row">
-              <div class="col-sm-6">
-                  {% include "vendor/vendor_info.html" %}
-              </div>
-      </div>
+            <div class="d-flex flex-row justify-content-between">
+                    {% include "vendor/vendor_info.html" %}
+            </div>
         </form>
-
+        
         <script>
             // Function for fetching product to be updated using AJAX
             function changeView(){
