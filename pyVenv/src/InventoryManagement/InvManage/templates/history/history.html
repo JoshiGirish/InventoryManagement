@@ -1,36 +1,46 @@
 {% load template_helpers %}
-<div id="history-pane" class="card bg-light">
+<div id="history-pane" class="card bg-light" style="margin: 0.2em;">
 <div class="sidebar-menu bg-light">
-    <ul style="list-style-type:none;">
-      <li class="header-menu border-bottom" style="text-align: center;">
-        <span>History</span>
-      </li>
-      <div id="historydata">
-        <div id="eventlist" >
-          <ul class="scroller">
-            {% for event in dicts %}
-              <li>
-                <div id="history-card" class="card bg-light" onclick="updateHistoryObject(this)" data-id={{event.objId}} data-route={{lookupRoute|lookup:event.objmodel}}>
-                    <h6 class="card-title">{{event.objname}}</h6>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
-                        {% if event.operation == "Create" %}
-                          <span class="badge badge-success">{{event.operation}}d</span>
-                        {% elif event.operation == "Update" %}
-                          <span class="badge badge-primary">{{event.operation}}d</span>
-                        {% elif event.operation == "Delete" %}
-                          <span class="badge badge-danger">{{event.operation}}d</span>
-                        {% endif %}
-                      </h6>
-                      <h6 class="card-subtitle mb-2 text-muted">{{event.date}}</h6>
-                    </div>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
+  <div class="header-menu border-bottom" style="text-align: center;">
+    <span>History</span>
+  </div>
+  <div class="col-sm-12 justify-content-between" style="padding:0em">
+    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+      <div class="carousel-inner">
+        <div id="createCorousel" class="carousel-item active">
+          <div class="d-flex row" style="width: 96%;">
+            <div id="historyFilter" class="col-10 mx-auto">
+              <input type="text" name="objname" class="form-control form-control-sm" onkeyup="fetchEvents()" id="id_objname" placeholder="Filter">
+            </div>
+            <div class="d-flex col-2 align-items-center justify-content-end" style="opacity: 0.5; padding:0em">
+              <a class="" href="#carousel" role="button" data-slide="next" onclick="getSettings(); toggleCorouselCookie();">
+                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+                <span style="color: gray;"><i class="fa fa-filter" aria-hidden="true"></i></span>
+                <!-- <span class="sr-only">Next</span> -->
+              </a>
+            </div>     
+          </div>
+          {% include "history/eventlist.html" %}
+        </div>
+        <div id="displayCorousel" class="carousel-item">
+          <div class="d-flex flex-row" style="height: 900px;">
+            <div class="d-flex col-2 align-items-center justify-content-end" style="opacity: 0.5; padding:0em">
+              <a class="" href="#carousel" role="button" data-slide="next" onclick="getSettings(); toggleCorouselCookie();">
+                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+                <span style="color: gray;"><i class="fa fa-filter" aria-hidden="true"></i></span>
+                <!-- <span class="sr-only">Next</span> -->
+              </a>
+            </div>
+            <div class="d-flex align-items-center col-10 mx-auto header-menu border-bottom">
+              <span>Settings</span>
+            </div>  
+          </div>
+
+        </div>
         </div>
       </div>
-    </ul>
+    </div>
+    
   </div>
 </div>
 <script>
@@ -67,6 +77,32 @@
             }
         });
       };
+
+    function fetchEvents(){
+        // var searchParams = new URLSearchParams(window.location.search)
+          var searchParams = new URLSearchParams(window.location.search);
+          var key = $('#historyFilter input').attr('name');
+          var val = $('#historyFilter input').val();
+          // var data = getFilterData();
+          // for(var key in data){
+            searchParams.append(key,val);
+          // }
+
+        $('#historydata').load("{% url 'history' %} #eventlist", searchParams.toString());
+      }
+
+    // Get filter data
+    // function getFilterData(){
+    //     var data = {}
+    //     $('#productsFilterForm input').each(function(index, value) {
+    //       var key = $(value).attr('name');
+    //       var val = $(value).val();
+    //       data[key] = val
+    //     });
+    //     return data      
+    //   }
+
+
 </script>
 <style>
   #history-card {
@@ -84,12 +120,16 @@
     box-shadow: rgba(46, 49, 50, 0.16) 0px 1px 2.94px 0.06px;
     border-color: currentcolor;
     cursor: pointer;
-}
+  }
 
-.scroller {
-    height: 400px;
-    overflow: auto;
-    scrollbar-width: none;  /* Firefox */
-}
+  #history-card:hover {
+    scale: 1.03;
+  }
+
+  .scroller {
+      height: 400px;
+      overflow: auto;
+      scrollbar-width: none;  /* Firefox */
+  }
 
 </style>
