@@ -1,0 +1,44 @@
+<div id="settingsdata">
+    <div id="settings">
+        <div>
+            <div class="header-menu border-bottom mb-2">
+                <span>Duration</span>
+            </div>
+            <div class="col-sm-12 d-flex row">
+                <div class="col-sm-6">
+                    {{ myFilter.form.date__gt }}
+                </div>
+                <div class="col-sm-6">
+                    {{ myFilter.form.date__lt }}
+                </div>
+            </div>
+        </div>
+        <div class="d-flex row">
+            <div class="col-sm-6">
+                <div class="header-menu border-bottom mb-2">
+                    <span>Event Types</span>
+                </div>
+                {% for op in myFilter.form.operation %}
+                    <div>
+                        {{op}}
+                    </div>    
+                {% endfor %}
+                
+                <div>
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="header-menu border-bottom mb-2">
+                    <span>Models</span>
+                </div>
+                {% for model in myFilter.form.objmodel %}
+                    <div>
+                        {{model}}
+                    </div>
+                {% endfor %}
+            
+            </div>
+        </div>
+    </div>
+</div>

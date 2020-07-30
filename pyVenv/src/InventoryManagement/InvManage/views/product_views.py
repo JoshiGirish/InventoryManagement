@@ -39,7 +39,7 @@ def create_product_view(request):
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
 		new_prod = Product.objects.create(**data)
-		create_event(new_prod,'Create')
+		create_event(new_prod,'Created')
 		return redirect('product')
 
 def delete_product_view(request,pk):
@@ -47,7 +47,7 @@ def delete_product_view(request,pk):
 		prod_id = pk
 		# prod_id = request.POST.get('product_id')
 		prod = Product.objects.get(id=prod_id)
-		create_event(prod,'Delete')
+		create_event(prod,'Deleted')
 		prod.delete()
 		return redirect('/product')
 
@@ -103,7 +103,7 @@ def update_product_view(request):
 		Product.objects.filter(id=pk).update(**data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-		create_event(Product.objects.get(id=pk),'Update')
+		create_event(Product.objects.get(id=pk),'Updated')
 		return redirect('/product')
 
 def uploadCSV(request,data):

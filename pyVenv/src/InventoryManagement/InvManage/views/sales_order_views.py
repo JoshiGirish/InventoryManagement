@@ -105,7 +105,7 @@ def create_sales_order_view(request):
                             product.save()
                         else:
                             print(pentry.errors)
-        create_event(new_so,'Create')
+        create_event(new_so,'Created')
         return redirect('sales_order')
 
 
@@ -134,7 +134,7 @@ def display_sales_orders_view(request):
 def delete_sales_order_view(request, pk):
     if request.method == 'POST':
         so = SalesOrder.objects.get(id=pk)
-        create_event(so,'Delete')
+        create_event(so,'Deleted')
         so.delete()
         return redirect('sales_order')
 
@@ -277,7 +277,7 @@ def update_sales_order_view(request):
                     pse = ProductSalesEntry.objects.get(id=pse_id)
                     product.quantity -= quantity
                     pse.delete()
-        create_event(SalesOrder.objects.get(id=pk),'Update')
+        create_event(SalesOrder.objects.get(id=pk),'Updated')
         return redirect('sales_order')
 
 

@@ -8,15 +8,15 @@
                 <h6 class="card-title">{{event.objname}}</h6>
                 <div class="d-flex justify-content-between align-items-center">
                   <h6 class="card-subtitle mb-2 text-muted">{{event.objmodel}} 
-                    {% if event.operation == "Create" %}
-                      <span class="badge badge-success">{{event.operation}}d</span>
-                    {% elif event.operation == "Update" %}
-                      <span class="badge badge-primary">{{event.operation}}d</span>
-                    {% elif event.operation == "Delete" %}
-                      <span class="badge badge-danger">{{event.operation}}d</span>
+                    {% if event.operation == "Created" %}
+                      <span class="badge badge-success">{{event.operation}}</span>
+                    {% elif event.operation == "Updated" %}
+                      <span class="badge badge-primary">{{event.operation}}</span>
+                    {% elif event.operation == "Deleted" %}
+                      <span class="badge badge-danger">{{event.operation}}</span>
                     {% endif %}
                   </h6>
-                  <h6 class="card-subtitle mb-2 text-muted">{{event.date}}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{{event.date|date:"D, d/m g:i a"}}</h6>
                 </div>
             </div>
           </li>

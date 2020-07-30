@@ -31,7 +31,7 @@ def create_company_view(request):
 		uploaded_file = request.FILES['thumbnail-image']
 		comp_data.update({'image':uploaded_file})
 		new_comp = Company.objects.create(**comp_data)
-		create_event(new_comp,'Create')
+		create_event(new_comp,'Created')
 		return redirect('company')
 
 def update_company_view(request):
@@ -67,13 +67,13 @@ def update_company_view(request):
 		Company.objects.filter(id=pk).update(**comp_data)
 		fs = FileSystemStorage()
 		fs.save(uploaded_file.name,uploaded_file)
-		create_event(Company.objects.get(id=pk),'Update')
+		create_event(Company.objects.get(id=pk),'Updated')
 		return redirect('company')
 
 def delete_company_view(request,pk):
 	if request.method == 'POST':
 		company = Company.objects.get(id=pk)
-		create_event(company,'Delete')
+		create_event(company,'Deleted')
 		company.delete()
 		return redirect('company')
 

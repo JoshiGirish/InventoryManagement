@@ -4,104 +4,151 @@
   <div class="header-menu border-bottom" style="text-align: center;">
     <span>History</span>
   </div>
+  
   <div class="col-sm-12 justify-content-between" style="padding:0em">
-    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+    <div id="historyCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
       <div class="carousel-inner">
-        <div id="createCorousel" class="carousel-item active">
+        <div id="eventsCorousel" class="carousel-item active">
           <div class="d-flex row" style="width: 96%;">
             <div id="historyFilter" class="col-10 mx-auto">
-              <input type="text" name="objname" class="form-control form-control-sm" onkeyup="fetchEvents()" id="id_objname" placeholder="Filter">
+              <input type="text" name="objname" class="form-control form-control-sm" onkeyup="fetchEvents(this)" id="id_objname" placeholder="Filter" data-url="{% url 'history' %}">
             </div>
             <div class="d-flex col-2 align-items-center justify-content-end" style="opacity: 0.5; padding:0em">
-              <a class="" href="#carousel" role="button" data-slide="next" onclick="getSettings(); toggleCorouselCookie();">
-                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+              <button type="submit" class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)">
                 <span style="color: gray;"><i class="fa fa-filter" aria-hidden="true"></i></span>
-                <!-- <span class="sr-only">Next</span> -->
-              </a>
+              </button>
             </div>     
           </div>
           {% include "history/eventlist.html" %}
         </div>
-        <div id="displayCorousel" class="carousel-item">
-          <div class="d-flex flex-row" style="height: 900px;">
-            <div class="d-flex col-2 align-items-center justify-content-end" style="opacity: 0.5; padding:0em">
-              <a class="" href="#carousel" role="button" data-slide="next" onclick="getSettings(); toggleCorouselCookie();">
-                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
-                <span style="color: gray;"><i class="fa fa-filter" aria-hidden="true"></i></span>
-                <!-- <span class="sr-only">Next</span> -->
-              </a>
+        <div id="settingsCorousel" class="carousel-item">
+          <form id="settingsForm" action="{% url 'history' %}" method="POST">
+            {% csrf_token %}
+          <div class="d-flex flex-row p-2 align-items-center db-title">
+            <div class="d-flex align-items-center justify-content-start" style="opacity: 0.5;">
+              <button type="button" class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)"></
+                <span><i class="fa fa-filter" aria-hidden="true"></i></span>
+              </button>
             </div>
-            <div class="d-flex align-items-center col-10 mx-auto header-menu border-bottom">
-              <span>Settings</span>
+            <div class="d-flex align-items-center mx-auto">
+              <span class="align-items-center">Filter Settings</span>
             </div>  
           </div>
-
+          {% include "history/history_settings.html" %}
+          <input type="submit" value="Submit">
+        </form>
         </div>
         </div>
       </div>
     </div>
-    
   </div>
 </div>
 <script>
+
+  // Create the cookie object for managing the history corousel.
+    cookie = {
+    name: 'activeHistoryCorousel',
+    parent:'historyCorousel',
+    valueLeft: 'events',
+    valueRight: 'settings',
+    leftCorouselID: 'eventsCorousel',
+    rightCorouselID: 'settingsCorousel'
+  }
+
+  // Load eventslist on pageload.
   $(document).ready(function(){
     $.ajax({
             url: "{% url 'history' %}",
             data: {},
             dataType:'html',
             success: function(data){
-                $('#historydata').html($('#eventlist',data).html())
-            }
+                $('#historydata').html($('#eventlist',data).html());
+                $('#settingsdata').html($('#settings',data).html());
+                $( "#id_date__lt" )
+                      .datepicker()
+                      .addClass('form-control','form-control-sm')
+                      .attr('placeholder','To');
+                $( "#id_date__gt" )                      
+                      .datepicker()
+                      .addClass('form-control','form-control-sm')
+                      .attr('placeholder','From');
+                    }
           });
   })
 
-    // Function for fetching data to be updated using AJAX
-      function updateHistoryObject(tag){
-          var id = $(tag).data('id');
-          var route = $(tag).data("route");
+  // Function for fetching data when user clicks on an event card.
+    function updateHistoryObject(tag){
+      // Construct the url 
+        var id = $(tag).data('id');
+        var route = $(tag).data("route");
+        var baseUrl = document.location.origin;
+        var url = baseUrl + route;
+      // AJAX request for fetching and displaying the object associated with the event.
+      $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+              'pk': id
+          },
+          dataType:'html',
+          success: function(data){
+            $('#data').html($('#updatedData',data).html()); // fetch and update the view
+            $('#displayCorousel').removeClass('active'); // if the display corousel is active, de-activate it
+            $('#createCorousel').addClass('active'); // set the create corousel as active
+          }
+      });
+    };
+
+
+    // Function for fetching events' list.
+    function fetchEvents(tag){
+          var searchParams = new URLSearchParams(window.location.search);
+          var filterName = $('#historyFilter input').attr('name'); // id_objname
+          var filterVal = $('#historyFilter input').val(); 
+          searchParams.append(filterName,filterVal);
+          // Get all values of the checkboxes
+          $("#settingsForm :input[type=checkbox]").each(function(){
+          var key = $(this).attr('name');
+            var val = $(this).attr('value');
+            var check = $(this).is(':checked');
+            if (check){
+              searchParams.append(key,val);
+            }
+          console.log($(this).attr('value'),$(this).is(':checked'));
+          });
+
+          // Get the date values
+          $("#settingsForm :input[type=text]").each(function(){
+          var key = $(this).attr('name');
+          var val = $(this).val();
+          searchParams.append(key,val);
+          console.log(key,val)
+          });
+
           var baseUrl = document.location.origin;
-          var url = baseUrl + route;
-          console.log(id);
-          console.log(url);
-        $.ajax({
+          var url = new URL(baseUrl + $(tag).data('url'));
+          $.ajax({
             url: url,
             type: 'GET',
-            data: {
-                'pk': id
-            },
+            data: searchParams.toString(), 
             dataType:'html',
             success: function(data){
-              $('#data').html($('#updatedData',data).html()); // fetch and update the view
-              $('#displayCorousel').removeClass('active'); // if the display corousel is active, de-activate it
-              $('#createCorousel').addClass('active'); // set the create corousel as active
+              $('#historydata').html($('#eventlist',data).html());
+              // $('#settingsdata').html($('#settings',data).html());
+              $( "#id_date__lt" )
+                      .datepicker()
+                      .addClass('form-control','form-control-sm')
+                      .attr('placeholder','To');
+                $( "#id_date__gt" )                      
+                      .datepicker()
+                      .addClass('form-control','form-control-sm')
+                      .attr('placeholder','From');
             }
         });
-      };
-
-    function fetchEvents(){
-        // var searchParams = new URLSearchParams(window.location.search)
-          var searchParams = new URLSearchParams(window.location.search);
-          var key = $('#historyFilter input').attr('name');
-          var val = $('#historyFilter input').val();
-          // var data = getFilterData();
-          // for(var key in data){
-            searchParams.append(key,val);
-          // }
-
-        $('#historydata').load("{% url 'history' %} #eventlist", searchParams.toString());
       }
 
-    // Get filter data
-    // function getFilterData(){
-    //     var data = {}
-    //     $('#productsFilterForm input').each(function(index, value) {
-    //       var key = $(value).attr('name');
-    //       var val = $(value).val();
-    //       data[key] = val
-    //     });
-    //     return data      
-    //   }
 
+    
 
 </script>
 <style>

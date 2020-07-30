@@ -74,12 +74,37 @@ class CompanyFilter(django_filters.FilterSet):
 
 class EventCardFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onkeyup':'fetchEvents()'}
+    choice_context = {'type':"checkbox", 'checked':""}
+    MODEL_CHOICES = (
+        ('Company', 'Company'),
+        ('Vendor', 'Vendor'),
+        ('PurchaseOrder', 'Purchase Order'),
+        ('Product', 'Product'),
+        ('Consumer', 'Consumer'),
+        ('SalesOrder', 'Sales Order')
+    )
+    
+    OPERATION_CHOICES = (
+        ('Created', 'Created'),
+        ('Updated', 'Updated'),
+        ('Deleted', 'Deleted')
+    )
     # obj = django_filters.CharFilter(field_name='name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     # objId = django_filters.CharFilter(field_name='owner',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     objname = django_filters.CharFilter(field_name='objname',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    # objmodel = django_filters.CharFilter(field_name='email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    # date = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    # operation = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    # objmodel = django_filters.ModelMultipleChoiceFilter(queryset=ObjectModel.objects.all()) 
+    objmodel = django_filters.MultipleChoiceFilter(choices = MODEL_CHOICES,
+                                                        widget=forms.CheckboxSelectMultiple(attrs=choice_context))
+    date__gt = django_filters.DateFilter(field_name='date',
+                                          lookup_expr= 'date__gt',
+                                          widget=forms.TextInput())
+    date__lt = django_filters.DateFilter(field_name='date',
+                                          lookup_expr= 'date__lt',
+                                          widget=forms.TextInput())
+    # operation = django_filters.ModelMultipleChoiceFilter(queryset=ObjectModel.objects.all())
+    operation = django_filters.MultipleChoiceFilter(choices=OPERATION_CHOICES,
+                                                        widget=forms.CheckboxSelectMultiple(attrs=choice_context))
     class Meta:
         model = EventCard
+        # fields = ['date__gt','date__lt','objname']
         fields = {}

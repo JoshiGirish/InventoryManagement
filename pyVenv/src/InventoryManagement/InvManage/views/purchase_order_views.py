@@ -46,6 +46,7 @@ def create_purchase_order_view(request):
         }
         return render(request, 'purchase_order.html', context)
     if request.method == 'POST':
+        print(request.POST)
         ProductPurchaseEntryFormset = formset_factory(
             ProductPurchaseEntryForm, can_delete=True)
         purchase_form = PurchaseOrderBasicInfo(request.POST, prefix='po')
@@ -102,7 +103,7 @@ def create_purchase_order_view(request):
                             product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
                         else:
                             print(pentry.errors)
-        create_event(new_po,'Create')
+        create_event(new_po,'Created')
         return redirect('purchase_order')
 
 
@@ -131,7 +132,7 @@ def display_purchase_orders_view(request):
 def delete_purchase_order_view(request, pk):
     if request.method == 'POST':
         po = PurchaseOrder.objects.get(id=pk)
-        create_event(po,'Delete')
+        create_event(po,'Deleted')
         po.delete()
         return redirect('purchase_order')
 
@@ -272,7 +273,7 @@ def update_purchase_order_view(request):
                     ppe = ProductPurchaseEntry.objects.get(id=ppe_id)
                     product.quantity -= quantity
                     ppe.delete()
-        create_event(PurchaseOrder.objects.get(id=pk),'Update')
+        create_event(PurchaseOrder.objects.get(id=pk),'Updated')
         return redirect('purchase_order')
 
 

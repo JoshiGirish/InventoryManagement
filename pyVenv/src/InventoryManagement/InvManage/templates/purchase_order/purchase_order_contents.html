@@ -72,7 +72,7 @@
                   {% endif %}
                 {% endfor %}
               {% endfor %}
-                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_purchase_order' dict.id %}" data-object_name="{{ dict.po }}" data-object_id="{{ dict.id }}">Delete</a></td>
                 <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_purchase_order' dict.id %}" data-po_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
             </tr>
@@ -133,6 +133,16 @@
     </div>
     <script src="{% static 'purchase_invoice.js' %}"></script>
      <script type="text/javascript">
+            cookie = {
+              name: 'activeProductCorousel',
+              parent:'corousel',
+              valueLeft: 'create',
+              valueRight: 'display',
+              leftCorouselID: 'createCorousel',
+              rightCorouselID: 'displayCorousel'
+            }
+
+
      $('#id_po-vendor').val({{purchase_form.vendor_id}})
         $('#delModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget);

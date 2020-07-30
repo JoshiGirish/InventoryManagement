@@ -16,13 +16,18 @@
 		<script src="{% static 'dropzone.js' %}"></script>
 		<script src="{% static 'popper.min.js' %}"></script>
 		<script src="{% static 'moment-with-locales.js' %}"></script>
+
+		<!-- Custom JS -->
 		<script src="{% static 'main.js' %}"></script>
+		<script src="{% static 'corousel.js' %}"></script>
 
 		<style>		
 			/* div {
 				border: 1px solid violet;
 			} */
-			
+			:root {
+				--base-font: 'Comfortaa', cursive;
+			}
 			.app-name{
 				font-family: 'Orbitron', sans-serif;
 				font-size: 1.5em;
@@ -65,7 +70,7 @@
 			}
 
 			body{
-				font-family: Verdana, Geneva, Tahoma, sans-serif;
+				font-family: var(--base-font);
 				font-size: 1em;
 				background-color: #f8f8f8;
 			}
@@ -83,7 +88,7 @@
 
 			.card-header *{
 				color: #3c6faa;
-				font-family: Verdana;
+				font-family: var(--base-font);
 				font-size: 1.1em;
 				font-weight: 500;
 			}
@@ -114,7 +119,7 @@
 
 			.label-head{
 				color: #666666;
-				font-family: Verdana, Geneva, Tahoma, sans-serif;
+				font-family: var(--base-font);
 				font-size: 1.2em;
 			}
 			input.score{
@@ -128,7 +133,7 @@
 				margin: 0;
 				color: #3f3f3f;
 				font-size: 1em;
-				font-family: Verdana, Geneva, Tahoma, sans-serif;
+				font-family: var(--base-font);
 			}
 			div.icon>img{
 				height: 30px;
@@ -156,14 +161,14 @@
 			.table td, .table th, .table input {
 				text-align: center;
 				vertical-align: middle;   
-				font-family: Verdana, Geneva, Tahoma, sans-serif;
+				font-family: var(--base-font);
 			}
 	
 			table#order_total td{
 				text-align: left;
 				vertical-align: middle;  
 				border: none;
-				font-family: Verdana, Geneva, Tahoma, sans-serif;
+				font-family: var(--base-font);
 				padding-left: 2em;
 				padding-right: 2em;
 			}
@@ -233,6 +238,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'jquery-ui.min.css' %}">
 
 	<!-- JSpdf dependencies -->
 	<script src="{% static 'jspdf.min.js' %}"></script>
@@ -242,6 +248,7 @@
 	<script src="{% static 'png_support.js' %}"></script>
 	<script src="{% static 'addimage.js' %}"></script>
 	<script src="{% static 'faker.min.js' %}"></script>
+	<script src="{% static 'jquery-ui.min.js' %}"></script>
 	
 </body>
 </html>

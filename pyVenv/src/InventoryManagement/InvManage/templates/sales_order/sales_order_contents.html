@@ -72,7 +72,7 @@
                   {% endif %}
                 {% endfor %}
               {% endfor %}
-                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_sales_order' dict.id %}" data-object_name="{{ dict.so }}" data-object_id="{{ dict.id }}">Delete</a></td>
                 <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_sales_order' dict.id %}" data-so_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
             </tr>
