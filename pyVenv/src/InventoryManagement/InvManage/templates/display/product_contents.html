@@ -72,7 +72,7 @@
                     {% endif %}
                   {% endfor %}
                 {% endfor %}
-                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_product' dict.id %}" data-prod_name="{{ dict.name }}" data-prod_id="{{ dict.id }}">Delete</a></td>
             </tr>
             {% endfor %}
@@ -126,8 +126,19 @@
       </div>
     </div>
 
-     <script type="text/javascript">
+     <script>
 
+          // Create the cookie object for corousel
+          cookie = {
+            name: 'activeProductCorousel',
+            parent:'corousel',
+            valueLeft: 'create',
+            valueRight: 'display',
+            leftCorouselID: 'createCorousel',
+            rightCorouselID: 'displayCorousel'
+          }
+
+        // Display the delete product dialog box
         $('#delModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget);
             console.log(button)

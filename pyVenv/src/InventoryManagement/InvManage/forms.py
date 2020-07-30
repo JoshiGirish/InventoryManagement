@@ -209,3 +209,4 @@ class ShippingAddressForm(forms.Form):
     ))
     email = forms.CharField(widget=forms.TextInput(attrs=context))
     location = forms.CharField(widget=forms.TextInput(attrs=context))
+    

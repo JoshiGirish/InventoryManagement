@@ -23,14 +23,14 @@ def create_consumer_view(request):
         if form.is_valid():
             data.update(form.cleaned_data)
         new_consumer = Consumer.objects.create(**data)
-        create_event(new_consumer,'Create')
+        create_event(new_consumer,'Created')
         return redirect('consumer')
 
 
 def delete_consumer_view(request, pk):
     if request.method == 'POST':
         consumer = Consumer.objects.get(id=pk)
-        create_event(consumer,'Delete')
+        create_event(consumer,'Deleted')
         consumer.delete()
         return redirect('consumer')
 
@@ -75,5 +75,5 @@ def update_consumer_view(request):
             data.update(form.cleaned_data)
         print('Printing DATA:', data)
         Consumer.objects.filter(id=pk).update(**data)
-        create_event(Consumer.objects.get(id=pk),'Update')
+        create_event(Consumer.objects.get(id=pk),'Updated')
         return redirect('consumer')

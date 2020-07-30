@@ -3,6 +3,7 @@ from django.db import models
 
 class FilterState(models.Model):
     name = models.CharField(max_length=30)
+    
 
 class FilterColumn(models.Model):
     name = models.CharField(max_length=50)
@@ -10,4 +11,5 @@ class FilterColumn(models.Model):
     visible = models.BooleanField(null=True,default=True)
     position = models.IntegerField()
     state = models.ForeignKey(FilterState,on_delete=models.CASCADE)
+
 

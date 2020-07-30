@@ -26,13 +26,13 @@ def create_vendor_view(request):
         if form.is_valid():
             data.update(form.cleaned_data)
         new_vendor = Vendor.objects.create(**data)
-        create_event(new_vendor,'Create')
+        create_event(new_vendor,'Created')
         return redirect('vendor')
 
 def delete_vendor_view(request, pk):
     if request.method == 'POST':
         vendor = Vendor.objects.get(id=pk)
-        create_event(vendor,'Delete')
+        create_event(vendor,'Deleted')
         vendor.delete()
         return redirect('vendor')
 
@@ -75,5 +75,5 @@ def update_vendor_view(request):
             data.update(form.cleaned_data)
         print('Printing DATA:', data)
         Vendor.objects.filter(id=pk).update(**data)
-        create_event(Vendor.objects.get(id=pk),'Update')
+        create_event(Vendor.objects.get(id=pk),'Updated')
         return redirect('vendor')

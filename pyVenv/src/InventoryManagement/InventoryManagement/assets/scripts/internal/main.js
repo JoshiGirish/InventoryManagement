@@ -1,6 +1,5 @@
-window.onload = function(){
-    $.ajax({
-          url: 'https://localhost:8000/history',
-          type: 'GET'
-      });
-    }
+
+$( function() {
+  $( "#id_date__lt" ).datepicker();
+  $( "#id_date__gt" ).datepicker();
+} );

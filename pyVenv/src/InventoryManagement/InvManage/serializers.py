@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Product, Consumer, Vendor, ProductPurchaseEntry, PurchaseOrder, ProductSalesEntry, SalesOrder, Company, PurchaseInvoice, SalesInvoice, ShippingAddress
+from .models import *
 
 class ProductSerializer(serializers.ModelSerializer):
     prod_id = serializers.IntegerField(source='pk')
@@ -148,7 +148,40 @@ class SalesInvoiceSerializer(serializers.ModelSerializer):
     company = CompanySerializer()
     so = SalesOrderSerializer()
     shippingaddress = ShippingAddressSerializer()
-
     class Meta:
         model = SalesInvoice
         fields = ('company','so','shippingaddress')
+        
+        
+class EventTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventType
+        fields = ('created','updated','deleted')
+        
+        
+class ObjectModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObjectModel
+        fields = ('company', 'vendor','po', 'product', 'consumer', 'so')
+    
+    
+class HistoryFilterStateSerializer(serializers.ModelSerializer):
+    events = EventTypeSerializer(source='eventtype_set', many=True)
+    objModels = ObjectModelSerializer(source='objectmodel_set', many=True)
+    class Meta:
+        model = HistoryFilterState
+        fields = ('name', 'numEntries','eventTypes', 'objModels') # using related names from nested objects
+        # fields = ('name', 'numEntries','eventtype_set', 'objectmodel_set') # if related names are not defined
+        
+    def update(self, instance,validated_data):
+        # print(instance)
+        print(instance.__dict__)
+        # instance.product = prod
+        # # print(validated_data)
+        # # instance.product = validated_data.get('product', validated_data['product'])
+        # instance.quantity = validated_data.get('quantity', instance.quantity)
+        # instance.price = validated_data.get('price', instance.price)
+        # instance.discount = validated_data.get('discount', instance.discount)
+        # instance.order = validated_data.get('order',instance.order)
+        # instance.save()
+        return instance

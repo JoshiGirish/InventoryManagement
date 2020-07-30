@@ -67,7 +67,7 @@
                   {% endif %}
                 {% endfor %}
               {% endfor %}
-                <td><a onclick="updateData(this);toggleCorousel();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_company' dict.id %}" data-object_name="{{ dict.name }}" data-object_id="{{ dict.id }}">Delete</a></td>
             </tr>
             {% endfor %}
