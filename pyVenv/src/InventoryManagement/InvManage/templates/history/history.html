@@ -35,7 +35,6 @@
             </div>  
           </div>
           {% include "history/history_settings.html" %}
-          <input type="submit" value="Submit">
         </form>
         </div>
         </div>
@@ -106,6 +105,7 @@
           var filterName = $('#historyFilter input').attr('name'); // id_objname
           var filterVal = $('#historyFilter input').val(); 
           searchParams.append(filterName,filterVal);
+          
           // Get all values of the checkboxes
           $("#settingsForm :input[type=checkbox]").each(function(){
           var key = $(this).attr('name');

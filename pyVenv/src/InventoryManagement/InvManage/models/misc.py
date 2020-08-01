@@ -36,7 +36,4 @@ class EventCard(models.Model):
 
 
 class HistoryFilterState(models.Model):
-    name = models.CharField(max_length=30)
-    numEntries = models.IntegerField(default=10)
-    events = models.ManyToManyField(EventType)
-    mods = models.ManyToManyField(ObjectModel)  
+    params = models.TextField(null=True) # Field to store serialized the state parameters

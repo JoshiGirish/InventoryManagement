@@ -4,7 +4,6 @@ from django_filters import CharFilter
 from django import forms
 
 class ProductFilter(django_filters.FilterSet):
-    # desc = CharFilter(field_name='description', lookup_expr='icontains')
     context = {'class':'form-control form-control-sm','onchange':'fetchData()'}
     name = django_filters.CharFilter(field_name='name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     category = django_filters.CharFilter(field_name='category',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
@@ -74,7 +73,6 @@ class CompanyFilter(django_filters.FilterSet):
 
 class EventCardFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onkeyup':'fetchEvents()'}
-    choice_context = {'type':"checkbox", 'checked':""}
     MODEL_CHOICES = (
         ('Company', 'Company'),
         ('Vendor', 'Vendor'),
@@ -89,22 +87,17 @@ class EventCardFilter(django_filters.FilterSet):
         ('Updated', 'Updated'),
         ('Deleted', 'Deleted')
     )
-    # obj = django_filters.CharFilter(field_name='name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    # objId = django_filters.CharFilter(field_name='owner',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     objname = django_filters.CharFilter(field_name='objname',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    # objmodel = django_filters.ModelMultipleChoiceFilter(queryset=ObjectModel.objects.all()) 
-    objmodel = django_filters.MultipleChoiceFilter(choices = MODEL_CHOICES,
-                                                        widget=forms.CheckboxSelectMultiple(attrs=choice_context))
+    objmodel = django_filters.MultipleChoiceFilter( choices = MODEL_CHOICES,
+                                                    widget=forms.CheckboxSelectMultiple())
     date__gt = django_filters.DateFilter(field_name='date',
                                           lookup_expr= 'date__gt',
                                           widget=forms.TextInput())
     date__lt = django_filters.DateFilter(field_name='date',
                                           lookup_expr= 'date__lt',
                                           widget=forms.TextInput())
-    # operation = django_filters.ModelMultipleChoiceFilter(queryset=ObjectModel.objects.all())
     operation = django_filters.MultipleChoiceFilter(choices=OPERATION_CHOICES,
-                                                        widget=forms.CheckboxSelectMultiple(attrs=choice_context))
+                                                    widget=forms.CheckboxSelectMultiple())
     class Meta:
         model = EventCard
-        # fields = ['date__gt','date__lt','objname']
         fields = {}
