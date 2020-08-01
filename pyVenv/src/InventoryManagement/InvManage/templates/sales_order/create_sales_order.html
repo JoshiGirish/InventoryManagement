@@ -18,23 +18,25 @@
         </div>
 
  
-<div class="row">
-    <div class="col-sm-6 d-flex flex-fill flex-column">
-      <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>Selelct a consumer</label>
+  <div class="row">
+      <div class="col-sm-6 d-flex flex-fill flex-column">
+        <div class="form-group form-row m-1">
+          <div class="col-sm-4">
+              <label>Selelct a consumer</label>
+          </div>
+          <div class="col-sm-8">
+              {{ sales_form.consumer }}
+          </div>
         </div>
-        <div class="col-sm-8">
-            {{ sales_form.consumer }}
-        </div>
+          {% include "consumer/consumer_info.html" %}
       </div>
-        {% include "consumer/consumer_info.html" %}
-    </div>
-    <div class="col-sm-6 d-flex flex-fill flex-column">
-      {% include "sales_order/so_pricing_info.html" %}
-    </div>
-</div>
-{% include "sales_order/so_products.html" %}
+      <div class="col-sm-6 d-flex flex-fill flex-column">
+        {% include "sales_order/so_pricing_info.html" %}
+      </div>
+  </div>
+  <div style="height: 400px; overflow: auto;">
+    {% include "sales_order/so_products.html" %}
+  </div>
 </form>
 <script>
   // Function for fetching product to be updated using AJAX

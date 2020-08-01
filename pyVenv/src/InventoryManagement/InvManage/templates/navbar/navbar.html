@@ -1,33 +1,41 @@
 <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
-  <nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand app-name" href="#">Invent</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<!-- <nav class="navbar navbar-expand-lg"> -->
+<nav class="navbar navbar-expand navbar-dark bg-primary" style="height: 2.5em;">
+  <div class="container col-sm-12">
+    <div class="d-flex align-items-center justify-content-start row">
+      <div class="col-sm-4 ml-2"><span class="ml-2"><i class="fa fa-warehouse" aria-hidden="true" style="scale: 150%;"></i></span></div>
+      <div class="ml-2"><a class="navbar-brand app-name" href="#">Invent</a></div>
+    </div>
+    <div class="">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'company' %}">Company</a>
-      </li>
-      {% include "navbar/purchase.html" %}
-      {% include "navbar/storage.html" %}
-      {% include "navbar/sales.html" %}
-      <li class="nav-item">
-        <a class="nav-link" href="#">Reports</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Stats</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search Product" aria-label="Search">
-      <button class="btn btn-light my-2 my-sm-0 m-1" type="submit"><i class="fas fa-search"></i> Search</button>
-    </form>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'company' %}">Company</a>
+          </li>
+          {% include "navbar/purchase.html" %}
+          {% include "navbar/storage.html" %}
+          {% include "navbar/sales.html" %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Stats</a>
+          </li>
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search Product" aria-label="Search">
+          <button class="btn btn-light my-2 my-sm-0 m-1" type="submit"><i class="fas fa-search"></i> Search</button>
+        </form> -->
+      </div>
+    </div>
   </div>
   <style>
     .navbar{

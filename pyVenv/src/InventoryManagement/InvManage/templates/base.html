@@ -30,7 +30,7 @@
 			}
 			.app-name{
 				font-family: 'Orbitron', sans-serif;
-				font-size: 1.5em;
+				font-size: 1.2em;
 			}
 			
 			div.card{
@@ -56,6 +56,8 @@
 				border-bottom: 1px solid #e0e0e0;
 				margin-bottom: 1.5em;
 				margin-top: 1em;
+				padding-left: 2em;
+				font-size: 0.9em;
 			}
 
 			.bg-c-blue {
@@ -74,6 +76,7 @@
 				font-family: var(--base-font);
 				font-size: 1em;
 				background-color: #f8f8f8;
+				margin: 0em;
 			}
 
 			/* .bg-c-pink { */
@@ -226,9 +229,9 @@
 		{% include "navbar/navbar.html" %}
 	</div>
 
-	<div class="container col-sm-12 d-flex flex-row">
+	<div class="col-sm-12 d-flex flex-row">
 
-		<div class="col-sm-3 sidebar" style="height: 200px;">
+		<div class="col-sm-3 sidebar" style="height: 800px;">
 			{% include "crud/sidebar.html" %}
 			{% include "history/history.html" %}
 		</div>

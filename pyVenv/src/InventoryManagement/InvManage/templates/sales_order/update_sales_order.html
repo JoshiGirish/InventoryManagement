@@ -32,7 +32,9 @@
               {% include "sales_order/so_pricing_info.html" %}
             </div>
         </div>
-        {% include "sales_order/so_products.html" %}
+        <div style="height: 400px; overflow: auto;">
+          {% include "sales_order/so_products.html" %}
+        </div>
       </form>
       <script>
         $('#id_so-consumer').val({{ sales_form.consumer_id }})
