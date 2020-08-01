@@ -210,3 +210,9 @@ class ShippingAddressForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs=context))
     location = forms.CharField(widget=forms.TextInput(attrs=context))
     
+class HistoryForm(forms.Form):
+    prefix = 'history'
+    context={
+        "class": "form-control",
+    }
+    qlen = forms.IntegerField(widget=forms.TextInput(attrs=context))

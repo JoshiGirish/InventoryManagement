@@ -14,9 +14,9 @@
               <input type="text" name="objname" class="form-control form-control-sm" onkeyup="fetchEvents(this)" id="id_objname" placeholder="Filter" data-url="{% url 'history' %}">
             </div>
             <div class="d-flex col-2 align-items-center justify-content-end" style="opacity: 0.5; padding:0em">
-              <button type="submit" class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)">
+              <a class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)">
                 <span style="color: gray;"><i class="fa fa-filter" aria-hidden="true"></i></span>
-              </button>
+              </a>
             </div>     
           </div>
           {% include "history/eventlist.html" %}
@@ -26,9 +26,9 @@
             {% csrf_token %}
           <div class="d-flex flex-row p-2 align-items-center db-title">
             <div class="d-flex align-items-center justify-content-start" style="opacity: 0.5;">
-              <button type="button" class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)"></
+              <a class="" href="#historyCarousel" data-url= "{% url 'history' %}" data-slide="next" onclick="fetchEvents(this);toggleCorouselCookie(cookie)"></
                 <span><i class="fa fa-filter" aria-hidden="true"></i></span>
-              </button>
+              </a>
             </div>
             <div class="d-flex align-items-center mx-auto">
               <span class="align-items-center">Filter Settings</span>
@@ -134,7 +134,7 @@
             dataType:'html',
             success: function(data){
               $('#historydata').html($('#eventlist',data).html());
-              // $('#settingsdata').html($('#settings',data).html());
+              $('#settingsdata').html($('#settings',data).html());
               $( "#id_date__lt" )
                       .datepicker()
                       .addClass('form-control','form-control-sm')

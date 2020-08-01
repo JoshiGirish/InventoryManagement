@@ -1,5 +1,14 @@
 <div id="settingsdata">
     <div id="settings">
+        <div class="d-flex row col-sm-12 justify-content-start align-items-center mt-2">
+            <div class="col-sm-6">
+                <span>Number of entries</span>
+            </div>
+            <div class="col-sm-6">
+                <!-- <input type="text" name="qlen" class="form-control" placeholder="10" value=10 onkeydown="return event.key != 'Enter';"> -->
+                {{ qlenForm.qlen }}
+            </div>
+        </div>
         <div>
             <div class="header-menu border-bottom mb-2">
                 <span>Duration</span>
@@ -23,10 +32,6 @@
                         {{op}}
                     </div>    
                 {% endfor %}
-                
-                <div>
-
-                </div>
             </div>
             <div class="col-sm-6">
                 <div class="header-menu border-bottom mb-2">
