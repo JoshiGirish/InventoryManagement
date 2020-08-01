@@ -34,7 +34,9 @@
       {% include "purchase_order/po_pricing_info.html" %}
     </div>
 </div>
-{% include "purchase_order/po_products.html" %}
+<div style="height: 400px; overflow: auto;">
+  {% include "purchase_order/po_products.html" %}
+</div>
 </form>
 <script>
   // Function for fetching product to be updated using AJAX
