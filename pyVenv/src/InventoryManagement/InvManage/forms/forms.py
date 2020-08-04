@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Vendor, PurchaseOrder, Consumer
+from InvManage.models import Product, Vendor, PurchaseOrder, Consumer
 from django.utils import timezone
 
 class ProductBasicInfoForm(forms.Form):
@@ -105,24 +105,6 @@ class SalesOrderBasicInfo(forms.Form):
     ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
 
     
-class VendorForm(forms.Form):
-    prefix = "vend"
-    context={
-        "class": "form-control",
-    }
-    name = forms.CharField(widget=forms.TextInput(attrs=context))
-    identifier = forms.CharField(widget=forms.TextInput(attrs=context))
-    phone = forms.CharField(widget=forms.TextInput(attrs=context))
-    address = forms.CharField(widget=forms.Textarea(
-        attrs={
-            "class": "form-control",
-            "rows": 3
-        }
-    ))
-    email = forms.CharField(widget=forms.TextInput(attrs=context))
-    location = forms.CharField(widget=forms.TextInput(attrs=context))
-
-
 class ConsumerForm(forms.Form):
     prefix = "consumer"
     context={
@@ -194,21 +176,7 @@ class CompanyForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs=context))
     location = forms.CharField(widget=forms.TextInput(attrs=context))
 
-class ShippingAddressForm(forms.Form):
-    prefix = "ship"
-    context={
-        "class": "form-control",
-    }
-    name = forms.CharField(widget=forms.TextInput(attrs=context))
-    phone = forms.CharField(widget=forms.TextInput(attrs=context))
-    address = forms.CharField(widget=forms.Textarea(
-        attrs={
-            "class": "form-control",
-            "rows": 3
-        }
-    ))
-    email = forms.CharField(widget=forms.TextInput(attrs=context))
-    location = forms.CharField(widget=forms.TextInput(attrs=context))
+
     
 class HistoryForm(forms.Form):
     prefix = 'history'

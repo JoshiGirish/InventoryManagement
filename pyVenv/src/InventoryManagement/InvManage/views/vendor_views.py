@@ -17,9 +17,13 @@ def create_vendor_view(request):
         for i, vend in enumerate(Vendor.objects.all()):
             vendors.append(
                 {'id': vend.id, 'name': vend.name, 'code': vend.identifier})
-        # Send a blank vendor form to the view
-        vendor_form = VendorForm()
-        return render(request, 'vendor.html', {'vendor_form': vendor_form, 'vendors': vendors, 'requested_view_type': 'create'})
+        return render(request, 'vendor.html', { 'vendor_form':      VendorForm(),
+                                                'address_form':     ShippingAddressForm(),
+                                                'com_form':         CommunicationForm(),
+                                                'purchasing_form':  PurchaseDataForm(),
+                                                'account_form':     BankAccountForm(),
+                                                'vendors':          vendors,
+                                                'requested_view_type': 'create'})
     if request.method == 'POST':
         data = {}
         form = VendorForm(request.POST, prefix='vend')
