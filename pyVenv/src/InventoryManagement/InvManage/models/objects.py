@@ -1,15 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from .reuse import ShippingAddress, Communication, BankAccount, PurchaseData
+
 
 class Dashboard(models.Model):
     pass
-
-class ShippingAddress(models.Model):
-    name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
-    email = models.CharField(null=True, blank=True,max_length=100)
-    location = models.CharField(null=True, blank=True,max_length=100)
 
 
 class Company(models.Model):
@@ -29,10 +24,10 @@ class Company(models.Model):
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
-    phone = models.CharField(max_length=100, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
-    email = models.CharField(null=True, blank=True,max_length=100)
-    location = models.CharField(null=True, blank=True,max_length=100)
+    address = models.OneToOneField(ShippingAddress, on_delete=models.PROTECT, null=True)
+    communication = models.OneToOneField(Communication, on_delete=models.PROTECT, null=True)
+    bankaccount = models.OneToOneField(BankAccount, on_delete=models.PROTECT, null=True)
+    purchasedata = models.OneToOneField(PurchaseData, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.name

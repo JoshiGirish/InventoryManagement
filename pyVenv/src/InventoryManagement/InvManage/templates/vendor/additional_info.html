@@ -1,0 +1,55 @@
+<div class="card d-flex flex-grow-1">
+    <div class="card-body">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link" id="nav-purchasing-tab" data-toggle="tab" href="#nav-purchasing" role="tab" aria-controls="nav-purchasing" aria-selected="true">Purchasing</a>
+                <a class="nav-item nav-link" id="nav-com-tab" data-toggle="tab" href="#nav-com" role="tab" aria-controls="nav-com" aria-selected="false">Communication</a>
+                <a class="nav-item nav-link active" id="nav-bank-tab" data-toggle="tab" href="#nav-bank" role="tab" aria-controls="nav-bank" aria-selected="false">Bank Account</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade" id="nav-purchasing" role="tabpanel" aria-labelledby="nav-purchasing-tab">
+                <div class="card-body">
+                    {% for field in purchasing_form %}
+                        <div class="form-group form-row m-1">
+                            <div class="col-sm-4">
+                                <label>{{ field.label }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-com" role="tabpanel" aria-labelledby="nav-com-tab">
+                <div class="card-body">
+                    {% for field in com_form %}
+                        <div class="form-group form-row m-1">
+                            <div class="col-sm-4">
+                                <label>{{ field.label }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="nav-bank" role="tabpanel" aria-labelledby="nav-bank-tab">
+                <div class="card-body">
+                    {% for field in account_form %}
+                        <div class="form-group form-row m-1">
+                            <div class="col-sm-4">
+                                <label>{{ field.label }}</label>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

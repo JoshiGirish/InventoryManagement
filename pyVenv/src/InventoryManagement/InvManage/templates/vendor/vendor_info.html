@@ -19,42 +19,27 @@
             {{ vendor_form.identifier }}
         </div>
     </div>
-    <!-- Vendor phone field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ vendor_form.phone.label }}</label>
+
+    <!-- Address Information Form -->
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <label class="card-text">Address</label>
         </div>
-        <div class="col-sm-8">
-            {{ vendor_form.phone }}
+        <div class="card-body">
+        {% for field in address_form %}
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ field.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ field }}
+                </div>
+            </div>
+        {% endfor %}
         </div>
-        </div>
-    <!-- Vendor address field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ vendor_form.address.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ vendor_form.address }}
-        </div>
-        </div>
-    <!-- Vendor email field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ vendor_form.email.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ vendor_form.email }}
-        </div>
-        </div>
-    <!-- Vendor location field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ vendor_form.location.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ vendor_form.location }}
-        </div>
-        </div>
+    </div>
+
+   
     </div>
 </div>
 <script>

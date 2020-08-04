@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'InvManage',
     'rest_framework',
     'django_filters',
-    'django_extensions'
+    'django_extensions',
+    'django_countries'
 ]
 
 MIDDLEWARE = [
