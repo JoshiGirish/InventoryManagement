@@ -19,9 +19,9 @@ class VendorFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onchange':'fetchData()'}
     name = django_filters.CharFilter(field_name='name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     identifier = django_filters.CharFilter(field_name='identifier',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    phone = django_filters.CharFilter(field_name='phone',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    email = django_filters.CharFilter(field_name='email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    location = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    phone = django_filters.CharFilter(field_name='address__phone',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    email = django_filters.CharFilter(field_name='communication__email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    location = django_filters.CharFilter(field_name='address__city',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     class Meta:
         model = Vendor
         fields = {}
