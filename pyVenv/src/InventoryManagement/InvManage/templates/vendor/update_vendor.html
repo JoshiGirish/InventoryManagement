@@ -14,8 +14,9 @@
                     <input type="text" hidden name="pk" value="{{ pk }}">
                 </div>
             </div>
-            <div class="d-flex flex-row justify-content-between">
-                    {% include "vendor/vendor_info.html" %}
+            <div class="d-flex flex-row">
+                {% include "vendor/vendor_info.html" %} 
+                {% include "vendor/additional_info.html" %} 
             </div>
         </form>
         

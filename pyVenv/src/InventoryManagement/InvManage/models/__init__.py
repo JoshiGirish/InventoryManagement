@@ -1,7 +1,7 @@
 from .objects import Product, ProductPurchaseEntry, ProductSalesEntry, SalesOrder, PurchaseOrder, Consumer, Vendor, Company, PurchaseInvoice, SalesInvoice
 from .states import FilterColumn, FilterState
 from .misc import Object, EventCard, EventType, ObjectModel, HistoryFilterState
-from .reuse import ShippingAddress, Communication, BankAccount
+from .reuse import ShippingAddress, Communication, PurchaseData, BankAccount
 __all__ = ['Product', 
            'ProductPurchaseEntry', 
            'ProductSalesEntry', 
@@ -10,7 +10,6 @@ __all__ = ['Product',
            'Consumer', 
            'Vendor',
            'Company',
-           'ShippingAddress',
            'PurchaseInvoice', 
            'SalesInvoice',
            'FilterState',
@@ -20,5 +19,7 @@ __all__ = ['Product',
            'EventType',
            'ObjectModel',
            'HistoryFilterState',
+           'ShippingAddress',
+           'PurchaseData',
            'Communication',
            'BankAccount']
