@@ -90,7 +90,7 @@ def change_column_position(request,state):
     column_list = get_columns(state) # get initial list of columns
     try:
         if request.GET.get('direction') != None and request.GET.get('column') != None:
-            column_list, old_index, new_index = modify_column_list(request,column_list)
+            column_list, old_index, new_index =  modify_column_list(request,column_list)
             save_column_change_to_database(state, column_list, old_index, new_index)
     except ValueError:
         pass

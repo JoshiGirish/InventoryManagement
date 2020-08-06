@@ -24,10 +24,10 @@
                             </span>
                           </div>
                           <div style="display:flex;padding:0em; flex-flow: column;">
-                            <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ column }}">
+                            <span style="cursor: pointer;" onClick="sort(this)" data-ordering="{{ column }}">
                               <i class="fas fa-caret-up"></i>
                             </span>
-                            <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ column }}">
+                            <span style="cursor: pointer;" onClick="sort(this)" data-ordering="-{{ column }}">
                               <i class="fas fa-caret-down"></i>
                             </span>
                           </div>
@@ -137,11 +137,11 @@
         })
      // Function for sorting products (ascending or descending)
      function sort(tag){
-      var column = $(tag).data('column');
-      var sort = $(tag).data('sort');
+      var ordering = $(tag).data('ordering');
+      // var sort = $(tag).data('sort');
       var searchParams = new URLSearchParams(window.location.search)
-      searchParams.append("column",column);
-      searchParams.append("sort", sort);
+      searchParams.append("ordering",ordering);
+      // searchParams.append("sort", sort);
       var data = getFilterData();
       for(var key in data){
         searchParams.append(key,data[key]);
