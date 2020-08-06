@@ -22,9 +22,20 @@ class VendorFilter(django_filters.FilterSet):
     phone = django_filters.CharFilter(field_name='address__phone',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     email = django_filters.CharFilter(field_name='communication__email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     location = django_filters.CharFilter(field_name='address__city',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('name','name'),
+            ('identifier','identifier'),
+            ('address__phone', 'phone'),
+            ('communication__email', 'email'),
+            ('address__city', 'location')
+        )
+    )
     class Meta:
         model = Vendor
-        fields = {}
+        fields = {'name','identifier', 'phone', 'email', 'location'}
+        
         
 class ConsumerFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onchange':'fetchData()'}

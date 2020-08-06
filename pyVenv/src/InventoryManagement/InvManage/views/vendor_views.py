@@ -73,16 +73,14 @@ def get_vendor(request):
 
 def display_vendors_view(request):
     if request.method == 'GET':
-        vendors = sort_ascending_descending(request, Vendor)
+        vendors = Vendor.objects.all()
         state = FilterState.objects.get(name='Vendors_basic')
         column_list = change_column_position(request, state)
         myFilter = VendorFilter(request.GET, queryset=vendors)
         queryset = myFilter.qs
         number_of_objects = len(queryset)
         page_number = request.GET.get('page')
-        print(number_of_objects)
         page_obj, data = paginate(queryset, myFilter, page_number)
-        print(data)
         dictionaries = []
         for obj in page_obj:
             objdata = { 'id': obj.pk,
