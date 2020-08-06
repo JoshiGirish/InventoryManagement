@@ -111,7 +111,7 @@ def create_sales_order_view(request):
 
 def display_sales_orders_view(request):
     if request.method == 'GET':
-        sos = sort_ascending_descending(request, SalesOrder)
+        sos = SalesOrder.objects.all()
         state = FilterState.objects.get(name='SOs_basic')
         column_list = change_column_position(request, state)
         myFilter = SalesOrderFilter(request.GET, queryset=sos)
@@ -128,7 +128,8 @@ def display_sales_orders_view(request):
                                                                                'myFilter': myFilter,
                                                                                'n_prod': number_of_objects,
                                                                                'columns': column_list,
-                                                                               'dicts': dictionaries})
+                                                                               'dicts': dictionaries,
+                                                                               'url': request.build_absolute_uri('/sales_orders/')})
 
 
 def delete_sales_order_view(request, pk):

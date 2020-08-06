@@ -1,0 +1,28 @@
+<th scope="col">
+    <div class="flex row">
+      <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ column|title }}</div>
+      <div class="col-sm-3 head-cell-content filter-icons">
+        <div class="flex row end-xs">
+          <div style="display:flex;justify-content:flex-start;align-items:center;">
+            <span style="cursor: pointer;" onClick="moveColumn(this)" data-url="{{ url }}" data-move="left" data-column="{{ column }}">
+              <i class="fas fa-caret-left"></i>
+            </span>
+          </div>
+          <div style="display:flex;padding:0em; flex-flow: column;">
+            <span style="cursor: pointer;" onClick="sort(this)" data-url="{{ url }}" data-ordering="{{ column }}">
+              <i class="fas fa-caret-up"></i>
+            </span>
+            <span style="cursor: pointer;" onClick="sort(this)" data-url="{{ url }}" data-ordering="-{{ column }}">
+              <i class="fas fa-caret-down"></i>
+            </span>
+          </div>
+          <div style="display:flex;justify-content:flex-start;align-items:center;">
+            <span style="cursor: pointer;" onClick="moveColumn(this)" data-url="{{ url }}" data-move="right" data-column="{{ column }}">
+              <i class="fas fa-caret-right"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+  </th>
+
+  

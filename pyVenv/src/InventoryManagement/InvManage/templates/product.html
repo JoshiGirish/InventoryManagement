@@ -61,7 +61,7 @@
 
         function getObjects(){
           var searchParams = new URLSearchParams(window.location.search)
-          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
+          $('#tableData').load("{% url 'products' %} #objTable", searchParams.toString());
         }
 
         $(document).keyup(function(e){

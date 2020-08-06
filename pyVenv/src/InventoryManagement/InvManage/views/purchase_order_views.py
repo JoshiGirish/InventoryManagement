@@ -109,7 +109,7 @@ def create_purchase_order_view(request):
 
 def display_purchase_orders_view(request):
     if request.method == 'GET':
-        pos = sort_ascending_descending(request, PurchaseOrder)
+        pos = PurchaseOrder.objects.all()
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
         myFilter = PurchaseOrderFilter(request.GET, queryset=pos)
@@ -126,7 +126,8 @@ def display_purchase_orders_view(request):
                                                                                'myFilter': myFilter,
                                                                                'n_prod': number_of_objects,
                                                                                'columns': column_list,
-                                                                               'dicts': dictionaries})
+                                                                               'dicts': dictionaries,
+                                                                               'url': request.build_absolute_uri('/purchase_orders/')})
 
 
 def delete_purchase_order_view(request, pk):

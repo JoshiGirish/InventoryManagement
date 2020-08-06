@@ -53,7 +53,7 @@ def delete_product_view(request,pk):
 
 def display_products_view(request):
 	if request.method == 'GET':
-		products = sort_ascending_descending(request,Product)
+		products = Product.objects.all()
 		state = FilterState.objects.get(name='Products_basic')
 		column_list = change_column_position(request, state)
 		myFilter = ProductFilter(request.GET, queryset=products)
@@ -65,7 +65,8 @@ def display_products_view(request):
 														'myFilter':myFilter,
 														'n_prod': number_of_products,
 														'columns': column_list,
-														'dicts': dictionaries})
+														'dicts': dictionaries,
+														'url': request.build_absolute_uri('/products/')})
 
 def update_product_view(request):
 	if request.method == 'GET':

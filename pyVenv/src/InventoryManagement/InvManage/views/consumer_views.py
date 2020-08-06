@@ -44,7 +44,7 @@ def get_consumer(request):
 
 def display_consumers_view(request):
     if request.method == 'GET':
-        consumers = sort_ascending_descending(request, Consumer)
+        consumers = Consumer.objects.all()
         state = FilterState.objects.get(name='Consumers_basic')
         column_list = change_column_position(request, state)
         myFilter = ConsumerFilter(request.GET, queryset=consumers)
@@ -57,7 +57,8 @@ def display_consumers_view(request):
                                                                'myFilter': myFilter,
                                                                'n_prod': number_of_objects,
                                                                'columns': column_list,
-                                                               'dicts': dictionaries})
+                                                               'dicts': dictionaries,
+                                                               'url': request.build_absolute_uri('/consumers/')})
 
 def update_consumer_view(request):
     if request.method == 'GET':
