@@ -11,6 +11,17 @@ class ProductFilter(django_filters.FilterSet):
     price = django_filters.CharFilter(field_name='price',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     identifier = django_filters.CharFilter(field_name='identifier',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     location = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('name','name'),
+            ('category','category'),
+            ('quantity', 'quantity'),
+            ('price','price'),
+            ('identifier','identifier'),
+            ('location', 'location')
+        )
+    )
     class Meta:
         model = Product
         fields = {}
@@ -44,6 +55,16 @@ class ConsumerFilter(django_filters.FilterSet):
     phone = django_filters.CharFilter(field_name='phone',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     email = django_filters.CharFilter(field_name='email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     location = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('name','name'),
+            ('identifier', 'identifier'),
+            ('phone','phone'),
+            ('email', 'email'),
+            ('location','location')
+        )
+    )
     class Meta:
         model = Consumer
         fields = {}
@@ -54,6 +75,15 @@ class PurchaseOrderFilter(django_filters.FilterSet):
     date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     po = django_filters.CharFilter(field_name='po',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     ordertotal = django_filters.CharFilter(field_name='ordertotal',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('vendor__name','vendor'),
+            ('date','date'),
+            ('po', 'po'),
+            ('ordertotal', 'ordertotal'),
+        )
+    )
     class Meta:
         model = PurchaseOrder
         fields = {}
@@ -65,6 +95,15 @@ class SalesOrderFilter(django_filters.FilterSet):
     date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     so = django_filters.CharFilter(field_name='so',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     ordertotal = django_filters.CharFilter(field_name='ordertotal',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('consumer__name','consumer'),
+            ('date','date'),
+            ('so', 'so'),
+            ('ordertotal', 'ordertotal'),
+        )
+    )
     class Meta:
         model = SalesOrder
         fields = {}
@@ -77,6 +116,16 @@ class CompanyFilter(django_filters.FilterSet):
     phone = django_filters.CharFilter(field_name='phone',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     email = django_filters.CharFilter(field_name='email',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     location = django_filters.CharFilter(field_name='location',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    order_by_field = 'ordering'
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('name','name'),
+            ('owner','owner'),
+            ('phone', 'phone'),
+            ('email', 'email'),
+            ('location', 'location')
+        )
+    )
     class Meta:
         model = Company
         fields = {}

@@ -1,6 +1,6 @@
 
 {% load template_helpers %}
-
+{% load static %}
 <div class="d-flex flex-grow-1 flex-column">
   <div class="d-flex align-items-center view-title">
     <div class="col-sm-6 d-flex row justify-content-start flex-grow-1">
@@ -11,37 +11,12 @@
 
 
   <div id="tableData">
-    <div id="productsTable">
+    <div id="objTable">
     <table class="table table-sm table-striped">
         <thead class="thead-light">
         <tr>
           {% for column in columns %}
-            <th scope="col">
-              <div class="flex row">
-                <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ column|title }}</div>
-                <div class="col-sm-3 head-cell-content filter-icons">
-                  <div class="flex row end-xs">
-                    <div style="display:flex;justify-content:flex-start;align-items:center;">
-                      <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="left" data-column="{{ column }}">
-                        <i class="fas fa-caret-left"></i>
-                      </span>
-                    </div>
-                    <div style="display:flex;padding:0em; flex-flow: column;">
-                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="ascend" data-column="{{ column }}">
-                        <i class="fas fa-caret-up"></i>
-                      </span>
-                      <span style="cursor: pointer;" onClick="sort(this)" data-sort="descend" data-column="{{ column }}">
-                        <i class="fas fa-caret-down"></i>
-                      </span>
-                    </div>
-                    <div style="display:flex;justify-content:flex-start;align-items:center;">
-                      <span style="cursor: pointer;" onClick="moveColumn(this)" data-move="right" data-column="{{ column }}">
-                        <i class="fas fa-caret-right"></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-            </th>
+            {% include "shared/table_column_sort_control.html" %}
           {% endfor %}
             <th scope="col">Update</th>
             <th scope="col">Remove</th>
@@ -49,7 +24,7 @@
         </thead>
 
         <tbody id="tableBody">
-            <tr id="productsFilterForm">
+            <tr id="objectFilterForm">
               {% for column in columns %}
                 {% for field in myFilter.form %}
                   {% if field.name == column %}
@@ -123,8 +98,8 @@
             </div>
       </div>
     </div>
-
-     <script>
+    <script src="{% static 'table_manipulation.js' %}"></script>
+    <script>
 
           // Create the cookie object for corousel
           cookie = {
@@ -149,57 +124,6 @@
             modal.find('#prod_name').text(product_name);
             modal.find('#delForm').attr('action',delete_url);
         })
-
-        // Function for sorting products (ascending or descending)
-        function sort(tag){
-          var column = $(tag).data('column');
-          var sort = $(tag).data('sort');
-          var searchParams = new URLSearchParams(window.location.search)
-          searchParams.append("column",column);
-          searchParams.append("sort", sort);
-          var data = getFilterData();
-            for(var key in data){
-              searchParams.append(key,data[key]);
-            }
-          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
-        }
-
-        // Function for sorting products (ascending or descending)
-        function moveColumn(tag){
-          var column = $(tag).data('column');
-          console.log(column)
-          var direction = $(tag).data('move');
-          console.log(direction)
-          var searchParams = new URLSearchParams(window.location.search)
-          searchParams.append("column",column);
-          searchParams.append("direction", direction);
-          var data = getFilterData();
-            for(var key in data){
-              searchParams.append(key,data[key]);
-            }
-          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
-        }
-        $('#productsFilterForm').find('input').addClass('form-control')
-
-        // Get filter data
-        function getFilterData(){
-          var data = {}
-          $('#productsFilterForm input').each(function(index, value) {
-            var key = $(value).attr('name');
-            var val = $(value).val();
-            data[key] = val
-          });
-          return data      
-        }
-
-        function fetchData(){
-          var searchParams = new URLSearchParams(window.location.search)
-            var data = getFilterData();
-            for(var key in data){
-              searchParams.append(key,data[key]);
-            }
-          $('#tableData').load("{% url 'products' %} #productsTable", searchParams.toString());
-        }
 
         // Function for fetching product to be updated using AJAX
         function updateData(tag){

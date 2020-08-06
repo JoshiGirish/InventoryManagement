@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from InvManage.filters import CompanyFilter
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event
+from django.urls import reverse
 
 
 def create_company_view(request):
@@ -92,7 +93,9 @@ def display_companies_view(request):
                                                                'myFilter': myFilter,
                                                                'n_prod': number_of_objects,
                                                                'columns': column_list,
-                                                               'dicts': dictionaries})
+                                                               'dicts': dictionaries,
+                                                               'url': request.build_absolute_uri('/companies/')})
+                                                            #    'url': request.get_host() + '/companies'})
 
 		
 	

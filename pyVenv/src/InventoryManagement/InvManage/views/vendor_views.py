@@ -95,7 +95,8 @@ def display_vendors_view(request):
                                                                'myFilter': myFilter,
                                                                'n_prod': number_of_objects,
                                                                'columns': column_list,
-                                                               'dicts': dictionaries})
+                                                               'dicts': dictionaries,
+                                                               'url': request.build_absolute_uri('/vendors/')})
 
 def update_vendor_view(request):
     if request.method == 'GET':
