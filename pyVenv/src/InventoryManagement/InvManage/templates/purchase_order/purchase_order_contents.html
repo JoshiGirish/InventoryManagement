@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="objectFilterForm">
+          <tr id="objectFilterForm" data-url="{{ url }}">
             {% for column in columns %}
               {% for field in myFilter.form %}
                 {% if field.name == column %}
@@ -118,19 +118,19 @@
             }
 
 
-     $('#id_po-vendor').val({{purchase_form.vendor_id}})
-        $('#delModal').on('show.bs.modal', function(event){
-            var button = $(event.relatedTarget);
-            console.log(button)
-            var obj_id = button.data('object_id');
-            var obj_name = button.data('object_name');
-            var delete_url = button.data('del_url');
-            var modal = $(this);
-            console.log(obj_name)
-            modal.find('.modal-body #object_id').val(obj_id);
-            modal.find('.modal-body #object_name').text(obj_name);
-            modal.find('#delForm').attr('action',delete_url);
-        })
+      $('#id_po-vendor').val({{purchase_form.vendor_id}})
+      $('#delModal').on('show.bs.modal', function(event){
+          var button = $(event.relatedTarget);
+          console.log(button)
+          var obj_id = button.data('object_id');
+          var obj_name = button.data('object_name');
+          var delete_url = button.data('del_url');
+          var modal = $(this);
+          console.log(obj_name)
+          modal.find('.modal-body #object_id').val(obj_id);
+          modal.find('.modal-body #object_name').text(obj_name);
+          modal.find('#delForm').attr('action',delete_url);
+      })
 
         // Function for fetching product to be updated using AJAX
         function updateData(tag){
