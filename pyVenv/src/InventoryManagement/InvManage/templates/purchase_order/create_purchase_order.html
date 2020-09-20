@@ -28,7 +28,24 @@
             {{ purchase_form.vendor }}
         </div>
       </div>
-        {% include "vendor/vendor_info.html" %}
+        <!-- Vendor name field -->
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>{{ vendor_form.name.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ vendor_form.name }}
+            </div>
+        </div>
+        <!-- Vendor identifier field -->
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>{{ vendor_form.identifier.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ vendor_form.identifier }}
+            </div>
+        </div>
     </div>
     <div class="col-sm-6 d-flex flex-fill flex-column">
       {% include "purchase_order/po_pricing_info.html" %}
@@ -50,6 +67,21 @@
       }
     });
   };
+  // Fetch vendor details when the user selects a vendor from the dropdown list
+  $('#id_po-vendor').change(function(){
+      var vendor_id = $('#id_po-vendor option:selected').val();
+      $.ajax({
+          url: "{% url 'get_vendor' %}",
+          data: {
+              'vendor_id': vendor_id
+          },
+          dataType:'json',
+          success: function(data){
+              $('#id_vend-name').val(data.name);
+              $('#id_vend-identifier').val(data.identifier);
+          }
+      });
+  });
 </script>
 </div>
 </div>

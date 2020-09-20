@@ -24,7 +24,7 @@
         </thead>
 
         <tbody id="tableBody">
-            <tr id="objectFilterForm">
+            <tr id="objectFilterForm" data-url="{{ url }}">
               {% for column in columns %}
                 {% for field in myFilter.form %}
                   {% if field.name == column %}

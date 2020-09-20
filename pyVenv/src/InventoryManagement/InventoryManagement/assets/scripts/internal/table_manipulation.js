@@ -42,7 +42,8 @@
 
         function fetchData(){
           var searchParams = new URLSearchParams(window.location.search)
-            var data = getFilterData();
+          var url = $('#objectFilterForm').data('url');
+          var data = getFilterData();
             for(var key in data){
               searchParams.append(key,data[key]);
             }

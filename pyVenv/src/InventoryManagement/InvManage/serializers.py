@@ -16,7 +16,9 @@ class ProductSerializer(serializers.ModelSerializer):
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        fields = ('name','identifier','phone','address','email','location')
+        fields = ('name','identifier','address')
+        phone = serializers.IntegerField(source='communication__phone')
+        email = serializers.IntegerField(source='communication__email')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)

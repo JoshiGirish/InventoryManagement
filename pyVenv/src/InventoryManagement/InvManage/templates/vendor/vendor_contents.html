@@ -21,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr id="objectFilterForm">
+            <tr id="objectFilterForm" data-url="{{ url }}">
               {% for column in columns %}
                 {% for field in myFilter.form %}
                   {% if field.name == column %}
@@ -48,6 +48,7 @@
               {% endfor %}
           </tbody>
         </table>
+        
         <!-- Pagination -->
         <div class="d-flex">
         <div class="pagination mr-auto">
@@ -100,6 +101,7 @@
       </div>
     </div>
   </div>
+  
   <script src="{% static 'table_manipulation.js' %}"></script>
   <script type="text/javascript">
     $('#delModal').on('show.bs.modal', function(event){
