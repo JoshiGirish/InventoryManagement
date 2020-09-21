@@ -173,10 +173,10 @@ function generatePDF(data){
       head: h,
       headStyles: { fontSize:12 },
       body: [
-        [data.po.vendor.name+'\n'+data.po.vendor.address],
-        [data.po.vendor.location],
-        [data.po.vendor.phone],
-        [data.po.vendor.email]
+        [data.po.vendor.name+'\n'+data.po.vendor.address.name+'\n'+data.po.vendor.address.address],
+        [data.po.vendor.address.city],
+        [data.communication.phone],
+        [data.communication.email]
       ]
     })
 
@@ -191,9 +191,9 @@ function generatePDF(data){
       headStyles: { fontSize:12 },
       body: [
         [data.shippingaddress.name+'\n'+data.shippingaddress.address],
-        [data.shippingaddress.location],
+        [data.shippingaddress.city + '[' + data.shippingaddress.state+ ']'],
         [data.shippingaddress.phone],
-        [data.shippingaddress.email]
+        [data.shippingaddress.country]
       ]
     })
 

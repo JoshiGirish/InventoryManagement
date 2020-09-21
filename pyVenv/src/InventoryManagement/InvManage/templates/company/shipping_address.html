@@ -1,47 +1,12 @@
 <div class="card-body">
-    <!-- Name field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ shipping_form.name.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ shipping_form.name }}
-        </div>
-    </div>
-    <!-- Address field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ shipping_form.address.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ shipping_form.address }}
-        </div>
-    </div>
-    <!-- Phone field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ shipping_form.phone.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ shipping_form.phone }}
-        </div>
-    </div>
-    <!-- Email field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ shipping_form.email.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ shipping_form.email }}
-        </div>
-    </div>
-    <!-- Lccation field -->
-    <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>{{ shipping_form.location.label }}</label>
-        </div>
-        <div class="col-sm-8">
-            {{ shipping_form.location }}
-        </div>
-    </div>                    
+    {% for field in shipping_form %}
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>{{ field.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ field }}
+            </div>
+        </div> 
+    {% endfor %}  
 </div>

@@ -2,6 +2,19 @@ from rest_framework import serializers
 
 from .models import *
 
+
+class ShippingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        fields = ('name','address','city','phone','state','country','post')
+
+
+class CommunicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Communication
+        fields = ('email','phone')
+
+
 class ProductSerializer(serializers.ModelSerializer):
     prod_id = serializers.IntegerField(source='pk')
     class Meta:
@@ -14,6 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class VendorSerializer(serializers.ModelSerializer):
+    address = ShippingAddressSerializer()
     class Meta:
         model = Vendor
         fields = ('name','identifier','address')
@@ -23,6 +37,7 @@ class VendorSerializer(serializers.ModelSerializer):
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
+
 
 class ConsumerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -130,20 +145,15 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = ('name','owner','phone','address','email','location','image')
 
 
-class ShippingAddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShippingAddress
-        fields = ('name','address','phone','email','location')
-
-
 class PurchaseInvoiceSerializer(serializers.ModelSerializer):
     company = CompanySerializer()
     po = PurchaseOrderSerializer()
     shippingaddress = ShippingAddressSerializer()
+    communication = CommunicationSerializer()
 
     class Meta:
         model = PurchaseInvoice
-        fields = ('company','po','shippingaddress')
+        fields = ('company','po','shippingaddress','communication')
         
 
 class SalesInvoiceSerializer(serializers.ModelSerializer):

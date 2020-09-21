@@ -124,12 +124,10 @@ class PurchaseInvoice(models.Model):
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
     po = models.OneToOneField(PurchaseOrder,on_delete=models.SET_NULL,null=True)
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
+    communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
     
 class SalesInvoice(models.Model):
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
     so = models.OneToOneField(SalesOrder,on_delete=models.SET_NULL,null=True)
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
-
-class Sale(models.Model):
-    pass
