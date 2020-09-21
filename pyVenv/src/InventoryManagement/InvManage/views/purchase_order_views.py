@@ -282,9 +282,13 @@ def print_purchase_order_view(request, pk):
     if request.method == 'GET':
         po = PurchaseOrder.objects.get(id=pk)
         company = Company.objects.all().last()
-        shippingaddress = company.shippingaddress
-        print(shippingaddress)
+        company_shippingaddress = company.shippingaddress
+        vendor_communication = po.vendor.communication
+        # print(shippingaddress)
         invoice_serializer = PurchaseInvoiceSerializer(
-            PurchaseInvoice(company=company, po=po, shippingaddress=shippingaddress))
-        print(invoice_serializer.data)
+            PurchaseInvoice(company=company, 
+                            po=po, 
+                            shippingaddress=company_shippingaddress, 
+                            communication=vendor_communication))
+        print(JsonResponse(invoice_serializer.data))
     return JsonResponse(invoice_serializer.data)
