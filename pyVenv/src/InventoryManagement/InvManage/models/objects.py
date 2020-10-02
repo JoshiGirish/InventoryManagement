@@ -31,6 +31,7 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class Consumer(models.Model):
     name = models.CharField(max_length=100)
@@ -43,12 +44,14 @@ class Consumer(models.Model):
     def __str__(self):
         return self.name
 
+
 class PurchaseOrder(models.Model):
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     # Order details
     date = models.DateTimeField(default=timezone.now,null=True, blank=True)
     po = models.IntegerField()
+    status = models.BooleanField(default=False, null=True, blank=False) # PO completion status
     # Pricing information
     discount = models.FloatField(default=0,null=True)
     tax = models.FloatField(default=0,null=True)
@@ -57,8 +60,36 @@ class PurchaseOrder(models.Model):
     subtotal = models.FloatField(default=0,null=True)
     taxtotal = models.FloatField(default=0,null=True)
     ordertotal = models.FloatField(default=0,null=True)
+    
 
 
+class GoodsReceiptNote(models.Model):
+    TYPE_CHOICES = [
+        ('manual', 'Blank'),
+        ('auto', 'PO Reference')
+    ]
+    
+    # Vendor details
+    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    poRef = models.ManyToManyField(PurchaseOrder)
+    # GRN details
+    identifier = models.IntegerField()
+    date = models.DateTimeField(default=timezone.now,null=True, blank=True)
+    grnType = models.CharField(default='manual', max_length=10, null=True,
+                               choices=TYPE_CHOICES)
+    # Amendments
+    amendNumber = models.IntegerField(default=0, null=True, blank=True)
+    amendDate = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    # Transport
+    vehicleNumber = models.TextField(default=None,null=True, blank=True)
+    gateInwardNumber = models.TextField(default=None, null=True, blank=True)
+    # Validationa and Approval authorities
+    preparedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
+    checkedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
+    inspectedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
+    approvedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
+    
+    
 class SalesOrder(models.Model):
     # Vendor details
     consumer = models.ForeignKey(Consumer,on_delete=models.CASCADE)
@@ -108,6 +139,20 @@ class ProductPurchaseEntry(models.Model):
     discount = models.FloatField(null=True)
     # subtotal = models.FloatField()
     order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
+    status = models.BooleanField(default=False, null=True, blank=False) # PPE completion status
+    receivedQty = models.IntegerField(default=0, null=True, blank=True)
+    acceptedQty = models.IntegerField(default=0, null=True, blank=True)
+    rejectedQty = models.IntegerField(default=0, null=True, blank=True)
+    
+
+class GRNEntry(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+    quantity = models.IntegerField(null=True)
+    grn = models.ForeignKey(GoodsReceiptNote,on_delete=models.CASCADE)
+    remark = models.TextField(default=None, null=True, blank=True)
+    receivedQty = models.IntegerField(default=0, null=True, blank=True)
+    acceptedQty = models.IntegerField(default=0, null=True, blank=True)
+    rejectedQty = models.IntegerField(default=0, null=True, blank=True)
 
 
 class ProductSalesEntry(models.Model):
