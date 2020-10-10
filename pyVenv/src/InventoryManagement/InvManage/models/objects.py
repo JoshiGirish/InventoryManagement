@@ -49,7 +49,7 @@ class PurchaseOrder(models.Model):
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     # Order details
-    date = models.DateTimeField(default=timezone.now,null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now().strftime("%d %B, %Y"),null=True, blank=True)
     po = models.IntegerField()
     status = models.BooleanField(default=False, null=True, blank=False) # PO completion status
     # Pricing information
@@ -61,7 +61,6 @@ class PurchaseOrder(models.Model):
     taxtotal = models.FloatField(default=0,null=True)
     ordertotal = models.FloatField(default=0,null=True)
     
-
 
 class GoodsReceiptNote(models.Model):
     TYPE_CHOICES = [

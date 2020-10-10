@@ -1,0 +1,65 @@
+    <!-- Modal for selecting a purchase order -->
+    <div class="modal fade" id="selModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Select Purchase Order</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="col-sm-12 modal-body px-1" style="background-color: #f8f8f8;">
+              <div class="d-flex flex-row">
+                <div class="col-sm-8">
+                  {% include "reuse/selection_dialog_box/table.html" %}
+                </div>
+                <div class="col-sm-1 d-flex flex-column justify-content-center align-items-center">
+                  <span style="color:#9eb6ce;"><i id="addObjectToSelection" class="fas fa-caret-square-right fa-2x my-2 appBtn" ></i></span>
+                  <span style="color:#9eb6ce;"><i id="removeObjectFromSelection" class="fas fa-caret-square-left fa-2x my-2 appBtn"></i></span>
+                </div>
+                <div id="selection_pane" class="col-sm-3 p-0" style="border: 1px solid #dee2e6">
+                  <table id="selection_pane_table" class="table table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="d-flex col-sm-12">
+                            <div class="col-sm-12 head-cell-content" style="display:flex;justify-content:center;align-items:center;">Selection</div>
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              
+            <input type="hidden" name="object_id" id="object_id" value="">
+            </div> 
+            <!-- <form id="delForm" action="" method="POST">
+              {% csrf_token %} -->
+            <div class="modal-footer">
+              <button id="selModalCancelBtn" type="button" class="btn btn-secondary appBtn" data-dismiss="modal">Cancel</button>
+              <button id="selModalSubmitBtn" type="submit" class="btn btn-success appBtn" data-dismiss="modal">OK</button>
+            </div>
+          <!-- </form> -->
+          </div>
+        </div>
+    </div>
+    <script>
+      $('#selModalSubmitBtn').on('click',function(){
+        $('#id_grn-poRef').html('');
+        $('#selection_pane_table tbody tr').each(function(index,tag){
+          var val = $(tag).data('id'); // Row identifier
+          var txt = 'PO #' + $(tag).children().first().text() + ' [' + $(tag).data('vendor') + ']'; // Cell text
+          $('#id_grn-poRef').append(new Option(txt, val));
+        })
+      })
+    </script>
+    <style>
+      /* .appBtn:hover{
+        color:#858585;
+      } */
+      .appBtn:hover {
+        transition : 0.3s;
+        box-shadow : 0px 0px 10px 2px #9eb6ce;
+        cursor: pointer;
+      }
+    </style>

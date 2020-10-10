@@ -1,0 +1,45 @@
+{% load template_helpers %}
+
+<div id="selectionTableOuterDiv" class="col-sm-12 p-0" style="border: 1px solid #dee2e6">
+  <div id="selectionTableInnerDiv">
+    <table id="selectionTable" class="table table-sm">
+      <thead class="thead-light">
+        <tr>
+          {% for column in columns %} 
+            <th scope="col">
+              <div class="col-sm-9 head-cell-content" style="display:flex;justify-content:center;align-items:center;">{{ column|title }}</div>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="selectionFilterForm" data-url="{{ url }}">
+          {% for column in columns %} 
+            {% for field in myFilter.form %} 
+              {% if field.name == column %}
+                <td>{{field}}</td>
+              {% endif %} 
+            {% endfor %} 
+          {% endfor %}
+          <td hidden>
+            <button class="btn btn-sm btn-info" type="submit" hidden>
+              Search
+            </button>
+          </td>
+        </tr>
+        {% for dict in dicts %}
+        <tr class="clickable-row" data-pk="{{dict.id}}">
+          {% for column in columns %} 
+            {% for key,value in dict.items %} 
+              {% if key == column %}
+                <td data-type="{{column}}">{{ value }}</td>
+              {% endif %} 
+            {% endfor %} 
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>

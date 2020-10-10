@@ -21,3 +21,12 @@
     color: var(--header-color);
     font-weight: bold;
 }
+
+/* .table-striped tbody tr:nth-child(odd) td {
+    background-color: green;
+} */
+
+.table-striped tbody tr.highlight td {
+    background-color: rgb(255, 254, 169);
+}
+

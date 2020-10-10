@@ -1,0 +1,86 @@
+
+<div id="data">
+  <div id="updatedData">
+    <form enctype="multipart/form-data" action="{% url 'update_grn' %}" method="POST">
+      {% csrf_token %}
+            <div class="m-2 d-flex align-items-center row view-title">
+              <div class="justify-content-start col-sm-6 d-flex row flex-grow-1">
+                <span class="model-icon"><i class="fa fa-download" aria-hidden="true" style="scale: 200%;"></i></span>
+                <h2 class="label-head">Update Goods Receipt Note</h2>
+              </div>
+                    <div class="float-right">
+                        <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
+                        <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                        <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                        <input type="text" hidden name="pk" value="{{ pk }}">
+                      </div>
+            </div>
+    
+        <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>Selelct a vendor</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ grn_form.vendor }}
+                    </div>
+                </div>
+                <!-- Vendor name field -->
+                <div class="form-group form-row m-1">
+                  <div class="col-sm-4">
+                      <label>{{ vendor_form.name.label }}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      {{ vendor_form.name }}
+                  </div>
+              </div>
+              <!-- Vendor identifier field -->
+              <div class="form-group form-row m-1">
+                  <div class="col-sm-4">
+                      <label>{{ vendor_form.identifier.label }}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      {{ vendor_form.identifier }}
+                  </div>
+              </div>
+            </div>
+            <!-- <div class="col-sm-6">
+              {% include "purchase_order/po_pricing_info.html" %}
+            </div> -->
+        </div>
+        <div style="height: 400px; overflow: auto;">
+          {% include "goods_receipt_note/grn_products.html" %}
+        </div>
+      </form>
+    <script>
+      $('#id_po-vendor').val({{ grn_form.vendor_id }})
+      // Function for fetching product to be updated using AJAX
+      function changeView(){
+      $.ajax({
+          url: "{% url 'grn' %}",
+          data: {},
+          dataType:'html',
+          success: function(data){
+              $('#data').html($('#updatedData',data).html())
+          }
+        });
+      };
+      // Fetch vendor details when the user selects a vendor from the dropdown list
+      $('#id_po-vendor').change(function(){
+          var vendor_id = $('#id_po-vendor option:selected').val();
+          $.ajax({
+              url: "{% url 'get_vendor' %}",
+              data: {
+                  'vendor_id': vendor_id
+              },
+              dataType:'json',
+              success: function(data){
+                  $('#id_vend-name').val(data.name);
+                  $('#id_vend-identifier').val(data.identifier);
+              }
+          });
+      });
+    </script>
+</div>
+</div>

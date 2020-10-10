@@ -81,6 +81,34 @@ class PurchaseOrderBasicInfo(forms.Form):
     subtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
     taxtotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
     ordertotal = forms.FloatField(widget=forms.TextInput(attrs=context),initial=0.0)
+    
+    
+####### GRN Forms #########
+class GRNInfo(forms.Form):
+    prefix = "grn"
+    context={
+        "class": "form-control",
+    }
+    product_choices = [(p.id, p.name) for p in Product.objects.all()]
+    vendor_choices = ((v.id,v.name) for v in Vendor.objects.all())
+    TYPE_CHOICES = [
+        ('manual', 'Blank'),
+        ('auto', 'PO Reference')
+    ]
+    vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
+    poRef = forms.MultipleChoiceField(label="PO References", required=True, widget=forms.SelectMultiple(attrs=context))
+    identifier = forms.CharField(label="GRN Number",widget=forms.TextInput(attrs=context)) 
+    date = forms.DateField(widget=forms.TextInput(attrs=context))
+    grnType = forms.ChoiceField(choices=TYPE_CHOICES, label="Receipt Type", widget=forms.Select(attrs=context))
+    amendNumber = forms.IntegerField(label="Amendment Number", widget=forms.TextInput(attrs=context))
+    amendDate = forms.DateField(label="Amendment Date", widget=forms.TextInput(attrs=context))
+    vehicleNumber = forms.CharField(widget=forms.TextInput(attrs=context))
+    gateInwardNumber = forms.CharField(widget=forms.TextInput(attrs=context))
+    preparedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
+    checkedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
+    inspectedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
+    approvedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
+    
 
 ####### Sales Order Forms #########
 class SalesOrderBasicInfo(forms.Form):
@@ -122,6 +150,23 @@ class ConsumerForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs=context))
     location = forms.CharField(widget=forms.TextInput(attrs=context))
 
+
+class GRNEntryForm(forms.Form):
+    prefix = "form"
+    context = {
+        "class": "form-control",
+    }
+    product = forms.ModelChoiceField(
+                    queryset= Product.objects.all(),
+                    widget=forms.Select(attrs={
+                                            "class": "form-control",
+                                            "onchange":"setIdentifier(this)"}))
+    quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    remark = forms.CharField(widget=forms.TextInput(attrs=context))
+    receivedQty = forms.CharField(widget=forms.TextInput(attrs=context))
+    acceptedQty = forms.CharField(widget=forms.TextInput(attrs=context))
+    rejectedQty = forms.CharField(widget=forms.TextInput(attrs=context))
+    
 
 class ProductPurchaseEntryForm(forms.Form):
     prefix = "form"

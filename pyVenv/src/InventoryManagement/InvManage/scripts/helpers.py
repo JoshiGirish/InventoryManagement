@@ -29,17 +29,10 @@ def create_event(obj,event):
     # newCard.operation.add(evetyp)
     # newCard.save()
 
-def logger(data):
-    print('####################################')
-    print('#')
-    print('#')
-    print('#')
-    
-    print(data)
-    
-    print('#')
-    print('#')
-    print('#')
-    print('####################################')
-    
-            
+def get_parameter_list_from_request(req,parameter):
+    try:
+        id_string= req.GET.get('exclude')
+        exclude_ids = list(map(int, id_string.split(',')))
+    except (AttributeError, ValueError) as e:
+        exclude_ids = []
+    return exclude_ids
