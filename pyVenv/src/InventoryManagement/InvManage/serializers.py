@@ -83,7 +83,8 @@ class PPEntrySerializer(serializers.ModelSerializer):
 
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer()
-    ppes = PPEntrySerializer(source='productpurchaseentry_set', many=True) 
+    ppes = PPEntrySerializer(source='productpurchaseentry_set', many=True)
+    date = serializers.DateField(format="%d-%b-%Y")
 
     class Meta:
         model = PurchaseOrder

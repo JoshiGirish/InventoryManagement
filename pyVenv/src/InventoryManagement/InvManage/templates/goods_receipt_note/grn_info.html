@@ -1,0 +1,78 @@
+{% load static %}
+
+        <div class="row m-2">
+            <!-- PO field -->
+            <div class="col-sm-4 form-group form-row">
+                <div class="col-sm-4" style="text-align: right; vertical-align: middle;">
+                    <label>{{ purchase_form.po.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.po }}
+                </div>
+            </div>
+            <!-- Date field -->
+            <div class="col-sm-8 form-group form-row">
+                <div class="col-sm-4" style="text-align: right; vertical-align: middle;">
+                    <label>{{ purchase_form.date.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ purchase_form.date }}
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-taxRates-tab" data-toggle="tab" href="#nav-taxRates" role="tab" aria-controls="nav-taxRates" aria-selected="true">Details</a>
+              <a class="nav-item nav-link" id="nav-shipTo-tab" data-toggle="tab" href="#nav-shipTo" role="tab" aria-controls="nav-shipTo" aria-selected="false">Ship To</a>
+              <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a> -->
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-taxRates" role="tabpanel" aria-labelledby="nav-taxRates-tab">
+                <div class="card-body">
+                <!-- Tax field -->
+                <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>{{ purchase_form.tax.label }}</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ purchase_form.tax }}
+                    </div>
+                </div>
+                <!-- Discount field -->
+                <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>{{ purchase_form.discount.label }}</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ purchase_form.discount }}
+                    </div>
+                </div>
+                <!-- Paid field -->
+                <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>{{ purchase_form.paid.label }}</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ purchase_form.paid }}
+                    </div>
+                </div>
+                <!-- Balance field -->
+                <div class="form-group form-row m-1">
+                    <div class="col-sm-4">
+                        <label>{{ purchase_form.balance.label }}</label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ purchase_form.balance }}
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="nav-shipTo" role="tabpanel" aria-labelledby="nav-shipTo-tab">
+                {% include 'company/shipping_address.html' %}
+            </div>
+            <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div> -->
+          </div>
+
+

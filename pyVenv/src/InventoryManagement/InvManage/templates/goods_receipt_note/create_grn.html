@@ -1,0 +1,219 @@
+{% load static %}
+
+<div id="data" class="flex-grow-1">
+    <div id="updatedData">
+<form enctype="multipart/form-data" action="{% url 'grn' %}" method="POST">
+  {% csrf_token %}
+        <div class="m-2 d-flex align-items-center flex-row flex-grow-1 justify-content-between view-title">
+            <!-- <h2 class="col-sm-6">Create Product</h2> -->
+            <div class="justify-content-start col-sm-6 d-flex row flex-grow-1">
+              <span class="model-icon"><i class="fa fa-download" aria-hidden="true" style="scale: 200%;"></i></span>
+              <h2 class="label-head">Create Goods Receipt Note</h2>
+            </div>
+                <div class="d-flex flex-row">
+                  <div class="btn btn-light m-1" onclick="changeView()"><i class="fas fa-plus"></i> New</div>
+                  <div class="btn btn-light m-1"><i class="fas fa-edit"></i> Edit</div>
+                    <button type="submit" id="save" class="btn btn-light m-1"><i class="fas fa-save"></i> Save</button>
+                    <!-- <button class="btn btn-light m-1" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-file-import"></i> Import</button> -->
+                    <a href="" class="btn btn-light m-1" id="print"><i class="fas fa-print"></i> Print</a>
+            </div>
+        </div>
+
+ 
+<div class="row">
+    <div class="col-sm-6 d-flex flex-fill flex-column">
+      <div class="form-group form-row m-1">
+        <div class="col-sm-4">
+            <label>Selelct a vendor</label>
+        </div>
+        <div class="col-sm-8">
+            {{ grn_form.vendor }}
+        </div>
+      </div>
+        <!-- Vendor name field -->
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>{{ vendor_form.name.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ vendor_form.name }}
+            </div>
+        </div>
+        <!-- Vendor identifier field -->
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>{{ vendor_form.identifier.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ vendor_form.identifier }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 d-flex flex-fill flex-column">
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+                <label>GRN Type</label>
+            </div>
+            <div class="col-sm-8">
+                {{ grn_form.grnType }}
+            </div>  
+        </div>
+        <div class="d-flex flex-row form-group form-row m-1">
+          
+          <div class="col-sm-4">
+            <div>{{ grn_form.poRef.label }}</div>
+            <div class="py-1">
+              <button  id="selectPOBtn"
+                href="" 
+                class="btn btn-sm btn-secondary" 
+                data-toggle="modal" 
+                data-target="#selModal" 
+                data-object_name="{{ dict.po }}" 
+                data-object_id="{{ dict.id }}" 
+                onClick=""
+                disabled
+                style="cursor: default;">Select</button>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            {{ grn_form.poRef }}
+          </div>
+        </div>
+      {% include "goods_receipt_note/grn_info.html" %}
+    </div>
+</div>
+<div style="height: 400px; overflow: auto;">
+  {% include "goods_receipt_note/grn_products.html" %}
+</div>
+</form>
+</div>
+
+{% include "reuse/selection_dialog_box/modal.html" %}
+
+  <script src="{% static 'table_manipulation.js' %}"></script>
+  <!-- <script src="{% static 'grn_invoice.js' %}"></script> -->
+    <script type="text/javascript">
+          cookie = {
+            name: 'activeProductCorousel',
+            parent:'corousel',
+            valueLeft: 'create',
+            valueRight: 'display',
+            leftCorouselID: 'createCorousel',
+            rightCorouselID: 'displayCorousel'
+          }
+
+
+    $('#id_po-vendor').val({{grn_form.vendor_id}})
+
+      // Function that fetches initial table populated with objects
+      // function initialData(){
+      //   var searchParams = new URLSearchParams(window.location.search)
+      //   searchParams.append('form', "selectionFilterForm"); // This parameter lets the PO display view know which object list is needed
+      //   $('#selectionTableOuterDiv').load("{{ url }}" + " #selectionTableInnerDiv", searchParams.toString(),function(){enableHighlight()});
+      // };
+      // initialData();
+      updateTable('selection'); // Initializes PO data in the selection modal on page load
+      // Function for fetching product to be updated using AJAX
+      function updateData(tag){
+        var id = $(tag).data('id');
+        console.log(id)
+      $.ajax({
+          url: "{% url 'update_grn' %}",
+          data: {
+              'pk': id
+          },
+          dataType:'html',
+          success: function(data){
+            $('#data').html($('#updatedData',data).html())
+          }
+      });
+    };
+
+    // Highlighting on rows on click event (only on object selectin table)
+    function enableHighlight(){
+      $('#selModal table tbody tr').on('click', function(event) {
+        $(this).removeClass('hover_highlight');
+        $(this).addClass('click_highlight').siblings().removeClass('click_highlight');
+        });
+
+        $('#selModal table tbody tr').on('mouseover', function(event) {
+            if (!$(this).hasClass('click_highlight')){
+                $(this).addClass('hover_highlight').siblings().removeClass('hover_highlight');
+            }
+            $(this).css('cursor', 'pointer');
+        });
+        $('#selModal table tbody tr').on('mouseout', function(event) {
+            $(this).removeClass('hover_highlight');
+            $(this).css('cursor', 'pointer');
+        });
+      }
+
+
+      // Function for fetching product to be updated using AJAX
+      function changeView(){
+      $.ajax({
+          url: "{% url 'grn' %}",
+          data: {},
+          dataType:'html',
+          success: function(data){
+              $('#data').html($('#updatedData',data).html())
+          }
+        });
+      };
+      // Fetch vendor details when the user selects a vendor from the dropdown list
+      $('#id_po-vendor').change(function(){
+          var vendor_id = $('#id_po-vendor option:selected').val();
+          $.ajax({
+              url: "{% url 'get_vendor' %}",
+              data: {
+                  'vendor_id': vendor_id
+              },
+              dataType:'json',
+              success: function(data){
+                  $('#id_vend-name').val(data.name);
+                  $('#id_vend-identifier').val(data.identifier);
+              }
+          });
+      });
+
+      $('#addObjectToSelection').on('click',function(){
+        var pk = $('tr.click_highlight').first().data('pk');
+        var txt = $('#selectionTable tbody tr.click_highlight td').first().text();
+        var vendor = $('tr.click_highlight td[data-type="vendor"]').text();
+        if(txt){
+          $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+"><td>"+txt+"</td></tr>");
+          enableHighlight();
+          updateTable('selection');
+        }
+        
+      })
+      $('#removeObjectFromSelection').on('click',function(){
+        $('#selection_pane_table tbody tr.click_highlight').first().remove();
+        enableHighlight();
+        updateTable('selection');
+      })
+
+      $('#id_grn-poRef').attr('disabled','true')
+      $('#id_grn-grnType').on('change',function(){
+        if($('#id_grn-grnType option:selected').val() == 'manual'){
+          $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').removeClass('btn-primary').addClass('btn-secondary').css('cursor','default');
+        }
+        else{
+          $('#selectPOBtn').attr('onClick', "updateTable('selection');enableHighlight();").removeAttr('disabled').addClass('btn-primary').removeClass('btn-secondary').css('cursor','pointer');
+        }
+      })
+    </script>
+    <style>
+      .table tbody tr.click_highlight td {
+        background-color: #e9ecef;
+      } 
+      .table tbody tr.hover_highlight td {
+        background-color:#f2f5f8;
+      } 
+      .table tbody tr td.fit, 
+      .table thead tr th.fit {
+          white-space: nowrap;
+          width: 1%;
+}
+    </style>
+</div>

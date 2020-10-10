@@ -7,7 +7,7 @@ from InvManage.filters import PurchaseOrderFilter
 from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
-from InvManage.scripts.helpers import create_event
+from InvManage.scripts.helpers import create_event,get_parameter_list_from_request
 
 
 def create_purchase_order_view(request):
@@ -109,7 +109,8 @@ def create_purchase_order_view(request):
 
 def display_purchase_orders_view(request):
     if request.method == 'GET':
-        pos = PurchaseOrder.objects.all()
+        exclude_ids = get_parameter_list_from_request(request,'exclude')
+        pos = PurchaseOrder.objects.all().exclude(pk__in=exclude_ids)
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
         myFilter = PurchaseOrderFilter(request.GET, queryset=pos)
@@ -122,14 +123,22 @@ def display_purchase_orders_view(request):
             vend_id = dict['vendor_id']
             vendor = Vendor.objects.get(id=vend_id)
             dict['vendor'] = vendor.name
-        return render(request, 'purchase_order/purchase_order_contents.html', {'page_obj': page_obj,
+        print(dictionaries)
+        if request.GET.get('form') == 'objectFilterForm' or request.GET.get('form') == None:
+            return render(request, 'purchase_order/purchase_order_contents.html', {'page_obj': page_obj,
                                                                                'myFilter': myFilter,
                                                                                'n_prod': number_of_objects,
                                                                                'columns': column_list,
                                                                                'dicts': dictionaries,
                                                                                'url': request.build_absolute_uri('/purchase_orders/')})
-
-
+        elif request.GET.get('form') == 'selectionFilterForm':
+            return render(request, 'reuse/selection_dialog_box/table.html', {'page_obj': page_obj,
+                                                                               'myFilter': myFilter,
+                                                                               'n_prod': number_of_objects,
+                                                                               'columns': column_list,
+                                                                               'dicts': dictionaries,
+                                                                               'url': request.build_absolute_uri('/purchase_orders/')})
+            
 def delete_purchase_order_view(request, pk):
     if request.method == 'POST':
         po = PurchaseOrder.objects.get(id=pk)

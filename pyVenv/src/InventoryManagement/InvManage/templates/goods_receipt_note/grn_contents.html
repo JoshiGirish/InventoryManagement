@@ -1,0 +1,152 @@
+
+{% load template_helpers %}
+{% load static %}
+
+<div class="d-flex flex-grow-1 flex-column">
+  <div class="d-flex align-items-center view-title">
+    <div class="col-sm-6 d-flex row justify-content-start flex-grow-1">
+      <span class="model-icon"><i class="fa fa-download" aria-hidden="true" style="scale: 200%;"></i></span>
+      <h2 class="label-head">Goods Receipt Notes</h2>
+    </div>
+  </div> 
+
+<div id="tableData">
+  <div id="objTable">
+  <table class="table table-sm table-striped">
+        <thead class="thead-light">
+         <tr>
+            {% for column in columns %}
+              {% include "shared/table_column_sort_control.html" %}
+            {% endfor %}
+              <th scope="col">Update</th>
+              <th scope="col">Remove</th>
+              <th scope="col">Print</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="objectFilterForm" data-url="{{ url }}">
+            {% for column in columns %}
+              {% for field in myFilter.form %}
+                {% if field.name == column %}
+                  <td>{{field}}</td>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            <td></td>
+            <td></td>
+            <td></td>
+            <td hidden><button class="btn btn-sm btn-info" type="submit" hidden>Search</button></td>
+          </tr>
+          {% for dict in dicts %}
+            <tr>
+              {% for column in columns %}
+              {% for key,value in dict.items %}
+                  {% if key == column %}
+                    <td>{{ value }}</td>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+                <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
+                <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_grn' dict.id %}" data-object_name="{{ dict.po }}" data-object_id="{{ dict.id }}">Delete</a></td>
+                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_grn' dict.id %}" data-po_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Pagination -->
+    <div class="d-flex">
+      <div class="pagination mr-auto">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a class="btn btn-light btn-sm" href="{% relative_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>  
+          {% endif %}
+
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+
+          {% if page_obj.has_next %}
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
+            <a class="btn btn-light btn-sm" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      <div>
+        Count: {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ n_prod }}
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+
+
+    <!-- Modal -->
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="delForm" action="" method="POST">
+          {% csrf_token %}
+        <div class="modal-body">
+          Are you sure you want to delete Goods Receipt Note <span id="object_name" style="font-weight: bold;"></span> !
+        <input type="hidden" name="object_id" id="object_id" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+      </div>
+    </div>
+    <script src="{% static 'table_manipulation.js' %}"></script>
+    <!-- <script src="{% static 'grn_invoice.js' %}"></script> -->
+     <script type="text/javascript">
+            cookie = {
+              name: 'activeProductCorousel',
+              parent:'corousel',
+              valueLeft: 'create',
+              valueRight: 'display',
+              leftCorouselID: 'createCorousel',
+              rightCorouselID: 'displayCorousel'
+            }
+
+
+      $('#id_po-vendor').val({{grn_form.vendor_id}})
+      $('#delModal').on('show.bs.modal', function(event){
+          var button = $(event.relatedTarget);
+          console.log(button)
+          var obj_id = button.data('object_id');
+          var obj_name = button.data('object_name');
+          var delete_url = button.data('del_url');
+          var modal = $(this);
+          console.log(obj_name)
+          modal.find('.modal-body #object_id').val(obj_id);
+          modal.find('.modal-body #object_name').text(obj_name);
+          modal.find('#delForm').attr('action',delete_url);
+      })
+
+        // Function for fetching product to be updated using AJAX
+        function updateData(tag){
+          var id = $(tag).data('id');
+          console.log(id)
+        $.ajax({
+            url: "{% url 'update_grn' %}",
+            data: {
+                'pk': id
+            },
+            dataType:'html',
+            success: function(data){
+              $('#data').html($('#updatedData',data).html())
+            }
+        });
+      };
+      </script>
+  </div>
+</div>

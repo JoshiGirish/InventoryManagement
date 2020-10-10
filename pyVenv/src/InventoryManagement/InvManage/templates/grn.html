@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+    {% block title %}
+    {% endblock %}
+
+    {% block contents %}
+
+    <div class="col-sm-12">
+    <div id="corousel" class="carousel slide" data-ride="carousel" data-interval="false">
+      <div class="carousel-inner">
+        <div id="createCorousel" class="carousel-item active">
+          <div class="d-flex flex-row" style="height: 900px;">
+            {% if requested_view_type == 'create' %}
+              {% include "goods_receipt_note/create_grn.html" %}
+            {% elif requested_view_type == 'update' %}
+              {% include "goods_receipt_note/update_grn.html" %}
+            {% endif %}
+          <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+            <div class="divider"></div>
+            <a class="" href="#carousel" role="button" data-slide="next" onclick="getObjects(); toggle();">
+              <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+              <span style="color: gray;"><i class="fas fa-angle-left fa-lg circle-icon"></i></span>
+              <!-- <span class="sr-only">Next</span> -->
+            </a>
+            <div class="divider"></div>
+          </div>
+          
+        </div>
+        </div>
+        <div id="displayCorousel" class="carousel-item">
+          <div class="d-flex flex-row" style="height: 900px;">
+            <div class="d-flex flex-column justify-content-center" style="width: 40px;">
+              <div class="divider"></div>
+              <a class="" href="#carousel" role="button" data-slide="prev" onclick="getObjects(); toggle();">
+                <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+                <span style="color: gray;"><i class="fas fa-angle-right fa-lg circle-icon"></i></span>
+                <!-- <span class="sr-only">Next</span> -->
+              </a>
+              <div class="divider"></div>
+            </div>
+            {% include "goods_receipt_note/grn_contents.html" %}
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>
+            cookie = {
+              name: 'activeProductCorousel',
+              parent:'corousel',
+              valueLeft: 'create',
+              valueRight: 'display',
+              leftCorouselID: 'createCorousel',
+              rightCorouselID: 'displayCorousel'
+            }
+            setCorousel(cookie);
+            getObjects();
+            
+            function getObjects(){
+              var searchParams = new URLSearchParams(window.location.search)
+              $('#tableData').load("{% url 'grns' %} #objTable", searchParams.toString());
+            }
+    
+            $(document).keyup(function(e){
+              toogle_corousel_using_arrow_keys(e, cookie);
+            });
+
+            function toggle(){
+              toggleCorousel(cookie);
+            }
+      </script>
+    {% endblock %}

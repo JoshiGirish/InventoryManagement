@@ -35,6 +35,13 @@ urlpatterns = [
     path('consumer/<str:pk>/delete', delete_consumer_view, name='delete_consumer'),
     path('get_consumer/', get_consumer, name ='get_consumer'), # ajax call in create sales order on consumer dropdown
     
+    # Routes for managing GRNs
+    path('grn/', create_grn_view, name='grn'),
+    path('grns/',display_grns_view, name='grns'),
+    path('grn/update', update_grn_view, name='update_grn'),
+    path('grn/<str:pk>/delete', delete_grn_view, name='delete_grn'),
+    path('grn/<str:pk>/print',print_grn_view, name='print_grn'),
+
     # Routes for managing POs
     path('purchase_order/', create_purchase_order_view, name='purchase_order'),
     path('purchase_orders/',display_purchase_orders_view, name='purchase_orders'),
