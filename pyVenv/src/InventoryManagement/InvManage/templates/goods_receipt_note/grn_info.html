@@ -1,78 +1,97 @@
 {% load static %}
 
-        <div class="row m-2">
-            <!-- PO field -->
-            <div class="col-sm-4 form-group form-row">
-                <div class="col-sm-4" style="text-align: right; vertical-align: middle;">
-                    <label>{{ purchase_form.po.label }}</label>
+    <div class="d-flex flex-row m-1">
+        <!-- GRN identifier field -->
+        <div class="col-6 form-group form-row">
+            <div class="d-flex col-sm-8 justify-content-center align-items-center">
+                <label>{{ grn_form.identifier.label }}</label>
+            </div>
+            <div class="col-4">
+                {{ grn_form.identifier }}
+            </div>
+        </div>
+        <!-- Date field -->
+        <div class="col-sm-6 form-group form-row">
+            <div class="d-flex col-sm-4 justify-content-center align-items-center">
+                <label>{{ grn_form.date.label }}</label>
+            </div>
+            <div class="col-sm-8">
+                {{ grn_form.date }}
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-transport-tab" data-toggle="tab" href="#nav-transport" role="tab" aria-controls="nav-transport" aria-selected="true">Vehicle Details</a>
+            <a class="nav-item nav-link" id="nav-validation-tab" data-toggle="tab" href="#nav-validation" role="tab" aria-controls="nav-validation" aria-selected="false">Validation</a>
+            <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a> -->
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-transport" role="tabpanel" aria-labelledby="nav-transport-tab">
+            <div class="card-body">
+            <!-- Vehicle Number field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ grn_form.vehicleNumber.label }}</label>
                 </div>
                 <div class="col-sm-8">
-                    {{ purchase_form.po }}
+                    {{ grn_form.vehicleNumber }}
                 </div>
             </div>
-            <!-- Date field -->
-            <div class="col-sm-8 form-group form-row">
-                <div class="col-sm-4" style="text-align: right; vertical-align: middle;">
-                    <label>{{ purchase_form.date.label }}</label>
+            <!-- Gate Inward Number field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ grn_form.gateInwardNumber.label }}</label>
                 </div>
                 <div class="col-sm-8">
-                    {{ purchase_form.date }}
+                    {{ grn_form.gateInwardNumber }}
                 </div>
             </div>
         </div>
-
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-taxRates-tab" data-toggle="tab" href="#nav-taxRates" role="tab" aria-controls="nav-taxRates" aria-selected="true">Details</a>
-              <a class="nav-item nav-link" id="nav-shipTo-tab" data-toggle="tab" href="#nav-shipTo" role="tab" aria-controls="nav-shipTo" aria-selected="false">Ship To</a>
-              <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a> -->
-            </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-taxRates" role="tabpanel" aria-labelledby="nav-taxRates-tab">
-                <div class="card-body">
-                <!-- Tax field -->
+        </div>
+        <div class="tab-pane fade" id="nav-validation" role="tabpanel" aria-labelledby="nav-validation-tab">
+            <div class="card-body">
+                <!-- Prepared by field -->
                 <div class="form-group form-row m-1">
                     <div class="col-sm-4">
-                        <label>{{ purchase_form.tax.label }}</label>
+                        <label>{{ grn_form.preparedBy.label }}</label>
                     </div>
                     <div class="col-sm-8">
-                        {{ purchase_form.tax }}
+                        {{ grn_form.preparedBy }}
                     </div>
                 </div>
-                <!-- Discount field -->
+                <!-- Checked by field -->
                 <div class="form-group form-row m-1">
                     <div class="col-sm-4">
-                        <label>{{ purchase_form.discount.label }}</label>
+                        <label>{{ grn_form.checkedBy.label }}</label>
                     </div>
                     <div class="col-sm-8">
-                        {{ purchase_form.discount }}
+                        {{ grn_form.checkedBy }}
                     </div>
                 </div>
-                <!-- Paid field -->
+                <!-- Inspected by field -->
                 <div class="form-group form-row m-1">
                     <div class="col-sm-4">
-                        <label>{{ purchase_form.paid.label }}</label>
+                        <label>{{ grn_form.inspectedBy.label }}</label>
                     </div>
                     <div class="col-sm-8">
-                        {{ purchase_form.paid }}
+                        {{ grn_form.inspectedBy }}
                     </div>
                 </div>
-                <!-- Balance field -->
+                <!-- Approved field -->
                 <div class="form-group form-row m-1">
                     <div class="col-sm-4">
-                        <label>{{ purchase_form.balance.label }}</label>
+                        <label>{{ grn_form.approvedBy.label }}</label>
                     </div>
                     <div class="col-sm-8">
-                        {{ purchase_form.balance }}
+                        {{ grn_form.approvedBy }}
                     </div>
                 </div>
             </div>
-            </div>
-            <div class="tab-pane fade" id="nav-shipTo" role="tabpanel" aria-labelledby="nav-shipTo-tab">
-                {% include 'company/shipping_address.html' %}
-            </div>
-            <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div> -->
-          </div>
+        </div>
+        <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div> -->
+    </div>
 
 
