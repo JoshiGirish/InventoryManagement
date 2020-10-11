@@ -37,6 +37,7 @@ urlpatterns = [
     
     # Routes for managing GRNs
     path('grn/', create_grn_view, name='grn'),
+    path('grn_po_ref', create_grn_with_po_reference_view, name='grn_po_ref'),
     path('grns/',display_grns_view, name='grns'),
     path('grn/update', update_grn_view, name='update_grn'),
     path('grn/<str:pk>/delete', delete_grn_view, name='delete_grn'),
@@ -48,6 +49,7 @@ urlpatterns = [
     path('purchase_order/update', update_purchase_order_view, name='update_purchase_order'),
     path('purchase_order/<str:pk>/delete', delete_purchase_order_view, name='delete_purchase_order'),
     path('purchase_order/<str:pk>/print',print_purchase_order_view, name='print_purchase_order'),
+    path('product_purchase_entries/', get_product_purchase_entries_view, name='product_purchase_entries'), # JSON API to get PPEs of POs
     
     # Routes for managing SOs
     path('sales_order/', create_sales_order_view, name='sales_order'),

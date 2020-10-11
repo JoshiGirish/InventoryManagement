@@ -67,6 +67,7 @@
             
         // }
 
+        // This function fetches a filtered list of objects. The argument is the filter input tag.
         function fetchData(element){
           var searchParams = new URLSearchParams(window.location.search)
           var filterId = $(element).parent().parent().attr('id')
@@ -86,6 +87,8 @@
             }        
           }
 
+        // This function is similar to fetchData but can be invoked by any element other than filter input tags.
+        // Note the arguments passed in both the functions.
           function updateTable(table_type){ // table --> display or selection
             console.log('I am in updateTable!')
             if(table_type == 'display'){

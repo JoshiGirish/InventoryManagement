@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event,get_parameter_list_from_request
+import json
 
 
 def create_purchase_order_view(request):
@@ -304,27 +305,15 @@ def print_purchase_order_view(request, pk):
 
 def get_product_purchase_entries_view(request):
     if request.method == 'GET':
-        pks = get_parameter_list_from_request(request,'pks')
-        print(pks)
+        # pks = get_parameter_list_from_request(request,'pks')
+        pks = request.GET.getlist('pks[]')
+        # pks = request.GET.get('pks')
         ppes = []
         for pk in pks:
-            ppes.append(PurchaseOrder.objects.get(id=pk).productpurchaseentry_set.all())
+            ppes.extend(PurchaseOrder.objects.get(id=int(pk)).productpurchaseentry_set.all())
         ppes_serialized = []
         for ppe in ppes:
             d = PPEntrySerializer(ppe)
             ppes_serialized.append(d.data)
-        ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm, can_delete=True)
-        data = {
-            'form-TOTAL_FORMS': len(ppes),
-            'form-INITIAL_FORMS': len(ppes),
-            'form-MAX_NUM_FORMS': '',
-        }
-        print(ppes_serialized)
-        pentry_formset = ProductPurchaseEntryFormset(data, initial=ppes)
-        pentry_form = ProductPurchaseEntryForm()
-        context = {
-            'pentry_form': pentry_form,
-            'pentry_formset': pentry_formset,
-            'ppes': ppes_serialized,
-        }
-        return render(request, 'purchase_order/update_purchase_order.html', context)
+    return JsonResponse(ppes_serialized, safe=False)
+        # return render(request, 'purchase_order/update_purchase_order.html', context)

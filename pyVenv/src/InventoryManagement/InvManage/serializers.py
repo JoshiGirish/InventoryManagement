@@ -51,6 +51,7 @@ class ConsumerSerializer(serializers.ModelSerializer):
 
 class PPEntrySerializer(serializers.ModelSerializer):
     ppe_id = serializers.IntegerField(source='pk')
+    order = serializers.IntegerField(source='order.po')
     product = ProductSerializer()
     class Meta:
         model = ProductPurchaseEntry
