@@ -103,6 +103,9 @@ def create_grn_view(request):
         create_event(new_grn,'Created')
         return redirect('purchase_order')
 
+def create_grn_with_po_reference_view(request):
+    pass
+
 
 def display_grns_view(request):
     if request.method == 'GET':

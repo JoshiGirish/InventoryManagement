@@ -41,14 +41,15 @@
         </div>
     </div>
     <script>
-      $('#selModalSubmitBtn').on('click',function(){
+       $('#selModalSubmitBtn').on('click', function(){ get_ppes(); update_po_references(); });
+      function update_po_references(){
         $('#id_grn-poRef').html('');
         $('#selection_pane_table tbody tr').each(function(index,tag){
           var val = $(tag).data('id'); // Row identifier
           var txt = 'PO #' + $(tag).children().first().text() + ' [' + $(tag).data('vendor') + ']'; // Cell text
           $('#id_grn-poRef').append(new Option(txt, val));
         })
-      })
+      }
     </script>
     <style>
       /* .appBtn:hover{
