@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from InvManage.forms import *
 from django.forms.formsets import formset_factory
 from InvManage.models import *
-from InvManage.filters import PurchaseOrderFilter
+from InvManage.filters import GoodsReceiptNoteFilter
 from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
@@ -21,20 +21,14 @@ def create_grn_view(request):
     grnentry_form = GRNEntryForm()
     if request.method == 'GET':
         grn_form = GRNInfo()
-        vendor_form = VendorForm()
         prods = []
         for i, prod in enumerate(Product.objects.all()):
             prods.append({'id': prod.id, 'name': prod.name,
                           'code': prod.identifier})
-        vendors = []
-        for i, vend in enumerate(Vendor.objects.all()):
-            vendors.append({'id': vend.id, 'name': vend.name})
         context = {
             'grn_form': grn_form,
             'grnentry_form': grnentry_form,
             'prods': prods,
-            'vendors': vendors,
-            'vendor_form': vendor_form,
             'grnentry_formset': grnentry_formset,
             'grnes': {},
             'requested_view_type': 'create',
@@ -45,7 +39,7 @@ def create_grn_view(request):
         print(request.POST)
         GRNEntryFormset = formset_factory(
             GRNEntryForm, can_delete=True)
-        grn_form = PurchaseOrderBasicInfo(request.POST, prefix='grn')
+        grn_form = GoodsReceiptNoteBasicInfo(request.POST, prefix='grn')
         grnentry_formset = GRNEntryFormset(
             request.POST, prefix='form')
         data = {}
@@ -56,43 +50,50 @@ def create_grn_view(request):
             vendor = grn_form.cleaned_data.get('vendor')
             grn = grn_form.cleaned_data.get('grn')
             date = grn_form.cleaned_data.get('date')
-            tax = grn_form.cleaned_data.get('tax')
-            discount = grn_form.cleaned_data.get('discount')
-            paid = grn_form.cleaned_data.get('paid')
-            balance = grn_form.cleaned_data.get('balance')
-            subtotal = grn_form.cleaned_data.get('subtotal')
-            taxtotal = grn_form.cleaned_data.get('taxtotal')
-            ordertotal = grn_form.cleaned_data.get('ordertotal')
+            poRef = grn_form.cleaned_data.get('poRef')
+            identifier = grn_form.cleaned_data.get('identifier')
+            grnType = grn_form.cleaned_data.get('grnType')
+            amendNumber = grn_form.cleaned_data.get('amendNumber')
+            amendDate = grn_form.cleaned_data.get('amendDate')
+            vehicleNumber = grn_form.cleaned_data.get('gateInwardNumber')
+            gateInwardNumber = grn_form.cleaned_data.get('gateInwardNumber')
+            preparedBy = grn_form.cleaned_data.get('preparedBy')
+            checkedBy = grn_form.cleaned_data.get('checkedBy')
+            inspectedBy = grn_form.cleaned_data.get('inspectedBy')
+            approvedBy = grn_form.cleaned_data.get('approvedBy')
+            
             data = {
                 'vendor': vendor,
                 'grn': grn,
                 'date': date,
-                'tax': tax,
-                'discount': discount,
-                'paid': paid,
-                'balance': balance,
-                'subtotal': subtotal,
-                'taxtotal': taxtotal,
-                'ordertotal': ordertotal
+                'poRef':poRef,
+                'identifier':identifier,
+                'grnType':grnType,
+                'amendNumber':amendNumber,
+                'amendDate':amendDate,
+                'vehicleNumber':vehicleNumber,
+                'gateInwardNumber':gateInwardNumber,
+                'preparedBy':preparedBy,
+                'checkedBy':checkedBy,
+                'inspectedBy':inspectedBy,
+                'approvedBy':approvedBy
             }
-            new_grn = PurchaseOrder.objects.create(**data)
-            for ppeform in grnentry_formset:
-                if ppeform.is_valid():
-                    ppe_id = ppeform.cleaned_data.get('ppe_id')
-                    product = ppeform.cleaned_data.get('product')
-                    quantity = ppeform.cleaned_data.get('quantity')
-                    price = ppeform.cleaned_data.get('price')
-                    discount = ppeform.cleaned_data.get('discount')
-                    order = PurchaseOrder.objects.get(id=new_grn.pk)
-                    print(ppe_id)
-                    validated_data = {'ppe_id': ppe_id,
+            new_grn = GoodsReceiptNote.objects.create(**data)
+            for grneform in grnentry_formset:
+                if grneform.is_valid():
+                    grne_id = grneform.cleaned_data.get('grne_id')
+                    product = grneform.cleaned_data.get('product')
+                    quantity = grneform.cleaned_data.get('quantity')
+                    
+                    print(grne_id)
+                    validated_data = {'grne_id': grne_id,
                                       'product': ProductSerializer(product).data,
                                       'quantity': quantity,
                                       'price': price,
                                       'discount': discount,
                                       'order': new_grn.pk,
                                       }
-                    if ppe_id == -1:  # new ppe to be created if id is -1
+                    if grne_id == -1:  # new ppe to be created if id is -1
                         pentry = PPEntrySerializer(data=validated_data)
                         if pentry.is_valid():
                             pentry.save()
@@ -105,10 +106,10 @@ def create_grn_view(request):
 
 def display_grns_view(request):
     if request.method == 'GET':
-        grns = PurchaseOrder.objects.all()
+        grns = GoodsReceiptNote.objects.all()
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
-        myFilter = PurchaseOrderFilter(request.GET, queryset=grns)
+        myFilter = GoodsReceiptNoteFilter(request.GET, queryset=grns)
         queryset = myFilter.qs
         number_of_objects = len(queryset)
         page_number = request.GET.get('page')
@@ -128,7 +129,7 @@ def display_grns_view(request):
 
 def delete_grn_view(request, pk):
     if request.method == 'POST':
-        grn = PurchaseOrder.objects.get(id=pk)
+        grn = GoodsReceiptNote.objects.get(id=pk)
         create_event(grn,'Deleted')
         grn.delete()
         return redirect('purchase_order')
@@ -138,7 +139,7 @@ def update_grn_view(request):
     if request.method == 'GET':
         pk = request.GET.get('pk')
         print(pk)
-        grn = PurchaseOrder.objects.get(id=pk)
+        grn = GoodsReceiptNote.objects.get(id=pk)
         grn_data = grn.__dict__
         vendor = grn.vendor
         ven_data = vendor.__dict__
@@ -146,7 +147,7 @@ def update_grn_view(request):
         ship_data = company.shippingaddress.__dict__
         GRNEntryFormset = formset_factory(
             GRNEntryForm, can_delete=True)
-        grnes = PurchaseOrder.objects.get(id=pk).productpurchaseentry_set.all()
+        grnes = GoodsReceiptNote.objects.get(id=pk).productpurchaseentry_set.all()
         grnes_serialized = []
         for ppe in grnes:
             d = PPEntrySerializer(ppe)
@@ -159,7 +160,7 @@ def update_grn_view(request):
         print(grnes_serialized)
         grnentry_formset = GRNEntryFormset(data, initial=grnes)
         grnentry_form = GRNEntryForm()
-        grn_form = PurchaseOrderBasicInfo(initial=grn_data)
+        grn_form = GoodsReceiptNoteBasicInfo(initial=grn_data)
         # print(grn_form)
         vendor_form = VendorForm(initial=ven_data)
         shipping_form = ShippingAddressForm(initial=ship_data)
@@ -189,7 +190,7 @@ def update_grn_view(request):
         print(pk)
         GRNEntryFormset = formset_factory(
             GRNEntryForm, can_delete=True)
-        grn_form = PurchaseOrderBasicInfo(request.POST, prefix='grn')
+        grn_form = GoodsReceiptNoteBasicInfo(request.POST, prefix='grn')
         grnentry_formset = GRNEntryFormset(
             request.POST, prefix='form')
         data = {}
@@ -218,17 +219,17 @@ def update_grn_view(request):
                 'taxtotal': taxtotal,
                 'ordertotal': ordertotal
             }
-            PurchaseOrder.objects.filter(id=pk).update(**data)
-            for ppeform in grnentry_formset:
-                if ppeform.is_valid():
-                    ppe_id = ppeform.cleaned_data.get('ppe_id')
-                    product = ppeform.cleaned_data.get('product')
-                    quantity = ppeform.cleaned_data.get('quantity')
-                    price = ppeform.cleaned_data.get('price')
-                    discount = ppeform.cleaned_data.get('discount')
-                    order = PurchaseOrder.objects.get(id=pk)
-                    print(ppe_id)
-                    validated_data = {'ppe_id': ppe_id,
+            GoodsReceiptNote.objects.filter(id=pk).update(**data)
+            for grneform in grnentry_formset:
+                if grneform.is_valid():
+                    grne_id = grneform.cleaned_data.get('grne_id')
+                    product = grneform.cleaned_data.get('product')
+                    quantity = grneform.cleaned_data.get('quantity')
+                    price = grneform.cleaned_data.get('price')
+                    discount = grneform.cleaned_data.get('discount')
+                    order = GoodsReceiptNote.objects.get(id=pk)
+                    print(grne_id)
+                    validated_data = {'grne_id': grne_id,
                                     #   'product': product.__dict__,
                                       'product': ProductSerializer(product).data,
                                       'quantity': quantity,
@@ -236,7 +237,7 @@ def update_grn_view(request):
                                       'discount': discount,
                                       'order': pk,
                                       }
-                    if ppe_id == -1:  # new ppe to be created if id is -1
+                    if grne_id == -1:  # new ppe to be created if id is -1
                         pentry = PPEntrySerializer(data=validated_data)
                         if pentry.is_valid():
                             pentry.save()
@@ -244,39 +245,39 @@ def update_grn_view(request):
                         else:
                             print(pentry.errors)
                     else:
-                        ppe = GRNEntry.objects.get(id=ppe_id)
+                        ppe = GRNEntry.objects.get(id=grne_id)
                         # print(ppe)
                         old_quantity = ppe.quantity
-                        # ppeform.cleaned_data.update({'order':order})
-                        # validated_data.update({'ppe_id': ppe_id})
+                        # grneform.cleaned_data.update({'order':order})
+                        # validated_data.update({'grne_id': grne_id})
                         # print(validated_data)
                         pentry = PPEntrySerializer(ppe, data=validated_data)
                         if pentry.is_valid():
                             # print(validated_data)
                             pentry.save()
-                            # GRNEntry.objects.filter(id=ppe_id).update(product=product,quantity=quantity,price=price,discount=discount,order=order)
+                            # GRNEntry.objects.filter(id=grne_id).update(product=product,quantity=quantity,price=price,discount=discount,order=order)
                             # Add the difference of quantity to the product stock as it is updated ppe
                             product.quantity += quantity-old_quantity
                             product.save()  # Save the changes to the product instance
                         else:
                             print(pentry.errors)
-            for ppeform in grnentry_formset.deleted_forms:
-                print(ppeform.is_valid())
-                ppe_id = ppeform.cleaned_data.get('ppe_id')
-                print(ppe_id)
-                product = ppeform.cleaned_data.get('product')
-                quantity = ppeform.cleaned_data.get('quantity')
-                if ppe_id != -1:
-                    ppe = GRNEntry.objects.get(id=ppe_id)
+            for grneform in grnentry_formset.deleted_forms:
+                print(grneform.is_valid())
+                grne_id = grneform.cleaned_data.get('grne_id')
+                print(grne_id)
+                product = grneform.cleaned_data.get('product')
+                quantity = grneform.cleaned_data.get('quantity')
+                if grne_id != -1:
+                    ppe = GRNEntry.objects.get(id=grne_id)
                     product.quantity -= quantity
                     ppe.delete()
-        create_event(PurchaseOrder.objects.get(id=pk),'Updated')
+        create_event(GoodsReceiptNote.objects.get(id=pk),'Updated')
         return redirect('purchase_order')
 
 
 def print_grn_view(request, pk):
     if request.method == 'GET':
-        grn = PurchaseOrder.objects.get(id=pk)
+        grn = GoodsReceiptNote.objects.get(id=pk)
         company = Company.objects.all().last()
         company_shippingaddress = company.shippingaddress
         vendor_communication = grn.vendor.communication

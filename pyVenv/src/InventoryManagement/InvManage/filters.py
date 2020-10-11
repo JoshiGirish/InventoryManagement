@@ -88,6 +88,30 @@ class PurchaseOrderFilter(django_filters.FilterSet):
         model = PurchaseOrder
         fields = {}
         
+        
+class GoodsReceiptNoteFilter(django_filters.FilterSet):
+    context = {'class':'form-control form-control-sm','onchange':'fetchData(this);enableHighlight();'}
+    vendor = django_filters.CharFilter(field_name='vendor__name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    poRef = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    grnType = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    amendNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    amendDate = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    vehicleNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    gateInwardNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    preparedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    checkedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    inspectedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    approvedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    ordering = django_filters.OrderingFilter(
+        fields = (
+            ('vendor__name','vendor'),
+        )
+    )
+    class Meta:
+        model = GoodsReceiptNote
+        fields = {}
+
 
 class SalesOrderFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onchange':'fetchData(this);enableHighlight();'}

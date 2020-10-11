@@ -301,3 +301,30 @@ def print_purchase_order_view(request, pk):
                             communication=vendor_communication))
         print(JsonResponse(invoice_serializer.data))
     return JsonResponse(invoice_serializer.data)
+
+def get_product_purchase_entries_view(request):
+    if request.method == 'GET':
+        pks = get_parameter_list_from_request(request,'pks')
+        print(pks)
+        ppes = []
+        for pk in pks:
+            ppes.append(PurchaseOrder.objects.get(id=pk).productpurchaseentry_set.all())
+        ppes_serialized = []
+        for ppe in ppes:
+            d = PPEntrySerializer(ppe)
+            ppes_serialized.append(d.data)
+        ProductPurchaseEntryFormset = formset_factory(ProductPurchaseEntryForm, can_delete=True)
+        data = {
+            'form-TOTAL_FORMS': len(ppes),
+            'form-INITIAL_FORMS': len(ppes),
+            'form-MAX_NUM_FORMS': '',
+        }
+        print(ppes_serialized)
+        pentry_formset = ProductPurchaseEntryFormset(data, initial=ppes)
+        pentry_form = ProductPurchaseEntryForm()
+        context = {
+            'pentry_form': pentry_form,
+            'pentry_formset': pentry_formset,
+            'ppes': ppes_serialized,
+        }
+        return render(request, 'purchase_order/update_purchase_order.html', context)

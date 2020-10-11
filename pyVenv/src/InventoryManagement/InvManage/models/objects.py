@@ -82,7 +82,7 @@ class GoodsReceiptNote(models.Model):
     # Transport
     vehicleNumber = models.TextField(default=None,null=True, blank=True)
     gateInwardNumber = models.TextField(default=None, null=True, blank=True)
-    # Validationa and Approval authorities
+    # Validation and Approval authorities
     preparedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
     checkedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
     inspectedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
@@ -148,6 +148,7 @@ class GRNEntry(models.Model):
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
     grn = models.ForeignKey(GoodsReceiptNote,on_delete=models.CASCADE)
+    ppes = models.ForeignKey(ProductPurchaseEntry, on_delete=models.CASCADE, null=True)
     remark = models.TextField(default=None, null=True, blank=True)
     receivedQty = models.IntegerField(default=0, null=True, blank=True)
     acceptedQty = models.IntegerField(default=0, null=True, blank=True)
