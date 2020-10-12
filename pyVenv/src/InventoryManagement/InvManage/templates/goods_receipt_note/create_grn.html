@@ -74,7 +74,7 @@
 </div>
 
 </div>
-  <div class="my-2" style="height: 400px; overflow: auto;">
+  <div class="my-4" style="height: 600px; overflow: auto;">
     {% include "goods_receipt_note/grn_products.html" %}
   </div>
 </form>
@@ -198,6 +198,12 @@
           $('#add').removeAttr('hidden');
           $('#id_grn-poRef').children().remove(); // Remove all selection in the multiple select
           $('#selection_pane_table tbody').children().remove(); // Remove all selection from the selection pane in the dialog box
+          $('#addProduct tr').children().each(function(delBtnIndex,delBtnTag){ // Deletes all the manual GRN Entries 
+            deleteRow(delBtnTag);
+          })
+          $('#grnEntryTable tr').each(function(ind,tag){
+            $(tag).children().first().removeAttr('hidden'); // Hide the delete btn cells
+          })
         }
         else{
           $('#selectPOBtn').attr('onClick', "updateTable('selection');enableHighlight();").removeAttr('disabled').css('cursor','pointer').css('color','#208efc');
