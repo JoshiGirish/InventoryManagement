@@ -37,7 +37,6 @@ urlpatterns = [
     
     # Routes for managing GRNs
     path('grn/', create_grn_view, name='grn'),
-    path('grn_po_ref', create_grn_with_po_reference_view, name='grn_po_ref'),
     path('grns/',display_grns_view, name='grns'),
     path('grn/update', update_grn_view, name='update_grn'),
     path('grn/<str:pk>/delete', delete_grn_view, name='delete_grn'),

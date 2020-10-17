@@ -94,6 +94,59 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
+    
+
+class GRNEntrySerializer(serializers.ModelSerializer):
+    grne_id = serializers.IntegerField(source='pk')
+    product = ProductSerializer()
+    grn = serializers.IntegerField(source='grn.pk')
+    class Meta:
+        model = GRNEntry
+        fields = ('grn','grne_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('pk')
+        # print(self.data)
+        prod = Product.objects.get(id=self.data['product']['prod_id'])
+        validated_data['product']=prod
+        grn = GoodsReceiptNote.objects.get(id=self.data['grn'])
+        validated_data['grn']=grn
+        try:
+            ppe = ProductPurchaseEntry.objects.get(id=self.data['ppes']['pk'])
+            validated_data['ppes']=ppe
+        except KeyError:
+            pass
+        return GRNEntry.objects.create(**validated_data)
+
+    def update(self, instance,validated_data):
+        # print(instance)
+        prod = Product.objects.get(id=validated_data['product']['pk'])
+        instance.product = prod
+        # print(validated_data)
+        # instance.product = validated_data.get('product', validated_data['product'])
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.price = validated_data.get('price', instance.price)
+        instance.discount = validated_data.get('discount', instance.discount)
+        instance.order = validated_data.get('order',instance.order)
+        instance.save()
+        return instance
+    
+
+class GoodsReceiptNoteSerializer(serializers.ModelSerializer):
+    grnes = GRNEntrySerializer(source='grnentry_set', many=True)
+    date = serializers.DateField(format="%d-%b-%Y")
+
+    class Meta:
+        model = GoodsReceiptNote
+        fields = ('grnes','date','vendor','poRef','identifier','grnType','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data
 
 
 class PSEntrySerializer(serializers.ModelSerializer):

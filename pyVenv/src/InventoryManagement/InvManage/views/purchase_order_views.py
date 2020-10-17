@@ -101,7 +101,7 @@ def create_purchase_order_view(request):
                         pentry = PPEntrySerializer(data=validated_data)
                         if pentry.is_valid():
                             pentry.save()
-                            product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
+                            # product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
                         else:
                             print(pentry.errors)
         create_event(new_po,'Created')
@@ -111,6 +111,10 @@ def create_purchase_order_view(request):
 def display_purchase_orders_view(request):
     if request.method == 'GET':
         exclude_ids = get_parameter_list_from_request(request,'exclude')
+        vendor_names = get_parameter_list_from_request(request,'vendor_names')
+        # if vendor_names:
+        # pos = PurchaseOrder.objects.filter(vendor__name=vendor_names).exclude(pk__in=exclude_ids)
+        # else:
         pos = PurchaseOrder.objects.all().exclude(pk__in=exclude_ids)
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
