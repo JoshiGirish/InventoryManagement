@@ -26,7 +26,8 @@
 				border: 1px solid violet;
 			} */
 			:root {
-				--base-font: 'Comfortaa', cursive;
+				/* --base-font: 'Roboto', sans-serif; */
+				--base-font: 'Commissioner', sans-serif;
 			}
 			.app-name{
 				font-family: 'Orbitron', sans-serif;
@@ -170,7 +171,7 @@
 				border-style: solid;
 				border-color: #e7e7e7;
 				height: 30px;
-				font-size: 0.95em;
+				font-size: 1em;
 			}
 			.table td, .table th, .table input {
 				text-align: center;
@@ -206,7 +207,13 @@
 				top: 0;
 				z-index: 2;
 			}
-	
+			
+			.table td.fit, 
+			.table th.fit {
+				white-space: nowrap;
+				width: 1%;
+			}
+
 			.disabled *{
 				background-color: #f8f8f8;
 				opacity: 1;
@@ -259,6 +266,12 @@
 		<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
 		<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
 		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Commissioner&family=Raleway&display=swap" rel="stylesheet"> 
 		<link rel="stylesheet" href="{% static 'jquery-ui.min.css' %}">
 
 		<!-- JSpdf dependencies -->

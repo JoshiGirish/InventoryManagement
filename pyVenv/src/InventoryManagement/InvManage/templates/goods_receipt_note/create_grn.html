@@ -30,6 +30,14 @@
                 {{ grn_form.grnType }}
             </div>  
         </div>
+        <div class="form-group form-row m-1">
+          <div class="col-sm-4">
+              <label id="vendorLabel">Selelct a vendor</label>
+          </div>
+          <div class="col-sm-8">
+              {{ grn_form.vendor }}
+          </div>
+      </div>
         <div class="d-flex flex-row form-group form-row m-1">
           <div id="poRefLabel" class="col-sm-4 d-flex flex-row justify-content-between" style="color: #c8c8c8">
             <div>{{ grn_form.poRef.label }}</div>
@@ -174,6 +182,7 @@
         var vendor = $('tr.click_highlight td[data-type="vendor"]').text();
         if(txt){
           $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+"><td>"+txt+"</td></tr>");
+          $('#id_vendor').val(vendor); // This sets the vendor name in the vendor filter input
           enableHighlight();
           updateTable('selection');
         }
@@ -181,6 +190,9 @@
       })
       $('#removeObjectFromSelection').on('click',function(){
         $('#selection_pane_table tbody tr.click_highlight').first().remove();
+        if ($('#selection_pane_table tbody').children().length == 0){ // If the selection pane has no rows left remove text from vendor filter input
+          $('#id_vendor').val(''); // This resets the vendor filter input text
+        }
         enableHighlight();
         updateTable('selection');
       })
@@ -194,25 +206,27 @@
         if($('#id_grn-grnType option:selected').val() == 'manual'){ // 'manual' is internam name for Blank GRN option
           $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').css('cursor','default').css('color','#c8c8c8');
           $('#poRefLabel').css('color','#c8c8c8'); // Apply inactive color to the PO reference label
+          $('#vendorLabel').css('color','black'); // Re-assert the color of vendor label
+          $('#id_grn-vendor').removeAttr('disabled'); // Enable the vendor selection list
           $('#header_poRef').attr('hidden','hidden');
           $('#add').removeAttr('hidden');
           $('#id_grn-poRef').children().remove(); // Remove all selection in the multiple select
           $('#selection_pane_table tbody').children().remove(); // Remove all selection from the selection pane in the dialog box
-          $('#addProduct tr').children().each(function(delBtnIndex,delBtnTag){ // Deletes all the manual GRN Entries 
-            deleteRow(delBtnTag);
-          })
+          $('#addProduct tr').remove(); // This deletes the rows
           $('#grnEntryTable tr').each(function(ind,tag){
             $(tag).children().first().removeAttr('hidden'); // Hide the delete btn cells
           })
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of GRN entry forms
         }
         else{
           $('#selectPOBtn').attr('onClick', "updateTable('selection');enableHighlight();").removeAttr('disabled').css('cursor','pointer').css('color','#208efc');
           $('#poRefLabel').css('color','black'); // Re-assert the color of PO reference label
           $('#header_poRef').removeAttr('hidden'); // Unhides the PO reference column header in the GRN Entry table
+          $('#vendorLabel').css('color','#c8c8c8'); // Apply inactive color to the vendor selection label
+          $('#id_grn-vendor').attr('disabled','true').css('cursor','default'); // Disable vendor selection list
           $('#add').attr('hidden','hidden'); // Hides the add button
-          $('#addProduct tr').children().each(function(delBtnIndex,delBtnTag){ // Deletes all the manual GRN Entries 
-            deleteRow(delBtnTag);
-          })
+          $('#addProduct tr').remove(); // This deletes the rows
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of GRN entry forms
         }
       }
 

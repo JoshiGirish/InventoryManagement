@@ -5,6 +5,8 @@ def create_event(obj,event):
     modName = type(obj).__name__
     if modName == 'PurchaseOrder': # not all models have "name" field
         objName = '# '+ str(obj.po)
+    elif modName == 'GoodsReceiptNote':
+        objName = '# '+ str(obj.identifier)
     elif modName == 'SalesOrder':
         objName = '# '+ str(obj.so)
     else:
