@@ -44,10 +44,12 @@
        $('#selModalSubmitBtn').on('click', function(){ get_ppes(); update_po_references(); });
       function update_po_references(){
         $('#id_grn-poRef').html('');
+        $('#id_grn-poRef-hidden').html('');
         $('#selection_pane_table tbody tr').each(function(index,tag){
           var val = $(tag).data('id'); // Row identifier
           var txt = 'PO #' + $(tag).children().first().text() + ' [' + $(tag).data('vendor') + ']'; // Cell text
-          $('#id_grn-poRef').append(new Option(txt, val));
+          $('#id_grn-poRef').append(new Option(txt, val, true, true));
+          $('#id_grn-poRef-hidden').append(new Option(txt, val, true, true));
         })
       }
     </script>

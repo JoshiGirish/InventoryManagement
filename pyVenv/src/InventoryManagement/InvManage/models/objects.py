@@ -67,7 +67,6 @@ class GoodsReceiptNote(models.Model):
         ('manual', 'Blank'),
         ('auto', 'PO Reference')
     ]
-    
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     poRef = models.ManyToManyField(PurchaseOrder)
