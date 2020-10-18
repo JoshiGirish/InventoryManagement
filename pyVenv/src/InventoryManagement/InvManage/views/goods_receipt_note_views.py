@@ -52,7 +52,7 @@ def create_grn_view(request):
         print(grnentry_formset.is_valid())
         print(grnentry_formset.errors)
         grn_fields_without_poRef = ['date','vendor','identifier','grnType','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
-        grn_fields_with_poRef = ['date','poRef','identifier','grnType','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
+        grn_fields_with_poRef = ['date','vendor','identifier','grnType','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
         if grn_form.is_valid():
             if request.POST.get('grn-grnType') == 'manual':
                 for field in grn_fields_without_poRef:
@@ -62,6 +62,10 @@ def create_grn_view(request):
                     data[field]=grn_form.cleaned_data.get(field)
             
             new_grn = GoodsReceiptNote.objects.create(**data)
+            # Add Purchase Order references to the GRN
+            poRefs = grn_form.cleaned_data.get('poRef')
+            for po in poRefs:
+                new_grn.poRef.add(po)
             grne_fields_without_poRef = ['grne_id','product','quantity','grn','remark','receivedQty','acceptedQty', 'rejectedQty']
             grne_fields_with_poRef = ['grne_id','product','quantity','grn','ppes','remark','receivedQty','acceptedQty', 'rejectedQty']
             for grneform in grnentry_formset:
@@ -71,7 +75,7 @@ def create_grn_view(request):
                         validated_data[field]=grneform.cleaned_data.get(field)
                     validated_data['ppes']=None
                 elif request.POST.get('grn-grnType') == 'auto':
-                    if grneform.cleaned_data.get('receivedQty')<=0: # for GRN type of PO reference, skip GRN entry creation if no quantity is received
+                    if int(grneform.cleaned_data.get('receivedQty'))<=0: # for GRN type of PO reference, skip GRN entry creation if no quantity is received
                         continue
                     for field in grne_fields_with_poRef:
                         validated_data[field]=grneform.cleaned_data.get(field)

@@ -37,6 +37,7 @@
           <div class="col-sm-8">
               {{ grn_form.vendor }}
           </div>
+          <input name="grn-vendor" type="text" class="form-control" required="" id="id_grn-vendor-for-PO" hidden>
       </div>
         <div class="d-flex flex-row form-group form-row m-1">
           <div id="poRefLabel" class="col-sm-4 d-flex flex-row justify-content-between" style="color: #c8c8c8">
@@ -44,6 +45,8 @@
           </div>
           <div class="col-sm-8 d-flex flex-row">
             {{ grn_form.poRef }}
+            <select name="grn-poRef" class="form-control" id="id_grn-poRef-hidden" multiple="" hidden></select>
+          
             <div class="py-1">
               <button  id="selectPOBtn"
                 href="" 
@@ -183,6 +186,16 @@
         if(txt){
           $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+"><td>"+txt+"</td></tr>");
           $('#id_vendor').val(vendor); // This sets the vendor name in the vendor filter input
+          $('#id_grn-vendor').children().each(function(ind,option_tag){
+            if(option_tag.text == vendor){ // Also set the vendor value in the drop down selection list
+              $(option_tag).attr('selected','selected');
+              $('#id_grn-vendor-for-PO').val($(option_tag).val());
+            }
+            else{
+              $(option_tag).removeAttr('selected');
+            }
+          })
+          
           enableHighlight();
           updateTable('selection');
         }
@@ -207,7 +220,8 @@
           $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').css('cursor','default').css('color','#c8c8c8');
           $('#poRefLabel').css('color','#c8c8c8'); // Apply inactive color to the PO reference label
           $('#vendorLabel').css('color','black'); // Re-assert the color of vendor label
-          $('#id_grn-vendor').removeAttr('disabled'); // Enable the vendor selection list
+          $('#id_grn-vendor').removeAttr('disabled').attr('name','grn-vendor'); // Enable the vendor selection list
+          $('#id_grn-vendor-for-PO').attr('disabled','true'); // Disable the hidden vendor input for PO reference
           $('#header_poRef').attr('hidden','hidden');
           $('#add').removeAttr('hidden');
           $('#id_grn-poRef').children().remove(); // Remove all selection in the multiple select
@@ -224,6 +238,7 @@
           $('#header_poRef').removeAttr('hidden'); // Unhides the PO reference column header in the GRN Entry table
           $('#vendorLabel').css('color','#c8c8c8'); // Apply inactive color to the vendor selection label
           $('#id_grn-vendor').attr('disabled','true').css('cursor','default'); // Disable vendor selection list
+          $('#id_grn-vendor-for-PO').removeAttr('disabled'); // Enable the hidden vendor input for PO reference
           $('#add').attr('hidden','hidden'); // Hides the add button
           $('#addProduct tr').remove(); // This deletes the rows
           $('#id_form-TOTAL_FORMS').val(0); // Reset the number of GRN entry forms
