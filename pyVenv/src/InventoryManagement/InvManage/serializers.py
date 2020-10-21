@@ -98,11 +98,12 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
 
 class GRNEntrySerializer(serializers.ModelSerializer):
     grne_id = serializers.IntegerField(source='pk')
+    ppe_id = serializers.IntegerField(source='ppes.pk')
     product = ProductSerializer()
     grn = serializers.IntegerField(source='grn.pk')
     class Meta:
         model = GRNEntry
-        fields = ('grn','grne_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
+        fields = ('grn','grne_id','ppe_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
@@ -110,13 +111,15 @@ class GRNEntrySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('pk')
-        # print(self.data)
+        print('\n\n\n')
+        print(self.data)
+        print('\n\n\n')
         prod = Product.objects.get(id=self.data['product']['prod_id'])
         validated_data['product']=prod
         grn = GoodsReceiptNote.objects.get(id=self.data['grn'])
         validated_data['grn']=grn
         try:
-            ppe = ProductPurchaseEntry.objects.get(id=self.data['ppes']['pk'])
+            ppe = ProductPurchaseEntry.objects.get(id=self.data['ppe_id'])
             validated_data['ppes']=ppe
         except KeyError:
             pass

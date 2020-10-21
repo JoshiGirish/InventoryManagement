@@ -67,19 +67,20 @@ def create_grn_view(request):
             for po in poRefs:
                 new_grn.poRef.add(po)
             grne_fields_without_poRef = ['grne_id','product','quantity','grn','remark','receivedQty','acceptedQty', 'rejectedQty']
-            grne_fields_with_poRef = ['grne_id','product','quantity','grn','ppes','remark','receivedQty','acceptedQty', 'rejectedQty']
+            grne_fields_with_poRef = ['grne_id','product','quantity','grn','ppe_id','remark','receivedQty','acceptedQty', 'rejectedQty']
             for grneform in grnentry_formset:
                 validated_data={}
                 if request.POST.get('grn-grnType') == 'manual':
                     for field in grne_fields_without_poRef:
                         validated_data[field]=grneform.cleaned_data.get(field)
-                    validated_data['ppes']=None
+                    validated_data['ppe_id']=None
                 elif request.POST.get('grn-grnType') == 'auto':
                     if int(grneform.cleaned_data.get('receivedQty'))<=0: # for GRN type of PO reference, skip GRN entry creation if no quantity is received
                         continue
                     for field in grne_fields_with_poRef:
                         validated_data[field]=grneform.cleaned_data.get(field)
-                    validated_data['ppes']=PPEntrySerializer(grneform.cleaned_data.get('ppes')).data
+                    ppe_pk = grneform.cleaned_data.get('ppe_id')
+                    validated_data['ppe_id']=PPEntrySerializer(ProductPurchaseEntry.objects.get(id=ppe_pk)).data
                 validated_data['product']=ProductSerializer(grneform.cleaned_data.get('product')).data
                 validated_data['grn']=new_grn.pk
                 grne_id = grneform.cleaned_data.get('grne_id')     
@@ -98,7 +99,7 @@ def create_grn_view(request):
 def display_grns_view(request):
     if request.method == 'GET':
         grns = GoodsReceiptNote.objects.all()
-        state = FilterState.objects.get(name='POs_basic')
+        state = FilterState.objects.get(name='GRNs_basic')
         column_list = change_column_position(request, state)
         myFilter = GoodsReceiptNoteFilter(request.GET, queryset=grns)
         queryset = myFilter.qs
@@ -110,12 +111,12 @@ def display_grns_view(request):
             vend_id = dict['vendor_id']
             vendor = Vendor.objects.get(id=vend_id)
             dict['vendor'] = vendor.name
-        return render(request, 'purchase_order/purchase_order_contents.html', {'page_obj': page_obj,
+        return render(request, 'goods_receipt_note/grn_contents.html', {'page_obj': page_obj,
                                                                                'myFilter': myFilter,
                                                                                'n_prod': number_of_objects,
                                                                                'columns': column_list,
                                                                                'dicts': dictionaries,
-                                                                               'url': request.build_absolute_uri('/purchase_orders/')})
+                                                                               'url': request.build_absolute_uri('/grns/')})
 
 
 def delete_grn_view(request, pk):
@@ -123,38 +124,32 @@ def delete_grn_view(request, pk):
         grn = GoodsReceiptNote.objects.get(id=pk)
         create_event(grn,'Deleted')
         grn.delete()
-        return redirect('purchase_order')
+        return redirect('grns')
 
 
 def update_grn_view(request):
     if request.method == 'GET':
+        ###### Fetch all the required data from the database ###########
         pk = request.GET.get('pk')
         print(pk)
         grn = GoodsReceiptNote.objects.get(id=pk)
         grn_data = grn.__dict__
         vendor = grn.vendor
         ven_data = vendor.__dict__
-        company = Company.objects.all().last()
-        ship_data = company.shippingaddress.__dict__
-        GRNEntryFormset = formset_factory(
-            GRNEntryForm, can_delete=True)
-        grnes = GoodsReceiptNote.objects.get(id=pk).productpurchaseentry_set.all()
+        grnes = GoodsReceiptNote.objects.get(id=pk).grnentry_set.all()
         grnes_serialized = []
-        for ppe in grnes:
-            d = PPEntrySerializer(ppe)
+        for grne in grnes:
+            d = GRNEntrySerializer(grne)
             grnes_serialized.append(d.data)
+        print('\n\n\n')
+        print(grnes_serialized)
+        print('\n\n\n')
         data = {
             'form-TOTAL_FORMS': len(grnes),
             'form-INITIAL_FORMS': len(grnes),
             'form-MAX_NUM_FORMS': '',
         }
         print(grnes_serialized)
-        grnentry_formset = GRNEntryFormset(data, initial=grnes)
-        grnentry_form = GRNEntryForm()
-        grn_form = GRNInfo(initial=grn_data)
-        # print(grn_form)
-        vendor_form = VendorForm(initial=ven_data)
-        shipping_form = ShippingAddressForm(initial=ship_data)
         prods = []
         for i, prod in enumerate(Product.objects.all()):
             prods.append({'id': prod.id, 'name': prod.name,
@@ -162,6 +157,12 @@ def update_grn_view(request):
         vendors = []
         for i, vend in enumerate(Vendor.objects.all()):
             vendors.append({'id': vend.id, 'name': vend.name})
+        ######## Initialize forms for GRN and GRN Entries ##################
+        GRNEntryFormset = formset_factory(GRNEntryForm, can_delete=True)
+        grnentry_formset = GRNEntryFormset(data, initial=grnes)
+        grnentry_form = GRNEntryForm()
+        grn_form = GRNInfo(initial=grn_data)
+        vendor_form = VendorForm(initial=ven_data)
         context = {
             'grn_form': grn_form,
             'grnentry_form': grnentry_form,
@@ -171,11 +172,10 @@ def update_grn_view(request):
             'vendor_form': vendor_form,
             'grnentry_formset': grnentry_formset,
             'grnes': grnes_serialized,
-            'shipping_form': shipping_form,
             'requested_view_type': 'update',
             'pk': pk,
         }
-        return render(request, 'purchase_order/update_purchase_order.html', context)
+        return render(request, 'goods_receipt_note/update_grn.html', context)
     if request.method == 'POST':
         pk = request.POST.get('pk')
         print(pk)

@@ -160,3 +160,8 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+# https://stackoverflow.com/a/53967426/10529395
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)

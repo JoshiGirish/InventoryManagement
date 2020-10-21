@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import RedirectView
 
 from InvManage.views import *
 
@@ -63,7 +64,8 @@ urlpatterns = [
     # Route for history
     path('history/', display_history_view, name='history'),
 
-    url(r'^api-auth/', include('rest_framework.urls'))
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^favicon\.ico$',RedirectView.as_view(url='/static/warehouse-colored-blue.svg')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
