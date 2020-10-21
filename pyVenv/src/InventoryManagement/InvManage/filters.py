@@ -91,6 +91,7 @@ class PurchaseOrderFilter(django_filters.FilterSet):
         
 class GoodsReceiptNoteFilter(django_filters.FilterSet):
     context = {'class':'form-control form-control-sm','onchange':'fetchData(this);enableHighlight();'}
+    identifier = django_filters.CharFilter(field_name='identifier',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     vendor = django_filters.CharFilter(field_name='vendor__name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     poRef = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))

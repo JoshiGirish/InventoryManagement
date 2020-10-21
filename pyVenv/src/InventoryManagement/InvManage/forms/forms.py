@@ -162,7 +162,7 @@ class GRNEntryForm(forms.Form):
                                             "class": "form-control",
                                             "onchange":"setIdentifier(this)"}))
     grne_id = forms.IntegerField(widget=forms.TextInput(attrs={"value":""}))
-    ppe = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    ppe_id = forms.IntegerField(widget=forms.TextInput(attrs=context))
     quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
     remark = forms.CharField(widget=forms.TextInput(attrs=context), required=False)
     receivedQty = forms.CharField(widget=forms.TextInput(attrs=context))
