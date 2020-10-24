@@ -58,6 +58,7 @@
             setCorousel(cookie);
             getObjects();
             
+            // This function fetches the entries to be displayed in the objects display table in the display view
             function getObjects(){
               var searchParams = new URLSearchParams(window.location.search)
               $('#tableData').load("{% url 'grns' %} #objTable", searchParams.toString());

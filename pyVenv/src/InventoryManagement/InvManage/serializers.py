@@ -98,12 +98,11 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
 
 class GRNEntrySerializer(serializers.ModelSerializer):
     grne_id = serializers.IntegerField(source='pk')
-    ppe_id = serializers.IntegerField(source='ppes.pk')
     product = ProductSerializer()
     grn = serializers.IntegerField(source='grn.pk')
     class Meta:
         model = GRNEntry
-        fields = ('grn','grne_id','ppe_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
+        fields = ('grn','grne_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
@@ -118,23 +117,55 @@ class GRNEntrySerializer(serializers.ModelSerializer):
         validated_data['product']=prod
         grn = GoodsReceiptNote.objects.get(id=self.data['grn'])
         validated_data['grn']=grn
-        try:
-            ppe = ProductPurchaseEntry.objects.get(id=self.data['ppe_id'])
-            validated_data['ppes']=ppe
-        except KeyError:
-            pass
+        return GRNEntry.objects.create(**validated_data)
+    
+    def update(self, instance,validated_data):
+        prod = Product.objects.get(id=validated_data['product']['pk'])
+        instance.product = prod
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.receivedQty = validated_data.get('receivedQty', instance.receivedQty)
+        instance.acceptedQty = validated_data.get('acceptedQty', instance.acceptedQty)
+        instance.rejectedQty = validated_data.get('rejectedQty',instance.rejectedQty)
+        instance.remark = validated_data.get('remark',instance.remark)
+        instance.save()
+        return instance
+    
+    
+class GRNEntryWithPORefSerializer(serializers.ModelSerializer):
+    grne_id = serializers.IntegerField(source='pk')
+    ppe_id = serializers.IntegerField(source='ppes.pk')
+    po_id = serializers.IntegerField(source='ppes.order.po')
+    product = ProductSerializer()
+    grn = serializers.IntegerField(source='grn.pk')
+    class Meta:
+        model = GRNEntry
+        fields = ('grn','grne_id','ppe_id','po_id','product','quantity','receivedQty', 'acceptedQty','rejectedQty','remark')
+
+    def to_representation(self,instance):
+        data = super().to_representation(instance)
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('pk')
+        print('\n\n\n')
+        print(self.data)
+        print('\n\n\n')
+        prod = Product.objects.get(id=self.data['product']['prod_id'])
+        validated_data['product']=prod
+        grn = GoodsReceiptNote.objects.get(id=self.data['grn'])
+        validated_data['grn']=grn
+        ppe = ProductPurchaseEntry.objects.get(id=self.data['ppe_id'])
+        validated_data['ppes']=ppe
         return GRNEntry.objects.create(**validated_data)
 
     def update(self, instance,validated_data):
-        # print(instance)
         prod = Product.objects.get(id=validated_data['product']['pk'])
         instance.product = prod
-        # print(validated_data)
-        # instance.product = validated_data.get('product', validated_data['product'])
-        instance.quantity = validated_data.get('quantity', instance.quantity)
-        instance.price = validated_data.get('price', instance.price)
-        instance.discount = validated_data.get('discount', instance.discount)
-        instance.order = validated_data.get('order',instance.order)
+        instance.quantity = int(validated_data.get('quantity', instance.quantity))
+        instance.receivedQty = int(validated_data.get('receivedQty', instance.receivedQty))
+        instance.acceptedQty = int(validated_data.get('acceptedQty', instance.acceptedQty))
+        instance.rejectedQty = int(validated_data.get('rejectedQty',instance.rejectedQty))
+        instance.remark = validated_data.get('remark',instance.remark)
         instance.save()
         return instance
     
