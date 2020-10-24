@@ -147,7 +147,7 @@ class GRNEntry(models.Model):
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
     grn = models.ForeignKey(GoodsReceiptNote,on_delete=models.CASCADE)
-    ppes = models.ForeignKey(ProductPurchaseEntry, on_delete=models.CASCADE, null=True)
+    ppes = models.ForeignKey(ProductPurchaseEntry, on_delete=models.CASCADE, null=True, blank=True)
     remark = models.TextField(default=None, null=True, blank=True)
     receivedQty = models.IntegerField(default=0, null=True, blank=True)
     acceptedQty = models.IntegerField(default=0, null=True, blank=True)

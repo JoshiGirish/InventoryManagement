@@ -96,7 +96,7 @@ class GRNInfo(forms.Form):
         ('manual', 'Blank'),
         ('auto', 'PO Reference')
     ]
-    poRef = forms.MultipleChoiceField(choices=PurchaseOrder.objects.all().values_list('id', 'po'),label="PO References", required=False, widget=forms.SelectMultiple(attrs=context))
+    poRef = forms.MultipleChoiceField(choices=PurchaseOrder.objects.all().values_list('pk', 'po'),label="PO References", required=False, widget=forms.SelectMultiple(attrs=context))
     identifier = forms.CharField(label="GRN Number",widget=forms.TextInput(attrs=context)) 
     date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
     grnType = forms.ChoiceField(choices=TYPE_CHOICES, label="Receipt Type", widget=forms.Select(attrs=context))
@@ -162,7 +162,7 @@ class GRNEntryForm(forms.Form):
                                             "class": "form-control",
                                             "onchange":"setIdentifier(this)"}))
     grne_id = forms.IntegerField(widget=forms.TextInput(attrs={"value":""}))
-    ppe_id = forms.IntegerField(widget=forms.TextInput(attrs=context))
+    ppe_id = forms.IntegerField(widget=forms.TextInput(attrs=context), required=False)
     quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
     remark = forms.CharField(widget=forms.TextInput(attrs=context), required=False)
     receivedQty = forms.CharField(widget=forms.TextInput(attrs=context))

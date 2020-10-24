@@ -116,21 +116,6 @@
       // };
       // initialData();
       updateTable('selection'); // Initializes PO data in the selection modal on page load
-      // Function for fetching product to be updated using AJAX
-      function updateData(tag){
-        var id = $(tag).data('id');
-        console.log(id)
-      $.ajax({
-          url: "{% url 'update_grn' %}",
-          data: {
-              'pk': id
-          },
-          dataType:'html',
-          success: function(data){
-            $('#data').html($('#updatedData',data).html())
-          }
-      });
-    };
 
     // Highlighting on rows on click event (only on object selectin table)
     function enableHighlight(){

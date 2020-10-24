@@ -95,15 +95,15 @@ class GoodsReceiptNoteFilter(django_filters.FilterSet):
     vendor = django_filters.CharFilter(field_name='vendor__name', lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     date = django_filters.CharFilter(field_name='date',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     poRef = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    grnType = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    amendNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    amendDate = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    vehicleNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    gateInwardNumber = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    preparedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    checkedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    inspectedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
-    approvedBy = django_filters.CharFilter(field_name='poRef',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    grnType = django_filters.CharFilter(field_name='grnType',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    amendNumber = django_filters.CharFilter(field_name='amendNumber',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    amendDate = django_filters.CharFilter(field_name='amendDate',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    vehicleNumber = django_filters.CharFilter(field_name='vehicleNumber',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    gateInwardNumber = django_filters.CharFilter(field_name='gateInwardNumber',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    preparedBy = django_filters.CharFilter(field_name='preparedBy',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    checkedBy = django_filters.CharFilter(field_name='checkedBy',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    inspectedBy = django_filters.CharFilter(field_name='inspectedBy',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
+    approvedBy = django_filters.CharFilter(field_name='approvedBy',lookup_expr= 'contains',widget=forms.TextInput(attrs=context))
     ordering = django_filters.OrderingFilter(
         fields = (
             ('vendor__name','vendor'),
@@ -164,7 +164,8 @@ class EventCardFilter(django_filters.FilterSet):
         ('PurchaseOrder', 'Purchase Order'),
         ('Product', 'Product'),
         ('Consumer', 'Consumer'),
-        ('SalesOrder', 'Sales Order')
+        ('SalesOrder', 'Sales Order'),
+        ('GoodsReceiptNote', 'Goods Receipt Note')
     )
     
     OPERATION_CHOICES = (

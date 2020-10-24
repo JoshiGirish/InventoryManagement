@@ -36,29 +36,8 @@
           var p_id = -1;
           $('#id_form-TOTAL_FORMS').val(0); // Reset the number of forms on page refresh  
 
-          // --------- Create View ------------- //
-          {% if requested_view_type == "create" %}
-            // addRow(null,-1,data[0].id,data[0].code,0,0,0,prefix)
-          {% endif %}
-          var prefix = 'form';
-
-          // --------- Update View -------------//
-          {% if requested_view_type == "update" %}
-          var grnes = JSON.parse(document.getElementById('grnes-data').textContent);
-          console.log(grnes)
-            for(var i=0;i<grnes.length;i++){
-              if(grnes[i].product == null){ // If the product is deleted from the database
-                addRow(null,grnes[i].grne_id,null,'---', grnes[i].quantity,grnes[i].price,grnes[i].discount,prefix)
-              }
-              else{
-                var ind = data.findIndex(p => p.id == grnes[i].product.pk) // Index of product element in data dictionary
-                addRow(null,grnes[i].grne_id,grnes[i].product.pk,data[ind].code, grnes[i].quantity,grnes[i].price,grnes[i].discount,prefix)
-              }
-            }
-          {% endif %}
-
           // Add row function
-          function addRow(tag,grne_id=-1,ppe_id=-1,prod_id=data[0].id,identifier=data[0].code,quantity=0,received=0,accepted=0,rejected=0,remarks='',prefix='form'){
+          function addRow(tag,grne_id=-1,prod_id=data[0].id,identifier=data[0].code,quantity=0,received=0,accepted=0,rejected=0,remarks='',prefix='form'){
             var opt='';
             var i;
             console.log(grne_id)
@@ -71,7 +50,6 @@
               }
             }
             grne = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-grne_id" id="id_'+prefix+'-'+count+'-grne_id" value="'+grne_id+'"></td>';
-            ppe_id = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-ppe_id" id="id_'+prefix+'-'+count+'-ppe_id" value="'+ppe_id+'"></td>';
             var xxx = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-DELETE" id="id_'+prefix+'-'+count+'-DELETE" value=""></td>';
             var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>';
             var sel = '<td><select onchange="setIdentifier(this)" class="form-control" data-num="'+count+'" name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product">'+opt+'</select></td>';
@@ -92,31 +70,77 @@
             $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
             };
 
-            // Add row function
-            function addRow_poRef(tag,grne_id=-1,poRef='',ppe_id=-1,prod_name=data[0].name, prod_id=data[0].id, identifier=data[0].code,quantity=0,received=0,accepted=0,rejected=0,remarks='',prefix='form'){
-              console.log(grne_id)
-              grne = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-grne_id" id="id_'+prefix+'-'+count+'-grne_id" value="'+grne_id+'"></td>';
-              ppe_id = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-ppe_id" id="id_'+prefix+'-'+count+'-ppe_id" value="'+ppe_id+'"></td>';
-              var xxx = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-DELETE" id="id_'+prefix+'-'+count+'-DELETE" value=""></td>';
-              var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;"><i class="fas fa-minus-circle"></i></span></div></td>';
-              var poR = '<td><label name="'+prefix+'-'+count+'-poRef" id="id_'+prefix+'-'+count+'-poRef" readonly>'+poRef+'</label></td>';
-              var sel = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product" value="'+prod_id+'" hidden>'+prod_name+'</td>';
-              var ids = '<td><label name="'+prefix+'-'+count+'-id" id="id_'+prefix+'-'+count+'-id" readonly>'+identifier+'</label></td>';
-              var qty = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value="'+quantity+'" readonly></td>';
-              var rec = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-receivedQty" id="id_'+prefix+'-'+count+'-receivedQty" value="'+received+'"></td>';
-              var acc = '<td><input class="form-control" data-num='+count+' oninput="updateRejected(this)" type="text" name="'+prefix+'-'+count+'-acceptedQty" id="id_'+prefix+'-'+count+'-acceptedQty" value="'+accepted+'"></td>';
-              var rej = '<td><input class="form-control" data-num='+count+' type="text" name="'+prefix+'-'+count+'-rejectedQty" id="id_'+prefix+'-'+count+'-rejectedQty" value="'+rejected+'" readonly></td>';
-              var rem = '<td><input class="form-control" data-num='+count+' type="text" name="'+prefix+'-'+count+'-remark" id="id_'+prefix+'-'+count+'-remark" value="'+remarks+'"></td>';
-              // rows.innerHTML += '<tr><td id="prod'+count+'">'+sel+'</td><td><label name="id'+count+'" id="id'+count+'"></label></td><td><input class="form-control" type="text" name="qty'+count+'" id="qty'+count+'"></td><td><input class="form-control" type="text" name="price'+count+'" id="price'+count+'"></td><td><input class="form-control" type="text" name="dis'+count+'" id="dis'+count+'"></td><td><label name="subt'+count+'" id="subt'+count+'"></label></td></tr>';           
-              var markup ='<tr id="id_row-'+count+'" data-num="'+count+'" style="line-height:60%;">'+del+poR+sel+ids+qty+rec+acc+rej+rem+xxx+grne+ppe_id+'</tr>';           
-              $('#addProduct').append(markup);
-              if(prod_name==null){
-                disableRow(count, prefix)
-              };
-              count++;
-              var form_idx = $('#id_form-TOTAL_FORMS').val();
-              $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+          // Add row function
+          function addRow_poRef(tag,grne_id=-1,poRef='',ppe_id=-1,prod_name=data[0].name, prod_id=data[0].id, identifier=data[0].code,quantity=0,received=0,accepted=0,rejected=0,remarks='',prefix='form'){
+            console.log(grne_id)
+            grne = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-grne_id" id="id_'+prefix+'-'+count+'-grne_id" value="'+grne_id+'"></td>';
+            ppe_id = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-ppe_id" id="id_'+prefix+'-'+count+'-ppe_id" value="'+ppe_id+'"></td>';
+            var xxx = '<td hidden="hidden"><input data-num='+count+' type="text" name="'+prefix+'-'+count+'-DELETE" id="id_'+prefix+'-'+count+'-DELETE" value=""></td>';
+            var del = '<td><div onClick="deleteRow(this)"><span style="font-size: 1em; color: Tomato; cursor: pointer;" hidden><i class="fas fa-minus-circle"></i></span></div></td>';
+            var poR = '<td><label name="'+prefix+'-'+count+'-poRef" id="id_'+prefix+'-'+count+'-poRef" readonly>'+poRef+'</label></td>';
+            var sel = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-product" id="id_'+prefix+'-'+count+'-product" value="'+prod_id+'" hidden>'+prod_name+'</td>';
+            var ids = '<td><label name="'+prefix+'-'+count+'-id" id="id_'+prefix+'-'+count+'-id" readonly>'+identifier+'</label></td>';
+            var qty = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-quantity" id="id_'+prefix+'-'+count+'-quantity" value="'+quantity+'" readonly></td>';
+            var rec = '<td><input class="form-control" data-num='+count+' name="'+prefix+'-'+count+'-receivedQty" id="id_'+prefix+'-'+count+'-receivedQty" value="'+received+'"></td>';
+            var acc = '<td><input class="form-control" data-num='+count+' oninput="updateRejected(this)" type="text" name="'+prefix+'-'+count+'-acceptedQty" id="id_'+prefix+'-'+count+'-acceptedQty" value="'+accepted+'"></td>';
+            var rej = '<td><input class="form-control" data-num='+count+' type="text" name="'+prefix+'-'+count+'-rejectedQty" id="id_'+prefix+'-'+count+'-rejectedQty" value="'+rejected+'" readonly></td>';
+            var rem = '<td><input class="form-control" data-num='+count+' type="text" name="'+prefix+'-'+count+'-remark" id="id_'+prefix+'-'+count+'-remark" value="'+remarks+'"></td>';
+            // rows.innerHTML += '<tr><td id="prod'+count+'">'+sel+'</td><td><label name="id'+count+'" id="id'+count+'"></label></td><td><input class="form-control" type="text" name="qty'+count+'" id="qty'+count+'"></td><td><input class="form-control" type="text" name="price'+count+'" id="price'+count+'"></td><td><input class="form-control" type="text" name="dis'+count+'" id="dis'+count+'"></td><td><label name="subt'+count+'" id="subt'+count+'"></label></td></tr>';           
+            var markup ='<tr id="id_row-'+count+'" data-num="'+count+'" style="line-height:60%;">'+del+poR+sel+ids+qty+rec+acc+rej+rem+xxx+grne+ppe_id+'</tr>';           
+            $('#addProduct').append(markup);
+            if(prod_name==null){
+              disableRow(count, prefix)
             };
+            count++;
+            var form_idx = $('#id_form-TOTAL_FORMS').val();
+            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+          };
+
+          // --------- Create View ------------- //
+          {% if requested_view_type == "create" %}
+            // addRow(null,-1,data[0].id,data[0].code,0,0,0,prefix)
+          {% endif %}
+          var prefix = 'form';
+
+          // --------- Update View -------------//
+          {% if requested_view_type == "update" %}
+            // Creates existing grn entries
+            function construct_grn_entries(){
+              change_ui_as_per_grn_type();
+
+              // Disable the GRN Type selection list, vendor selection list, PO reference fields, and PO selection button
+              $('#grnTypeLabel').addClass('disabled')
+              $('#vendorLabel').addClass('disabled')
+              $('#id_grn-grnType').attr('disabled','true')
+              $('#id_grn-vendor').attr('disabled','true')
+              $('#poRefFields').addClass('disabled')
+              $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').css('cursor','default').css('color','#c8c8c8');
+              $('#id_grn-vendor-for-PO').removeAttr('disabled');
+
+              var grnes = JSON.parse(document.getElementById('grnes-data').textContent);
+              console.log(grnes)
+                for(var i=0;i<grnes.length;i++){ // If the product is not deleted from the database
+                  if(grnes[i].product){ 
+                    var ind = data.findIndex(p => p.id == grnes[i].product.pk) // Index of product element in data dictionary
+                    if(grnes[i].ppe_id){ // If the entry has po reference
+                      addRow_poRef(null,grnes[i].grne_id,grnes[i].po_id,grnes[i].ppe_id,grnes[i].product.name,grnes[i].product.pk,grnes[i].product.identifier, grnes[i].quantity,grnes[i].receivedQty,grnes[i].acceptedQty,grnes[i].rejectedQty,grnes[i].remark,prefix)
+                    }
+                    else{
+                      addRow(null,grnes[i].grne_id,grnes[i].product.pk,grnes[i].product.identifier, grnes[i].quantity,grnes[i].receivedQty,grnes[i].acceptedQty,grnes[i].rejectedQty,grnes[i].remark,prefix)
+                    }
+                  }
+                  else{ // If the product is deleted from the database
+                    if(grnes[i].ppe_id){ // If the entry has po reference
+                      addRow_poRef(null,grnes[i].grne_id,grnes[i].po_id,grnes[i].ppe_id,null,'---', grnes[i].quantity,grnes[i].receivedQty,grnes[i].acceptedQty,grnes[i].rejectedQty,grnes[i].remark,prefix)
+                    }
+                    else{
+                      addRow(null,grnes[i].grne_id,null,'---', grnes[i].quantity,grnes[i].receivedQty,grnes[i].acceptedQty,grnes[i].rejectedQty,grnes[i].remark,prefix)
+                    }
+                  }
+                }
+            }
+            construct_grn_entries();
+          {% endif %}
           
           // Disables rows whose products have been deleted from the database
           function disableRow(num, prefix){
@@ -166,7 +190,7 @@
                   var poRef = obj.order;
                   var ppe_id = obj.ppe_id;
                   var prod_name = obj.product.name;
-                  var prod_id = obj.product.id;
+                  var prod_id = obj.product.pk;
                   var identifier = obj.product.identifier;
                   var quantity = obj.quantity;
                   addRow_poRef(null,-1, poRef, ppe_id, prod_name, prod_id,identifier, quantity,0,0,0,'')

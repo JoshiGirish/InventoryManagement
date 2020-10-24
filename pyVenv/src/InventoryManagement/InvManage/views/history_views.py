@@ -48,7 +48,8 @@ def display_history_view(request):
                   'Consumer': '/consumer/update',
                   'Product': '/product/update',
                   'PurchaseOrder': '/purchase_order/update',
-                  'SalesOrder': '/sales_order/update'}
+                  'SalesOrder': '/sales_order/update',
+                  'GoodsReceiptNote':'/grn/update'}
         return render(request, 'history/history.html',{'dicts': dictionaries,
                                                        'lookupRoute':lookup,
                                                        'myFilter':myFilter,
