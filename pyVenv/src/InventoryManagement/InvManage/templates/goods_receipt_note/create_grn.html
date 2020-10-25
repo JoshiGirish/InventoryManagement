@@ -117,23 +117,28 @@
       // initialData();
       updateTable('selection'); // Initializes PO data in the selection modal on page load
 
-    // Highlighting on rows on click event (only on object selectin table)
+    // Highlighting on rows on click event (only on object selection table)
     function enableHighlight(){
-      $('#selModal table tbody tr').on('click', function(event) {
-        $(this).removeClass('hover_highlight');
-        $(this).addClass('click_highlight').siblings().removeClass('click_highlight');
-        });
-
-        $('#selModal table tbody tr').on('mouseover', function(event) {
+        // Click Highlight
+        $('#selModal table tbody tr[data-status="False"]').on('click', function(event) {
+          $(this).removeClass('hover_highlight');
+          $(this).addClass('click_highlight').siblings().removeClass('click_highlight');
+          });
+        // Hover in highlight
+        $('#selModal table tbody tr[data-status="False"]').on('mouseover', function(event) {
             if (!$(this).hasClass('click_highlight')){
                 $(this).addClass('hover_highlight').siblings().removeClass('hover_highlight');
             }
             $(this).css('cursor', 'pointer');
         });
-        $('#selModal table tbody tr').on('mouseout', function(event) {
+        // Hover out highlight
+        $('#selModal table tbody tr[data-status="False"]').on('mouseout', function(event) {
             $(this).removeClass('hover_highlight');
             $(this).css('cursor', 'pointer');
         });
+        // Disable row highlight
+        $('#selModal table tbody tr[data-status="True"]').attr('disabled','true').addClass('disabled');
+
       }
 
 
@@ -168,8 +173,9 @@
         var pk = $('tr.click_highlight').first().data('pk');
         var txt = $('#selectionTable tbody tr.click_highlight td').first().text();
         var vendor = $('tr.click_highlight td[data-type="vendor"]').text();
+        var status = $('tr.click_highlight').first().data('status');
         if(txt){
-          $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+"><td>"+txt+"</td></tr>");
+          $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+" data-status="+status+"><td>"+txt+"</td></tr>");
           $('#id_vendor').val(vendor); // This sets the vendor name in the vendor filter input
           $('#id_grn-vendor').children().each(function(ind,option_tag){
             if(option_tag.text == vendor){ // Also set the vendor value in the drop down selection list

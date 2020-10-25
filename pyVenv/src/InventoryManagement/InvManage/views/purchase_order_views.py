@@ -124,10 +124,11 @@ def display_purchase_orders_view(request):
         page_number = request.GET.get('page')
         page_obj, dictionaries = paginate(queryset, myFilter, page_number)
         # dictionary contains only vendor id and not vendor name. So add it.
-        for dict in dictionaries:
-            vend_id = dict['vendor_id']
+        for dictionary in dictionaries:
+            dictionary['status'] = PurchaseOrder.objects.get(id=dictionary['id']).is_complete()
+            vend_id = dictionary['vendor_id']
             vendor = Vendor.objects.get(id=vend_id)
-            dict['vendor'] = vendor.name
+            dictionary['vendor'] = vendor.name
         print(dictionaries)
         if request.GET.get('form') == 'objectFilterForm' or request.GET.get('form') == None:
             return render(request, 'purchase_order/purchase_order_contents.html', {'page_obj': page_obj,
