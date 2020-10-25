@@ -51,7 +51,6 @@ class PurchaseOrder(models.Model):
     # Order details
     date = models.DateTimeField(default=timezone.now().strftime("%d %B, %Y"),null=True, blank=True)
     po = models.IntegerField()
-    status = models.BooleanField(default=False, null=True, blank=False) # PO completion status
     # Pricing information
     discount = models.FloatField(default=0,null=True)
     tax = models.FloatField(default=0,null=True)
@@ -61,6 +60,21 @@ class PurchaseOrder(models.Model):
     taxtotal = models.FloatField(default=0,null=True)
     ordertotal = models.FloatField(default=0,null=True)
     
+    def is_complete(self):
+        completionStatus = True
+        for ppe in self.productpurchaseentry_set.all():
+            if ppe.is_complete() == False:
+                completionStatus = False
+                break
+        return completionStatus
+    
+    def pending_ppes(self):
+        ppes = []
+        for ppe in self.productpurchaseentry_set.all():
+            if ppe.is_complete() == False:
+                ppes.append(ppe)
+        return ppes
+        
 
 class GoodsReceiptNote(models.Model):
     TYPE_CHOICES = [
@@ -137,11 +151,25 @@ class ProductPurchaseEntry(models.Model):
     discount = models.FloatField(null=True)
     # subtotal = models.FloatField()
     order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
-    status = models.BooleanField(default=False, null=True, blank=False) # PPE completion status
     receivedQty = models.IntegerField(default=0, null=True, blank=True)
     acceptedQty = models.IntegerField(default=0, null=True, blank=True)
     rejectedQty = models.IntegerField(default=0, null=True, blank=True)
     
+    def is_complete(self):
+        totalAcceptedQty = 0
+        for grnentry in self.grnentry_set.all():
+            totalAcceptedQty += grnentry.acceptedQty
+        completionStatus = False
+        if totalAcceptedQty == self.quantity:
+            completionStatus = True
+        return completionStatus
+    
+    def pending_quantity(self):
+        totalAcceptedQty = 0
+        for grnentry in self.grnentry_set.all():
+            totalAcceptedQty += grnentry.acceptedQty
+        return self.quantity - totalAcceptedQty
+        
 
 class GRNEntry(models.Model):
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)

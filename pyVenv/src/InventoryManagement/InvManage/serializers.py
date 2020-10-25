@@ -147,9 +147,6 @@ class GRNEntryWithPORefSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('pk')
-        print('\n\n\n')
-        print(self.data)
-        print('\n\n\n')
         prod = Product.objects.get(id=self.data['product']['prod_id'])
         validated_data['product']=prod
         grn = GoodsReceiptNote.objects.get(id=self.data['grn'])

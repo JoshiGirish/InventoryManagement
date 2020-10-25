@@ -28,7 +28,7 @@
           </td>
         </tr>
         {% for dict in dicts %}
-        <tr class="clickable-row" data-pk="{{dict.id}}">
+        <tr class="clickable-row" data-pk="{{dict.id}}" data-status="{{dict.status}}">
           {% for column in columns %} 
             {% for key,value in dict.items %} 
               {% if key == column %}
