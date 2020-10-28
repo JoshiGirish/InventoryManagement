@@ -187,13 +187,15 @@
                 })
                 var dictionary = data;
                 $.each(dictionary,function(key,obj){
-                  var poRef = obj.order;
-                  var ppe_id = obj.ppe_id;
-                  var prod_name = obj.product.name;
-                  var prod_id = obj.product.pk;
-                  var identifier = obj.product.identifier;
-                  var quantity = obj.quantity;
-                  addRow_poRef(null,-1, poRef, ppe_id, prod_name, prod_id,identifier, quantity,0,0,0,'')
+                  if(obj.pendingQty != 0){
+                    var poRef = obj.po;
+                    var ppe_id = obj.ppe_id;
+                    var prod_name = obj.product.name;
+                    var prod_id = obj.product.pk;
+                    var identifier = obj.product.identifier;
+                    var quantity = obj.pendingQty;
+                    addRow_poRef(null,-1, poRef, ppe_id, prod_name, prod_id,identifier, quantity,0,0,0,'')
+                  }
                 })
                   $('#grnEntryTable tr').each(function(ind,tag){
                     $(tag).children().first().attr('hidden','hidden'); // Hide the delete btn cells

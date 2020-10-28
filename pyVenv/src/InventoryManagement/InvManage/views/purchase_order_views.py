@@ -308,6 +308,7 @@ def print_purchase_order_view(request, pk):
         print(JsonResponse(invoice_serializer.data))
     return JsonResponse(invoice_serializer.data)
 
+
 def get_product_purchase_entries_view(request):
     if request.method == 'GET':
         # pks = get_parameter_list_from_request(request,'pks')
@@ -319,6 +320,5 @@ def get_product_purchase_entries_view(request):
         ppes_serialized = []
         for ppe in ppes:
             d = PPEntrySerializer(ppe)
-            ppes_serialized.append(d.data)
+            ppes_serialized.append({**d.data,**{'po':ppe.order.po}})
     return JsonResponse(ppes_serialized, safe=False)
-        # return render(request, 'purchase_order/update_purchase_order.html', context)
