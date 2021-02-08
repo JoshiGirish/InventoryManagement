@@ -93,7 +93,8 @@ class GoodsReceiptNote(models.Model):
     amendNumber = models.IntegerField(default=0, null=True, blank=True)
     amendDate = models.DateTimeField(default=timezone.now, null=True, blank=True)
     # Transport
-    vehicleNumber = models.TextField(default=None,null=True, blank=True)
+    transporter = models.TextField(default=None, null=True, blank=False)
+    vehicleNumber = models.TextField(default=None,null=True, blank=False)
     gateInwardNumber = models.TextField(default=None, null=True, blank=True)
     # Validation and Approval authorities
     preparedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
@@ -198,6 +199,11 @@ class PurchaseInvoice(models.Model):
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
     communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
+class GRNInvoice(models.Model):
+    company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
+    grn = models.OneToOneField(GoodsReceiptNote,on_delete=models.SET_NULL,null=True)
+    shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
+    communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
 class SalesInvoice(models.Model):
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)

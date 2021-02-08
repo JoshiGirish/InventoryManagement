@@ -172,7 +172,7 @@
 				border-color: #e7e7e7;
 				height: 30px;
 				font-size: 1em;
-				padding: 0rem 0rem;
+				padding: 5px 0px;
 			}
 			.table td, .table th, .table input {
 				text-align: center;
@@ -239,9 +239,11 @@
 		</style>
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'dropzone.css' %}">
+		<!-- Disable all zooming and all scaling -->
+		<meta name="viewport" content="user-scalable=no" />
 </head>
 <body>
-	<div style="width: 1920px; height: 1080;">
+	<div id="mainDiv" style="width: 1920px; height: 1080;">
 		<div class="col-sm-12">
 			{% include "navbar/navbar.html" %}
 		</div>

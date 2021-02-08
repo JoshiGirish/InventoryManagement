@@ -102,6 +102,7 @@ class GRNInfo(forms.Form):
     grnType = forms.ChoiceField(choices=TYPE_CHOICES, label="Receipt Type", widget=forms.Select(attrs=context))
     amendNumber = forms.IntegerField(label="Amendment Number", widget=forms.TextInput(attrs=context))
     amendDate = forms.DateField(label="Amendment Date", widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
+    transporter = forms.CharField(label="Transporter", widget=forms.TextInput(attrs=context))
     vehicleNumber = forms.CharField(label="Vehicle Number", widget=forms.TextInput(attrs=context))
     gateInwardNumber = forms.CharField(label="Inward Number", widget=forms.TextInput(attrs=context))
     preparedBy = forms.CharField(label="Prepared By", widget=forms.TextInput(attrs=context))   

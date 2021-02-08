@@ -31,6 +31,15 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-transport" role="tabpanel" aria-labelledby="nav-transport-tab">
             <div class="card-body">
+            <!-- Transport company name field -->
+            <div class="form-group form-row m-1">
+                <div class="col-sm-4">
+                    <label>{{ grn_form.transporter.label }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ grn_form.transporter }}
+                </div>
+            </div>
             <!-- Vehicle Number field -->
             <div class="form-group form-row m-1">
                 <div class="col-sm-4">

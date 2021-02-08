@@ -48,7 +48,7 @@
               {% endfor %}
                 <td><a onclick="updateData(this);toggle();" class="btn btn-sm btn-info" data-id="{{dict.id}}">Update</a></td>
                 <td><a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-del_url="{% url 'delete_grn' dict.id %}" data-object_name="{{ dict.po }}" data-object_id="{{ dict.id }}">Delete</a></td>
-                <td><a onclick="printInvoice(this)" data-print_url="{% url 'print_grn' dict.id %}" data-po_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
+                <td><a onclick="printGRNInvoice(this)" data-print_url="{% url 'print_grn' dict.id %}" data-grn_id="{{ dict.id }}" style="font-size: 1em; cursor: pointer;"><i class="fas fa-print"></i></a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -106,7 +106,7 @@
       </div>
     </div>
     <script src="{% static 'table_manipulation.js' %}"></script>
-    <!-- <script src="{% static 'grn_invoice.js' %}"></script> -->
+    <script src="{% static 'grn_invoice.js' %}"></script>
      <script type="text/javascript">
             cookie = {
               name: 'activeProductCorousel',
