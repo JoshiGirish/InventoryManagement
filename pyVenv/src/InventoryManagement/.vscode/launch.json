@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "pythonPath": "D:\\Dev\\InventoryManagement\\pyVenv\\Scripts\\python.exe",
+            "python": "D:\\Dev\\InventoryManagement\\pyVenv\\Scripts\\python.exe",
             "program": "${workspaceRoot}/manage.py",
             "args": [
                 "runserver",
@@ -18,5 +18,6 @@
             "env": {},
             // "envFile": "D:\\Dev\\InventoryManagement\\pyVenv"
         }
+        
     ]
 }

@@ -88,7 +88,7 @@ class PPEntrySerializer(serializers.ModelSerializer):
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer()
     ppes = PPEntrySerializer(source='productpurchaseentry_set', many=True)
-    date = serializers.DateField(format="%d-%b-%Y")
+    date = serializers.DateTimeField(format="%d-%b-%Y")
 
     class Meta:
         model = PurchaseOrder
@@ -172,11 +172,12 @@ class GRNEntryWithPORefSerializer(serializers.ModelSerializer):
 
 class GoodsReceiptNoteSerializer(serializers.ModelSerializer):
     grnes = GRNEntrySerializer(source='grnentry_set', many=True)
-    date = serializers.DateField(format="%d-%b-%Y")
+    date = serializers.DateTimeField(format="%d-%b-%Y")
+    vendor = VendorSerializer()
 
     class Meta:
         model = GoodsReceiptNote
-        fields = ('grnes','date','vendor','poRef','identifier','grnType','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy')
+        fields = ('grnes','date','vendor','poRef','identifier','grnType','amendDate','transporter','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
@@ -244,6 +245,15 @@ class PurchaseInvoiceSerializer(serializers.ModelSerializer):
         model = PurchaseInvoice
         fields = ('company','po','shippingaddress','communication')
         
+class GRNInvoiceSerializer(serializers.ModelSerializer):
+    company = CompanySerializer()
+    grn = GoodsReceiptNoteSerializer()
+    shippingaddress = ShippingAddressSerializer()
+    communication = CommunicationSerializer()
+
+    class Meta:
+        model = PurchaseInvoice
+        fields = ('company','grn','shippingaddress','communication')
 
 class SalesInvoiceSerializer(serializers.ModelSerializer):
     company = CompanySerializer()

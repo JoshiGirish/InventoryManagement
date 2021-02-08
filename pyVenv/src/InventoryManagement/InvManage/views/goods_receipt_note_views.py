@@ -5,9 +5,10 @@ from django.forms.formsets import formset_factory
 from InvManage.models import *
 from InvManage.filters import GoodsReceiptNoteFilter
 from django.http import JsonResponse
-from InvManage.serializers import ProductSerializer, PPEntrySerializer, GRNEntrySerializer, GRNEntryWithPORefSerializer, GoodsReceiptNoteSerializer, PurchaseInvoiceSerializer
+from InvManage.serializers import GRNEntrySerializer, GRNEntryWithPORefSerializer, GRNInvoiceSerializer, GoodsReceiptNoteSerializer, PPEntrySerializer, ProductSerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event
+from InvManage.models.objects import GRNInvoice
 
 
 def create_grn_view(request):
@@ -49,7 +50,7 @@ def create_grn_view(request):
         print(grn_form.errors)
         print(grnentry_formset.is_valid())
         print(grnentry_formset.errors)
-        grn_fields_without_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
+        grn_fields_without_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
         if grn_form.is_valid():
             for field in grn_fields_without_poRef:
                 data[field]=grn_form.cleaned_data.get(field)            
@@ -68,7 +69,8 @@ def create_grn_view(request):
                     if grnentry.is_valid():
                         grnentry.save()
                         product = grneform.cleaned_data.get('product')
-                        product.quantity += grneform.cleaned_data.get('quantity')  # Add the quantity to the product stock as it is new grn entry
+                        product.quantity += int(grneform.cleaned_data.get('acceptedQty'))  # Add the quantity to the product stock as it is new grn entry
+                        product.save()
                     else:
                         print(grnentry.errors)
         create_event(new_grn,'Created')
@@ -79,14 +81,15 @@ def create_grn_view(request):
         grn_form = GRNInfo(request.POST, prefix='grn')
         grnentry_formset = GRNEntryFormset(request.POST, prefix='form')
         data = {}
-        print(grn_form.is_valid())
-        print(grn_form.errors)
-        print(grnentry_formset.is_valid())
-        print(grnentry_formset.errors)
-        grn_fields_with_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
+        # print(grn_form.is_valid())
+        # print(grn_form.errors)
+        # print(grnentry_formset.is_valid())
+        # print(grnentry_formset.errors)
+        grn_fields_with_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
         if grn_form.is_valid():
             for field in grn_fields_with_poRef:
                 data[field]=grn_form.cleaned_data.get(field)
+                print(data)
             new_grn = GoodsReceiptNote.objects.create(**data)
             # Add Purchase Order references to the GRN
             poRefs = grn_form.cleaned_data.get('poRef')
@@ -108,7 +111,8 @@ def create_grn_view(request):
                     if grnentry.is_valid():
                         grnentry.save()
                         product = grneform.cleaned_data.get('product')
-                        product.quantity += grneform.cleaned_data.get('quantity')  # Add the quantity to the product stock as it is new grn entry
+                        product.quantity += int(grneform.cleaned_data.get('acceptedQty'))  # Add the quantity to the product stock as it is new grn entry
+                        product.save()
                     else:
                         print(grnentry.errors)
         create_event(new_grn,'Created')
@@ -207,7 +211,7 @@ def update_grn_view(request):
             print(grn_form.errors)
             print(grnentry_formset.is_valid())
             print(grnentry_formset.errors)
-            grn_fields_without_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
+            grn_fields_without_poRef = ['date','vendor','identifier','grnType','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
             if grn_form.is_valid():
                 for field in grn_fields_without_poRef:
                     data[field]=grn_form.cleaned_data.get(field)            
@@ -255,7 +259,7 @@ def update_grn_view(request):
             grn_form = GRNInfo(request.POST, prefix='grn')
             grnentry_formset = GRNEntryFormset(request.POST, prefix='form')
             data = {}
-            grn_fields_with_poRef = ['date','identifier','amendNumber','amendDate','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
+            grn_fields_with_poRef = ['date','identifier','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber','preparedBy','checkedBy','inspectedBy','approvedBy']
             if grn_form.is_valid():
                 for field in grn_fields_with_poRef:
                     data[field]=grn_form.cleaned_data.get(field)
@@ -302,9 +306,8 @@ def print_grn_view(request, pk):
         company = Company.objects.all().last()
         company_shippingaddress = company.shippingaddress
         vendor_communication = grn.vendor.communication
-        # print(shippingaddress)
-        invoice_serializer = PurchaseInvoiceSerializer(
-            PurchaseInvoice(company=company, 
+        invoice_serializer = GRNInvoiceSerializer(
+            GRNInvoice(company=company, 
                             grn=grn, 
                             shippingaddress=company_shippingaddress, 
                             communication=vendor_communication))
