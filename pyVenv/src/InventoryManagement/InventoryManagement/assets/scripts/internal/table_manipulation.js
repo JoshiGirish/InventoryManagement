@@ -43,10 +43,13 @@
             // Get values to exclude (we need to exclude objects which are selected in the selection pane 
             // and filter them out in the back end from the queryset so they are not see in the proposed list)
             var exclude_ids = []
+            var vendor_names = []
             $('#selection_pane_table tbody tr').each(function(ind, tag){
               exclude_ids.push($(tag).data('id'));
+              vendor_names.push($(tag).data('vendor'))
             })
             data['exclude'] = exclude_ids;
+            data['vendor_names'] = vendor_names;
             console.log(data)
             return data      
         }
@@ -67,6 +70,7 @@
             
         // }
 
+        // This function fetches a filtered list of objects. The argument is the filter input tag.
         function fetchData(element){
           var searchParams = new URLSearchParams(window.location.search)
           var filterId = $(element).parent().parent().attr('id')
@@ -86,8 +90,9 @@
             }        
           }
 
+        // This function is similar to fetchData but can be invoked by any element other than filter input tags.
+        // Note the arguments passed in both the functions.
           function updateTable(table_type){ // table --> display or selection
-            console.log('I am in updateTable!')
             if(table_type == 'display'){
               var filterId = 'objectFilterForm';
               var url = $('#objectFilterForm').data('url');
@@ -96,13 +101,12 @@
               var filterId = 'selectionFilterForm';
               var url = $('#selectionFilterForm').data('url');
             }
-            console.log(filterId,url)
             var searchParams = new URLSearchParams(window.location.search)
             var data = getFilterData(filterId);
               for(var key in data){
                 searchParams.append(key,data[key]);
               }
-              searchParams.append('form', filterId); // Used to identify which table is calling (object or selection)
+              searchParams.append('form', filterId); // Used to identify which table is calling (display or selection)
               // Here objTable (innerDiv) element received from the display view will be the same despite of the type of table 
               // that requests the data.
               if(filterId=='objectFilterForm'){

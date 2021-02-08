@@ -51,7 +51,6 @@ class PurchaseOrder(models.Model):
     # Order details
     date = models.DateTimeField(default=timezone.now().strftime("%d %B, %Y"),null=True, blank=True)
     po = models.IntegerField()
-    status = models.BooleanField(default=False, null=True, blank=False) # PO completion status
     # Pricing information
     discount = models.FloatField(default=0,null=True)
     tax = models.FloatField(default=0,null=True)
@@ -61,13 +60,27 @@ class PurchaseOrder(models.Model):
     taxtotal = models.FloatField(default=0,null=True)
     ordertotal = models.FloatField(default=0,null=True)
     
+    def is_complete(self):
+        completionStatus = True
+        for ppe in self.productpurchaseentry_set.all():
+            if ppe.is_complete() == False:
+                completionStatus = False
+                break
+        return completionStatus
+    
+    def pending_ppes(self):
+        ppes = []
+        for ppe in self.productpurchaseentry_set.all():
+            if ppe.is_complete() == False:
+                ppes.append(ppe)
+        return ppes
+        
 
 class GoodsReceiptNote(models.Model):
     TYPE_CHOICES = [
         ('manual', 'Blank'),
         ('auto', 'PO Reference')
     ]
-    
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     poRef = models.ManyToManyField(PurchaseOrder)
@@ -80,9 +93,10 @@ class GoodsReceiptNote(models.Model):
     amendNumber = models.IntegerField(default=0, null=True, blank=True)
     amendDate = models.DateTimeField(default=timezone.now, null=True, blank=True)
     # Transport
-    vehicleNumber = models.TextField(default=None,null=True, blank=True)
+    transporter = models.TextField(default=None, null=True, blank=False)
+    vehicleNumber = models.TextField(default=None,null=True, blank=False)
     gateInwardNumber = models.TextField(default=None, null=True, blank=True)
-    # Validationa and Approval authorities
+    # Validation and Approval authorities
     preparedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
     checkedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
     inspectedBy = models.CharField(default=None, max_length=50, null=True, blank=True)
@@ -138,16 +152,31 @@ class ProductPurchaseEntry(models.Model):
     discount = models.FloatField(null=True)
     # subtotal = models.FloatField()
     order = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE)
-    status = models.BooleanField(default=False, null=True, blank=False) # PPE completion status
     receivedQty = models.IntegerField(default=0, null=True, blank=True)
     acceptedQty = models.IntegerField(default=0, null=True, blank=True)
     rejectedQty = models.IntegerField(default=0, null=True, blank=True)
     
+    def is_complete(self):
+        totalAcceptedQty = 0
+        for grnentry in self.grnentry_set.all():
+            totalAcceptedQty += grnentry.acceptedQty
+        completionStatus = False
+        if totalAcceptedQty == self.quantity:
+            completionStatus = True
+        return completionStatus
+    
+    def pending_quantity(self):
+        totalAcceptedQty = 0
+        for grnentry in self.grnentry_set.all():
+            totalAcceptedQty += grnentry.acceptedQty
+        return self.quantity - totalAcceptedQty
+        
 
 class GRNEntry(models.Model):
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
     grn = models.ForeignKey(GoodsReceiptNote,on_delete=models.CASCADE)
+    ppes = models.ForeignKey(ProductPurchaseEntry, on_delete=models.CASCADE, null=True, blank=True)
     remark = models.TextField(default=None, null=True, blank=True)
     receivedQty = models.IntegerField(default=0, null=True, blank=True)
     acceptedQty = models.IntegerField(default=0, null=True, blank=True)
@@ -170,6 +199,11 @@ class PurchaseInvoice(models.Model):
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
     communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
+class GRNInvoice(models.Model):
+    company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
+    grn = models.OneToOneField(GoodsReceiptNote,on_delete=models.SET_NULL,null=True)
+    shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
+    communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
 class SalesInvoice(models.Model):
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)

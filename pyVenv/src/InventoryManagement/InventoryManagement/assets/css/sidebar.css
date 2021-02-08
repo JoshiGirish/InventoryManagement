@@ -208,7 +208,7 @@ body {
 
 .sidebar-menu {
   padding-bottom: 10px;
-  font-family: 'Comfortaa', cursive;
+  font-family: var(--base-font);
   font-size: 1em;
   color: #252525;
 }
@@ -238,7 +238,7 @@ body {
   /*margin-bottom: 30px;*/
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  font-family: 'Comfortaa', cursive;
+  font-family: var(--base-font);
   list-style-type: none;
 }
 

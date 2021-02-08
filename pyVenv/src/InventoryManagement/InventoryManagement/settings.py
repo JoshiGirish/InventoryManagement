@@ -32,17 +32,18 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',
+    'InvManage',
+    'rest_framework',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'InvManage',
-    'rest_framework',
     'django_filters',
     'django_extensions',
-    'django_countries'
+    'django_countries',
+    'django-dia',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,13 @@ DATETIME_INPUT_FORMATS = [
     '%m/%d/%y %H:%M:%S.%f',  # '10/25/06 14:30:59.000200'
     '%m/%d/%y %H:%M',        # '10/25/06 14:30'
 ]
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
+# https://stackoverflow.com/a/53967426/10529395
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)

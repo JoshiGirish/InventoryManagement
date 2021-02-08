@@ -21,35 +21,7 @@
 
  
 <div class="row">
-    <div class="col-sm-6 d-flex flex-fill flex-column">
-      <div class="form-group form-row m-1">
-        <div class="col-sm-4">
-            <label>Selelct a vendor</label>
-        </div>
-        <div class="col-sm-8">
-            {{ grn_form.vendor }}
-        </div>
-      </div>
-        <!-- Vendor name field -->
-        <div class="form-group form-row m-1">
-            <div class="col-sm-4">
-                <label>{{ vendor_form.name.label }}</label>
-            </div>
-            <div class="col-sm-8">
-                {{ vendor_form.name }}
-            </div>
-        </div>
-        <!-- Vendor identifier field -->
-        <div class="form-group form-row m-1">
-            <div class="col-sm-4">
-                <label>{{ vendor_form.identifier.label }}</label>
-            </div>
-            <div class="col-sm-8">
-                {{ vendor_form.identifier }}
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 d-flex flex-fill flex-column">
+      <div class="col-sm-6 d-flex flex-fill flex-column">
         <div class="form-group form-row m-1">
             <div class="col-sm-4">
                 <label>GRN Type</label>
@@ -58,40 +30,71 @@
                 {{ grn_form.grnType }}
             </div>  
         </div>
-        <div class="d-flex flex-row form-group form-row m-1">
-          
+        <div class="form-group form-row m-1">
           <div class="col-sm-4">
+              <label id="vendorLabel">Selelct a vendor</label>
+          </div>
+          <div class="col-sm-8">
+              {{ grn_form.vendor }}
+          </div>
+          <input name="grn-vendor" type="text" class="form-control" required="" id="id_grn-vendor-for-PO" hidden>
+      </div>
+        <div class="d-flex flex-row form-group form-row m-1">
+          <div id="poRefLabel" class="col-sm-4 d-flex flex-row justify-content-between" style="color: #c8c8c8">
             <div>{{ grn_form.poRef.label }}</div>
+          </div>
+          <div class="col-sm-8 d-flex flex-row">
+            {{ grn_form.poRef }}
+            <select name="grn-poRef" class="form-control" id="id_grn-poRef-hidden" multiple="" hidden></select>
+          
             <div class="py-1">
               <button  id="selectPOBtn"
                 href="" 
-                class="btn btn-sm btn-secondary" 
+                class="btn btn-sm" 
                 data-toggle="modal" 
                 data-target="#selModal" 
                 data-object_name="{{ dict.po }}" 
                 data-object_id="{{ dict.id }}" 
                 onClick=""
                 disabled
-                style="cursor: default;">Select</button>
+                style="cursor: default; color:#c8c8c8;"><i class="fas fa-check-square" style="font-size: 1.4rem;"></i></button>
             </div>
           </div>
-          <div class="col-sm-8">
-            {{ grn_form.poRef }}
-          </div>
+          
         </div>
-      {% include "goods_receipt_note/grn_info.html" %}
+        <div class="form-group form-row m-1">
+            <div class="col-sm-4">
+              {{ grn_form.amendNumber.label }}
+            </div>
+            <div class="col-sm-8">
+                {{ grn_form.amendNumber }}
+            </div>  
+        </div>
+        <div class="form-group form-row m-1">
+          <div class="col-sm-4">
+            {{ grn_form.amendDate.label }}
+          </div>
+          <div class="col-sm-8">
+              {{ grn_form.amendDate }}
+          </div>  
+      </div>
     </div>
+    <div>
+
+  {% include "goods_receipt_note/grn_info.html" %}
 </div>
-<div style="height: 400px; overflow: auto;">
-  {% include "goods_receipt_note/grn_products.html" %}
+
 </div>
+  <div class="my-4" style="height: 600px; overflow: auto;">
+    {% include "goods_receipt_note/grn_products.html" %}
+  </div>
 </form>
 </div>
 
 {% include "reuse/selection_dialog_box/modal.html" %}
 
   <script src="{% static 'table_manipulation.js' %}"></script>
-  <!-- <script src="{% static 'grn_invoice.js' %}"></script> -->
+  <script src="{% static 'grn_invoice.js' %}"></script>
     <script type="text/javascript">
           cookie = {
             name: 'activeProductCorousel',
@@ -113,39 +116,32 @@
       // };
       // initialData();
       updateTable('selection'); // Initializes PO data in the selection modal on page load
-      // Function for fetching product to be updated using AJAX
-      function updateData(tag){
-        var id = $(tag).data('id');
-        console.log(id)
-      $.ajax({
-          url: "{% url 'update_grn' %}",
-          data: {
-              'pk': id
-          },
-          dataType:'html',
-          success: function(data){
-            $('#data').html($('#updatedData',data).html())
-          }
-      });
-    };
 
-    // Highlighting on rows on click event (only on object selectin table)
+    // Highlighting on rows on click event (only on object selection table)
     function enableHighlight(){
-      $('#selModal table tbody tr').on('click', function(event) {
-        $(this).removeClass('hover_highlight');
-        $(this).addClass('click_highlight').siblings().removeClass('click_highlight');
-        });
-
-        $('#selModal table tbody tr').on('mouseover', function(event) {
+        // Click Highlight
+        $('#selModal table tbody tr[data-status="False"]').on('click', function(event) {
+          $(this).removeClass('hover_highlight');
+          $(this).addClass('click_highlight').siblings().removeClass('click_highlight');
+          });
+        // Hover-in highlight
+        $('#selModal table tbody tr[data-status="False"]').on('mouseover', function(event) {
             if (!$(this).hasClass('click_highlight')){
                 $(this).addClass('hover_highlight').siblings().removeClass('hover_highlight');
             }
             $(this).css('cursor', 'pointer');
         });
-        $('#selModal table tbody tr').on('mouseout', function(event) {
+        // Hover-out highlight
+        $('#selModal table tbody tr[data-status="False"]').on('mouseout', function(event) {
             $(this).removeClass('hover_highlight');
             $(this).css('cursor', 'pointer');
         });
+        // Disable row highlight
+        // $('#selModal table tbody tr[data-status="True"]').attr('disabled','true').addClass('disabled');
+
+        // Hide completed purchase orders
+        $('#selModal table tbody tr[data-status="True"]').attr('hidden','true');
+
       }
 
 
@@ -160,6 +156,7 @@
           }
         });
       };
+      
       // Fetch vendor details when the user selects a vendor from the dropdown list
       $('#id_po-vendor').change(function(){
           var vendor_id = $('#id_po-vendor option:selected').val();
@@ -180,8 +177,20 @@
         var pk = $('tr.click_highlight').first().data('pk');
         var txt = $('#selectionTable tbody tr.click_highlight td').first().text();
         var vendor = $('tr.click_highlight td[data-type="vendor"]').text();
+        var status = $('tr.click_highlight').first().data('status');
         if(txt){
-          $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+"><td>"+txt+"</td></tr>");
+          $('#selection_pane_table tbody').append("<tr data-id="+pk+" data-vendor="+vendor+" data-status="+status+"><td>"+txt+"</td></tr>");
+          $('#id_vendor').val(vendor); // This sets the vendor name in the vendor filter input
+          $('#id_grn-vendor').children().each(function(ind,option_tag){
+            if(option_tag.text == vendor){ // Also set the vendor value in the drop down selection list
+              $(option_tag).attr('selected','selected');
+              $('#id_grn-vendor-for-PO').val($(option_tag).val());
+            }
+            else{
+              $(option_tag).removeAttr('selected');
+            }
+          })
+          
           enableHighlight();
           updateTable('selection');
         }
@@ -189,19 +198,48 @@
       })
       $('#removeObjectFromSelection').on('click',function(){
         $('#selection_pane_table tbody tr.click_highlight').first().remove();
+        if ($('#selection_pane_table tbody').children().length == 0){ // If the selection pane has no rows left remove text from vendor filter input
+          $('#id_vendor').val(''); // This resets the vendor filter input text
+        }
         enableHighlight();
         updateTable('selection');
       })
 
-      $('#id_grn-poRef').attr('disabled','true')
-      $('#id_grn-grnType').on('change',function(){
-        if($('#id_grn-grnType option:selected').val() == 'manual'){
-          $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').removeClass('btn-primary').addClass('btn-secondary').css('cursor','default');
+      $('#id_grn-grnType').on('change',function(){change_ui_as_per_grn_type()});
+      $('#id_grn-poRef').attr('disabled','true'); // Disable the multiple select field that displays the referenced POs. All selection is done throught the dialog box.
+      change_ui_as_per_grn_type(); // Executes on page load
+
+      // Function to configure user interface depending on which option is selected for GRN Type
+      function change_ui_as_per_grn_type(){
+        if($('#id_grn-grnType option:selected').val() == 'manual'){ // 'manual' is internam name for Blank GRN option
+          $('#selectPOBtn').removeAttr('onClick').attr('disabled','true').css('cursor','default').css('color','#c8c8c8');
+          $('#poRefLabel').css('color','#c8c8c8'); // Apply inactive color to the PO reference label
+          $('#vendorLabel').css('color','black'); // Re-assert the color of vendor label
+          $('#id_grn-vendor').removeAttr('disabled').attr('name','grn-vendor'); // Enable the vendor selection list
+          $('#id_grn-vendor-for-PO').attr('disabled','true'); // Disable the hidden vendor input for PO reference
+          $('#header_poRef').attr('hidden','hidden');
+          $('#add').removeAttr('hidden');
+          $('#id_grn-poRef').children().remove(); // Remove all selection in the multiple select
+          $('#selection_pane_table tbody').children().remove(); // Remove all selection from the selection pane in the dialog box
+          $('#addProduct tr').remove(); // This deletes the rows
+          $('#grnEntryTable tr').each(function(ind,tag){
+            $(tag).children().first().removeAttr('hidden'); // Hide the delete btn cells
+          })
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of GRN entry forms
         }
         else{
-          $('#selectPOBtn').attr('onClick', "updateTable('selection');enableHighlight();").removeAttr('disabled').addClass('btn-primary').removeClass('btn-secondary').css('cursor','pointer');
+          $('#selectPOBtn').attr('onClick', "updateTable('selection');enableHighlight();").removeAttr('disabled').css('cursor','pointer').css('color','#208efc');
+          $('#poRefLabel').css('color','black'); // Re-assert the color of PO reference label
+          $('#header_poRef').removeAttr('hidden'); // Unhides the PO reference column header in the GRN Entry table
+          $('#vendorLabel').css('color','#c8c8c8'); // Apply inactive color to the vendor selection label
+          $('#id_grn-vendor').attr('disabled','true').css('cursor','default'); // Disable vendor selection list
+          $('#id_grn-vendor-for-PO').removeAttr('disabled'); // Enable the hidden vendor input for PO reference
+          $('#add').attr('hidden','hidden'); // Hides the add button
+          $('#addProduct tr').remove(); // This deletes the rows
+          $('#id_form-TOTAL_FORMS').val(0); // Reset the number of GRN entry forms
         }
-      })
+      }
+
     </script>
     <style>
       .table tbody tr.click_highlight td {

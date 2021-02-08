@@ -26,7 +26,8 @@
 				border: 1px solid violet;
 			} */
 			:root {
-				--base-font: 'Comfortaa', cursive;
+				/* --base-font: 'Roboto', sans-serif; */
+				--base-font: 'Commissioner', sans-serif;
 			}
 			.app-name{
 				font-family: 'Orbitron', sans-serif;
@@ -74,7 +75,7 @@
 
 			body{
 				font-family: var(--base-font);
-				font-size: 1em;
+				font-size: 0.95em;
 				background-color: #f8f8f8;
 				margin: 0em;
 			}
@@ -169,6 +170,9 @@
 				background-color: #ffffff;
 				border-style: solid;
 				border-color: #e7e7e7;
+				height: 30px;
+				font-size: 1em;
+				padding: 5px 0px;
 			}
 			.table td, .table th, .table input {
 				text-align: center;
@@ -198,11 +202,23 @@
 				text-align: right;
 				padding-right: 1em;
 			}
-	
+
+			th {
+				position: sticky;
+				top: 0;
+				z-index: 2;
+			}
+			
+			.table td.fit, 
+			.table th.fit {
+				white-space: nowrap;
+				width: 1%;
+			}
+
 			.disabled *{
 				background-color: #f8f8f8;
 				opacity: 1;
-				color: gray;
+				color: #c8c8c8;
 			}
 			
 			/* .divider {
@@ -223,44 +239,53 @@
 		</style>
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'dropzone.css' %}">
+		<!-- Disable all zooming and all scaling -->
+		<meta name="viewport" content="user-scalable=no" />
 </head>
 <body>
-	<div class="col-sm-12">
-		{% include "navbar/navbar.html" %}
+	<div id="mainDiv" style="width: 1920px; height: 1080;">
+		<div class="col-sm-12">
+			{% include "navbar/navbar.html" %}
+		</div>
+
+		<div class="col-sm-12 d-flex flex-row">
+
+			<div class="col-sm-3 sidebar" style="height: 800px;">
+				{% include "crud/sidebar.html" %}
+				{% include "history/history.html" %}
+			</div>
+
+			<div class="col-sm-9 workarea d-flex flex-row justify-content-between align-items-start">
+				{% block title %}
+				{% endblock %}
+
+				{% block contents %}
+				{% endblock %}
+			</div>
+		
+		<!-- FontAwesome -->
+		<script src="{% static '76f5eda5f3.js' %}"></script> 
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Commissioner&family=Raleway&display=swap" rel="stylesheet"> 
+		<link rel="stylesheet" href="{% static 'jquery-ui.min.css' %}">
+
+		<!-- JSpdf dependencies -->
+		<script src="{% static 'jspdf.min.js' %}"></script>
+		<script src="{% static 'jspdf.plugin.autotable.min.js' %}"></script>
+		<script src="{% static 'png.js' %}"></script>
+		<script src="{% static 'zlib.js' %}"></script>	
+		<script src="{% static 'png_support.js' %}"></script>
+		<script src="{% static 'addimage.js' %}"></script>
+		<script src="{% static 'faker.min.js' %}"></script>
+		<script src="{% static 'jquery-ui.min.js' %}"></script>
 	</div>
-
-	<div class="col-sm-12 d-flex flex-row">
-
-		<div class="col-sm-3 sidebar" style="height: 800px;">
-			{% include "crud/sidebar.html" %}
-			{% include "history/history.html" %}
-		</div>
-
-		<div class="col-sm-9 workarea d-flex flex-row justify-content-between align-items-start">
-			{% block title %}
-			{% endblock %}
-
-			{% block contents %}
-			{% endblock %}
-		</div>
-	
-	<!-- FontAwesome -->
-	<script src="{% static '76f5eda5f3.js' %}"></script> 
-	<!-- Fonts -->
-	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet"> 
-	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
-	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="{% static 'jquery-ui.min.css' %}">
-
-	<!-- JSpdf dependencies -->
-	<script src="{% static 'jspdf.min.js' %}"></script>
-	<script src="{% static 'jspdf.plugin.autotable.min.js' %}"></script>
-	<script src="{% static 'png.js' %}"></script>
-	<script src="{% static 'zlib.js' %}"></script>	
-	<script src="{% static 'png_support.js' %}"></script>
-	<script src="{% static 'addimage.js' %}"></script>
-	<script src="{% static 'faker.min.js' %}"></script>
-	<script src="{% static 'jquery-ui.min.js' %}"></script>
-	
 </body>
 </html>

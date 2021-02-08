@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import RedirectView
 
 from InvManage.views import *
 
@@ -48,6 +49,7 @@ urlpatterns = [
     path('purchase_order/update', update_purchase_order_view, name='update_purchase_order'),
     path('purchase_order/<str:pk>/delete', delete_purchase_order_view, name='delete_purchase_order'),
     path('purchase_order/<str:pk>/print',print_purchase_order_view, name='print_purchase_order'),
+    path('product_purchase_entries/', get_product_purchase_entries_view, name='product_purchase_entries'), # JSON API to get PPEs of POs
     
     # Routes for managing SOs
     path('sales_order/', create_sales_order_view, name='sales_order'),
@@ -62,7 +64,8 @@ urlpatterns = [
     # Route for history
     path('history/', display_history_view, name='history'),
 
-    url(r'^api-auth/', include('rest_framework.urls'))
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^favicon\.ico$',RedirectView.as_view(url='/static/warehouse-colored-blue.svg')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

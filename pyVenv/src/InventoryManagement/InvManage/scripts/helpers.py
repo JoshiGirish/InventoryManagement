@@ -5,6 +5,8 @@ def create_event(obj,event):
     modName = type(obj).__name__
     if modName == 'PurchaseOrder': # not all models have "name" field
         objName = '# '+ str(obj.po)
+    elif modName == 'GoodsReceiptNote':
+        objName = '# '+ str(obj.identifier)
     elif modName == 'SalesOrder':
         objName = '# '+ str(obj.so)
     else:
@@ -31,8 +33,8 @@ def create_event(obj,event):
 
 def get_parameter_list_from_request(req,parameter):
     try:
-        id_string= req.GET.get('exclude')
-        exclude_ids = list(map(int, id_string.split(',')))
+        id_string= req.GET.get(parameter)
+        param_list = list(map(int, id_string.split(',')))
     except (AttributeError, ValueError) as e:
-        exclude_ids = []
-    return exclude_ids
+        param_list = []
+    return param_list

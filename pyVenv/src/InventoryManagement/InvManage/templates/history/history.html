@@ -94,6 +94,11 @@
             $('#data').html($('#updatedData',data).html()); // fetch and update the view
             $('#displayCorousel').removeClass('active'); // if the display corousel is active, de-activate it
             $('#createCorousel').addClass('active'); // set the create corousel as active
+
+            // Execute the scripts received in the ajax response
+             $('#updatedData',data).find("script").each(function(i) {
+                    eval($(this).text());
+                });
           }
       });
     };
@@ -161,7 +166,7 @@
     padding: 8px 8px 8px 8px;
     margin: 1px;
     color: #252525;
-    font-family: 'Comfortaa', cursive;
+    font-family: var(--base-font);
 	  list-style-type: none;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(46, 49, 50, 0.16) 0px 1px 2.94px 0.06px;

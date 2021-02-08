@@ -91,23 +91,24 @@ class GRNInfo(forms.Form):
     }
     product_choices = [(p.id, p.name) for p in Product.objects.all()]
     vendor_choices = ((v.id,v.name) for v in Vendor.objects.all())
+    vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
     TYPE_CHOICES = [
         ('manual', 'Blank'),
         ('auto', 'PO Reference')
     ]
-    vendor = forms.ModelChoiceField(queryset= Vendor.objects.all(),required=True, widget=forms.Select(attrs=context))
-    poRef = forms.MultipleChoiceField(label="PO References", required=True, widget=forms.SelectMultiple(attrs=context))
+    poRef = forms.MultipleChoiceField(choices=PurchaseOrder.objects.all().values_list('pk', 'po'),label="PO References", required=False, widget=forms.SelectMultiple(attrs=context))
     identifier = forms.CharField(label="GRN Number",widget=forms.TextInput(attrs=context)) 
-    date = forms.DateField(widget=forms.TextInput(attrs=context))
+    date = forms.DateField(widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
     grnType = forms.ChoiceField(choices=TYPE_CHOICES, label="Receipt Type", widget=forms.Select(attrs=context))
     amendNumber = forms.IntegerField(label="Amendment Number", widget=forms.TextInput(attrs=context))
-    amendDate = forms.DateField(label="Amendment Date", widget=forms.TextInput(attrs=context))
-    vehicleNumber = forms.CharField(widget=forms.TextInput(attrs=context))
-    gateInwardNumber = forms.CharField(widget=forms.TextInput(attrs=context))
-    preparedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
-    checkedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
-    inspectedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
-    approvedBy = forms.CharField(widget=forms.TextInput(attrs=context))   
+    amendDate = forms.DateField(label="Amendment Date", widget=forms.widgets.DateInput(attrs={"type": "date","class":"form-control"}), initial=timezone.now)
+    transporter = forms.CharField(label="Transporter", widget=forms.TextInput(attrs=context))
+    vehicleNumber = forms.CharField(label="Vehicle Number", widget=forms.TextInput(attrs=context))
+    gateInwardNumber = forms.CharField(label="Inward Number", widget=forms.TextInput(attrs=context))
+    preparedBy = forms.CharField(label="Prepared By", widget=forms.TextInput(attrs=context))   
+    checkedBy = forms.CharField(label="Checked By", widget=forms.TextInput(attrs=context))   
+    inspectedBy = forms.CharField(label="Inspected By", widget=forms.TextInput(attrs=context))   
+    approvedBy = forms.CharField(label="Approved By ", widget=forms.TextInput(attrs=context))   
     
 
 ####### Sales Order Forms #########
@@ -161,8 +162,10 @@ class GRNEntryForm(forms.Form):
                     widget=forms.Select(attrs={
                                             "class": "form-control",
                                             "onchange":"setIdentifier(this)"}))
+    grne_id = forms.IntegerField(widget=forms.TextInput(attrs={"value":""}))
+    ppe_id = forms.IntegerField(widget=forms.TextInput(attrs=context), required=False)
     quantity = forms.IntegerField(widget=forms.TextInput(attrs=context))
-    remark = forms.CharField(widget=forms.TextInput(attrs=context))
+    remark = forms.CharField(widget=forms.TextInput(attrs=context), required=False)
     receivedQty = forms.CharField(widget=forms.TextInput(attrs=context))
     acceptedQty = forms.CharField(widget=forms.TextInput(attrs=context))
     rejectedQty = forms.CharField(widget=forms.TextInput(attrs=context))

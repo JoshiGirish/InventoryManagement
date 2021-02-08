@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from InvManage.serializers import ProductSerializer, PPEntrySerializer, PurchaseInvoiceSerializer
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event,get_parameter_list_from_request
+import json
 
 
 def create_purchase_order_view(request):
@@ -100,7 +101,7 @@ def create_purchase_order_view(request):
                         pentry = PPEntrySerializer(data=validated_data)
                         if pentry.is_valid():
                             pentry.save()
-                            product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
+                            # product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
                         else:
                             print(pentry.errors)
         create_event(new_po,'Created')
@@ -110,6 +111,10 @@ def create_purchase_order_view(request):
 def display_purchase_orders_view(request):
     if request.method == 'GET':
         exclude_ids = get_parameter_list_from_request(request,'exclude')
+        vendor_names = get_parameter_list_from_request(request,'vendor_names')
+        # if vendor_names:
+        # pos = PurchaseOrder.objects.filter(vendor__name=vendor_names).exclude(pk__in=exclude_ids)
+        # else:
         pos = PurchaseOrder.objects.all().exclude(pk__in=exclude_ids)
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
@@ -119,10 +124,11 @@ def display_purchase_orders_view(request):
         page_number = request.GET.get('page')
         page_obj, dictionaries = paginate(queryset, myFilter, page_number)
         # dictionary contains only vendor id and not vendor name. So add it.
-        for dict in dictionaries:
-            vend_id = dict['vendor_id']
+        for dictionary in dictionaries:
+            dictionary['status'] = PurchaseOrder.objects.get(id=dictionary['id']).is_complete()
+            vend_id = dictionary['vendor_id']
             vendor = Vendor.objects.get(id=vend_id)
-            dict['vendor'] = vendor.name
+            dictionary['vendor'] = vendor.name
         print(dictionaries)
         if request.GET.get('form') == 'objectFilterForm' or request.GET.get('form') == None:
             return render(request, 'purchase_order/purchase_order_contents.html', {'page_obj': page_obj,
@@ -301,3 +307,18 @@ def print_purchase_order_view(request, pk):
                             communication=vendor_communication))
         print(JsonResponse(invoice_serializer.data))
     return JsonResponse(invoice_serializer.data)
+
+
+def get_product_purchase_entries_view(request):
+    if request.method == 'GET':
+        # pks = get_parameter_list_from_request(request,'pks')
+        pks = request.GET.getlist('pks[]')
+        # pks = request.GET.get('pks')
+        ppes = []
+        for pk in pks:
+            ppes.extend(PurchaseOrder.objects.get(id=int(pk)).productpurchaseentry_set.all())
+        ppes_serialized = []
+        for ppe in ppes:
+            d = PPEntrySerializer(ppe)
+            ppes_serialized.append({**d.data,**{'po':ppe.order.po}})
+    return JsonResponse(ppes_serialized, safe=False)
