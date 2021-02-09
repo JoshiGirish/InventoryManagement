@@ -93,7 +93,8 @@ function generatePDF(data,imgdata){
     sumReceived = 0;
     sumAccepted = 0;
     sumRejected = 0;
-      
+    var numPages = 0;
+
     // Returns header rows for the main table
     function headRows() {
       return [
@@ -309,7 +310,7 @@ function generatePDF(data,imgdata){
                           console.log(hookdata.cell.height);
                       },
         didDrawPage: function (hookdata){
-
+          numPages += 1;
           ////////////////// HEADER ////////////////////
 
           /////////// COMPANY LOGO ////////////////////
@@ -317,11 +318,11 @@ function generatePDF(data,imgdata){
           doc.addImage(imgdata, 'JPEG', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf) 
 
           margins = {
-            top: 15,
-            bottom: 15,
-            left: 15,
-            right: 15
-        };
+                      top: 15,
+                      bottom: 15,
+                      left: 15,
+                      right: 15
+                  };
           var lineHeight = 3;
           var atLine = margins.top;
           var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
@@ -364,7 +365,7 @@ function generatePDF(data,imgdata){
           let grn_body = []
           grn_fields_with_poRef = ['identifier','grnType','date','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber']
           grn_body.push(
-            ['PO', ':' + grn.identifier],
+            ['GRN', ':' + grn.identifier],
             ['Receipt Type',':' + (grn.grnType=='auto') ? 'GRN with PO reference' : 'GRN without PO reference'],
             ['Date',':' + grn.date],
             ['Amendment Number', ':' + grn.amendNumber],
@@ -465,8 +466,29 @@ function generatePDF(data,imgdata){
           }
         })
 
-    
-      doc.output('dataurlnewwindow');
+      
+      // Company logo
+      var img = new Image()
+      img.src = data.company.image
+      console.log(img.src)
+      img.onload = function(){
+                var imageHeightInPdf = 20;
+                for(var i=1; i<=numPages;i++){
+                  doc.setPage(i);
+                  doc.addImage(img, 'PNG', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf);
+
+                  // Add page number in the footer
+                  var str = 'Page ' + i;
+                  str = str + ' of ' + numPages;
+                  doc.setFontSize(10);
+
+                  // doc.text(str, margins.left, pageHeight - 10);
+                  doc.text(str, pageWidth-margins.right, pageHeight - 10,'right');
+                }
+        // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
+        doc.output('dataurlnewwindow');
+        }
+      
     // doc.text(str, start, atLine);
     // atLine += lineHeight+3+20;
     

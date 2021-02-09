@@ -171,7 +171,7 @@ class GRNEntryWithPORefSerializer(serializers.ModelSerializer):
     
 
 class GoodsReceiptNoteSerializer(serializers.ModelSerializer):
-    grnes = GRNEntrySerializer(source='grnentry_set', many=True)
+    grnes = serializers.SerializerMethodField()
     date = serializers.DateTimeField(format="%d-%b-%Y")
     vendor = VendorSerializer()
 
@@ -182,6 +182,21 @@ class GoodsReceiptNoteSerializer(serializers.ModelSerializer):
     def to_representation(self,instance):
         data = super().to_representation(instance)
         return data
+    
+    def get_grnes(self,instance):
+        value = instance.grnentry_set
+        if instance.grnType == 'auto':
+            return GRNEntryWithPORefSerializer(value, many=True).data
+        else:
+            return GRNEntrySerializer(value, many=True).data
+    
+    # def create(self, validated_data):
+    #     if self.data['grnType'] == 'auto':
+    #         validated_data['grnes'] = GRNEntryWithPORefSerializer(source='grnentry_set', many=True)
+    #     else:
+    #         validated_data['grnes'] = GRNEntrySerializer(source='grnentry_set', many=True)
+    #     prod = Product.objects.get(id=self.data['product']['prod_id'])
+    #     return GoodsReceiptNote.objects.create(**validated_data)
 
 
 class PSEntrySerializer(serializers.ModelSerializer):
