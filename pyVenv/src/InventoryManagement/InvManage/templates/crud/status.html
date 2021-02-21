@@ -2,15 +2,21 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">{{ status_form.quantity.label }}</h4>
+                <div class="card-header" id="headingTwo">
+                    <label class="card-text">{{status_form.quantity.label}}</label>
+                </div>
                 {{ status_form.quantity }}
             </div>
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">{{ status_form.identifier.label }}</h4>
+                <div class="card-header" id="headingTwo">
+                    <label class="card-text">{{status_form.identifier.label}}</label>
+                </div>
                 {{ status_form.identifier }}
             </div>
             <div class="col-sm-4" align="center">
-                <h4 class="label-head">{{ status_form.location.label }}</h4>
+                <div class="card-header" id="headingTwo">
+                    <label class="card-text">{{status_form.location.label}}</label>
+                </div>
                 {{ status_form.location }}
             </div>
         </div>

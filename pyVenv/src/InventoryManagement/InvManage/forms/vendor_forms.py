@@ -7,6 +7,7 @@ class VendorForm(forms.Form):
     }
     name = forms.CharField(widget=forms.TextInput(attrs=context))
     identifier = forms.CharField(widget=forms.TextInput(attrs=context))
+    gstin = forms.CharField(label='GSTIN',widget=forms.TextInput(attrs=context))
 
 
 class ShippingAddressForm(forms.Form):
