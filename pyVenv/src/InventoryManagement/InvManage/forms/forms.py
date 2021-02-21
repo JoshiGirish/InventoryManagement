@@ -141,6 +141,7 @@ class ConsumerForm(forms.Form):
     }
     name = forms.CharField(widget=forms.TextInput(attrs=context))
     identifier = forms.CharField(widget=forms.TextInput(attrs=context))
+    gstin = forms.CharField(label='GSTIN',widget=forms.TextInput(attrs=context))
     phone = forms.CharField(widget=forms.TextInput(attrs=context))
     address = forms.CharField(widget=forms.Textarea(
         attrs={
@@ -214,6 +215,7 @@ class CompanyForm(forms.Form):
     }
     name = forms.CharField(widget=forms.TextInput(attrs=context))
     owner = forms.CharField(widget=forms.TextInput(attrs=context))
+    gstin = forms.CharField(label='GSTIN',widget=forms.TextInput(attrs=context))
     phone = forms.CharField(widget=forms.TextInput(attrs=context))
     address = forms.CharField(widget=forms.Textarea(
         attrs={

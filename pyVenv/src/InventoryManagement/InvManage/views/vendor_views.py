@@ -138,6 +138,7 @@ def update_vendor_view(request):
        
         Vendor.objects.filter(id=pk).update(    name=data['name'],
                                                 identifier=data['identifier'],
+                                                gstin=data['gstin'],
                                                 address=add,
                                                 communication=com,
                                                 bankaccount=acc,

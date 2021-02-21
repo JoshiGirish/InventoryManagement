@@ -147,10 +147,21 @@ function generatePDF(data,imgdata){
 
   // Don't forget, that there are CORS-Restrictions. So if you want to run it without a Server in your Browser you need to transform the image to a dataURL
   // Use http://dataurl.net/#dataurlmaker
-  var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', lineHeight:1.25, format:'a4' });
+  // var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', lineHeight:1.25, format:'a4' }); // for older version
+
+  var doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', lineHeight:1.25, format:'a4' });
 
   doc.addFont('Verdana', 'Arial', 'normal');
   doc.setFont('Verdana');
+  // Optional - set properties on the document
+  doc.setProperties({
+    title: 'GRN' + grn.identifier,
+    subject: '',
+    author: data.company.numPages,
+    keywords: 'generated, javascript, web 2.0, ajax',
+    creator: ''
+  });
+  doc.viewerPreferences({'DisplayDocTitle': true});
 
   margins = {
               top: 15,
@@ -164,114 +175,6 @@ function generatePDF(data,imgdata){
     var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
     var usableWidth = pageWidth-margins.left-margins.right;
 
-    // Company logo
-    // var img = new Image()
-    // img.src = data.company.image
-    // console.log(img.src)
-    // img.onload = function(){
-    //           var imageHeightInPdf = 20;
-    //           doc.addImage(img, 'png', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf)
-    //   // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
-    //   }
-
-    let str = "Original for Recepient";
-    doc.setFontSize(9);
-    doc.text(str, pageWidth-margins.right, atLine,'right');
-    atLine += lineHeight;
-    
-    str = "Goods Receipt Note";
-    doc.setFontSize(12);
-    doc.text(str, pageWidth-margins.right, atLine+2,'right');
-    atLine += lineHeight+5;
-    
-    str = String(data.grn.identifier);
-    doc.setFontSize(15);
-    doc.text(str, pageWidth-margins.right, atLine,'right');
-    atLine += lineHeight+2;
-    
-    str = "Date: "+ moment(data.grn.date).format('MMMM Do YYYY');
-    doc.setFontSize(9);
-    doc.text(str, pageWidth-margins.right, atLine+2,'right');
-    atLine += lineHeight+2;
-    
-    // str = "Shipping Date: "+ moment(data.grn.date).format('MMMM Do YYYY');
-    // doc.text(str, pageWidth-margins.right, atLine+2,'right');
-    // atLine += lineHeight+2;
-    
-    // Divider line
-    doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
-    atLine += lineHeight+4;
-    
-    var part = usableWidth/4;
-    doc.setFontSize(12)
-      
-    ///////////////GRN DETAILS TABLE///////////////////
-
-    // let head = headRows()
-    let grn_body = []
-    grn_fields_with_poRef = ['identifier','grnType','date','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber']
-    grn_body.push(
-      ['PO', ':' + grn.identifier],
-      ['Receipt Type',':' + (grn.grnType=='auto') ? 'GRN with PO reference' : 'GRN without PO reference'],
-      ['Date',':' + grn.date],
-      ['Amendment Number', ':' + grn.amendNumber],
-      ['Amendment Date', ':' + grn.amendDate],
-      ['Transporter', ':' + grn.transporter],
-      ['Vehicle Number', ':' + grn.vehicleNumber],
-      ['Inward Number', ':' + grn.gateInwardNumber]) 
-    doc.autoTable({
-      startY: atLine-3,
-      theme: 'plain',
-      tableWidth: part*2,
-      styles: { cellPadding: 0.5, fontSize: 10},
-      head: h,
-      headStyles: { fontSize:12 },
-      body: grn_body,
-      columnStyles: {
-        0: {cellWidth: 2*part/3}, // Less width for first column
-        1: {cellWidth: 4*part/3},}
-    })
-
-    var h = [[data.company.name]]
-    doc.autoTable({
-      startY: atLine-3,
-      theme: 'plain',
-      tableWidth: part,
-      styles: { cellPadding: 0.5, fontSize: 10},
-      head: h,
-      margin: { left: margins.left+2*part },
-      headStyles: { fontSize:12 },
-      body: [
-        [data.company.owner+'\n'+data.company.address],
-        [data.company.location],
-        [data.company.phone],
-        [data.company.email]
-      ]
-    })
-
-    var h = [['Vendor']]
-    doc.autoTable({
-      startY: atLine-3,
-      theme: 'plain',
-      tableWidth: part,
-      styles: { cellPadding: 0.5, fontSize: 10},
-      margin: { left: margins.left+3*part },
-      head: h,
-      headStyles: { fontSize:12 },
-      body: [
-        [data.grn.vendor.name+'\n'+data.grn.vendor.address.name+'\n'+data.grn.vendor.address.address],
-        [data.grn.vendor.address.city],
-        [data.communication.phone],
-        [data.communication.email]
-      ]
-    })
-
-
-    atLine += lineHeight+35;    
-
-    // Divider line
-    doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
-    atLine += lineHeight;
     
     ///////////////MAIN TABLE///////////////////
 
@@ -314,8 +217,8 @@ function generatePDF(data,imgdata){
           ////////////////// HEADER ////////////////////
 
           /////////// COMPANY LOGO ////////////////////
-          var imageHeightInPdf = 20;
-          doc.addImage(imgdata, 'JPEG', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf) 
+          // var imageHeightInPdf = 20;
+          // doc.addImage(imgdata, 'JPEG', margins.left, margins.top, this.width*imageHeightInPdf/this.height, imageHeightInPdf) 
 
           margins = {
                       top: 15,
@@ -363,63 +266,74 @@ function generatePDF(data,imgdata){
       
           // let head = headRows()
           let grn_body = []
+          var tableWidth = part * 2;
           grn_fields_with_poRef = ['identifier','grnType','date','amendNumber','amendDate','transporter','vehicleNumber','gateInwardNumber']
           grn_body.push(
-            ['GRN', ':' + grn.identifier],
-            ['Receipt Type',':' + (grn.grnType=='auto') ? 'GRN with PO reference' : 'GRN without PO reference'],
-            ['Date',':' + grn.date],
-            ['Amendment Number', ':' + grn.amendNumber],
-            ['Amendment Date', ':' + grn.amendDate],
-            ['Transporter', ':' + grn.transporter],
-            ['Vehicle Number', ':' + grn.vehicleNumber],
-            ['Inward Number', ':' + grn.gateInwardNumber]) 
+            ['GRN :', grn.identifier],
+            ['Receipt Type : ', (grn.grnType=='auto') ? 'GRN with PO reference' : 'GRN without PO reference'],
+            ['Date : ', grn.date],
+            ['Amend Number : ', grn.amendNumber],
+            ['Amend Date : ', grn.amendDate],
+            ['Transporter : ', grn.transporter],
+            ['Vehicle Number : ', grn.vehicleNumber],
+            ['Inward Number : ', grn.gateInwardNumber]) 
           doc.autoTable({
             startY: atLine-3,
             theme: 'plain',
-            tableWidth: part*2,
+            tableWidth: tableWidth,
             styles: { cellPadding: 0.5, fontSize: 10},
             head: h,
             headStyles: { fontSize:12 },
             body: grn_body,
             columnStyles: {
-              0: {cellWidth: 2*part/3}, // Less width for first column
-              1: {cellWidth: 4*part/3},}
+              0: {cellWidth: tableWidth/4}, // Less width for first column
+              1: {cellWidth: 3*tableWidth/2},}
           })
       
-          var h = [[data.company.name]]
+          
+          var h = [[{content: 'Vendor', colSpan: 2}]]
+          var tableWidth = part*1.25;
           doc.autoTable({
             startY: atLine-3,
             theme: 'plain',
-            tableWidth: part,
+            tableWidth: part*1.25,
             styles: { cellPadding: 0.5, fontSize: 10},
+            margin: { left: margins.left+1.5*part },
             head: h,
-            margin: { left: margins.left+2*part },
             headStyles: { fontSize:12 },
+            columnStyles: {
+              0: {cellWidth: tableWidth/4}, // Less width for first column
+              1: {cellWidth: 3*tableWidth/4},},
             body: [
-              [data.company.owner+'\n'+data.company.address],
-              [data.company.location],
-              [data.company.phone],
-              [data.company.email]
+              ['Address :',data.grn.vendor.address.name+'\n'+data.grn.vendor.address.address],
+              ['City :',data.grn.vendor.address.city],
+              ['Phone :',data.communication.phone],
+              ['Email :',data.communication.email],
+              ['GSTIN :',data.grn.vendor.gstin]
             ]
           })
-      
-          var h = [['Vendor']]
+          
+          var h = [[{content: data.company.name, colSpan: 2}]]
+          var tableWidth = part*1.25;
           doc.autoTable({
             startY: atLine-3,
             theme: 'plain',
-            tableWidth: part,
+            tableWidth: part*1.25,
             styles: { cellPadding: 0.5, fontSize: 10},
-            margin: { left: margins.left+3*part },
             head: h,
+            margin: { left: margins.left+2.75*part },
             headStyles: { fontSize:12 },
+            columnStyles: {
+              0: {cellWidth: tableWidth/4}, // Less width for first column
+              1: {cellWidth: 3*tableWidth/4},},
             body: [
-              [data.grn.vendor.name+'\n'+data.grn.vendor.address.name+'\n'+data.grn.vendor.address.address],
-              [data.grn.vendor.address.city],
-              [data.communication.phone],
-              [data.communication.email]
+              ['Address :',data.company.owner+'\n'+data.company.address],
+              ['City :',data.company.location],
+              ['Phone :',data.company.phone],
+              ['Email :',data.company.email],
+              ['GSTIN :',data.company.gstin]
             ]
           })
-      
       
           atLine += lineHeight+35;    
       
@@ -486,7 +400,8 @@ function generatePDF(data,imgdata){
                   doc.text(str, pageWidth-margins.right, pageHeight - 10,'right');
                 }
         // doc.save("C:/Users/Girish/Desktop/jspdf/example.pdf");
-        doc.output('dataurlnewwindow');
+        // doc.output('dataurlnewwindow');
+        window.open(doc.output('bloburl'), '_blank'); 
         }
       
     // doc.text(str, start, atLine);

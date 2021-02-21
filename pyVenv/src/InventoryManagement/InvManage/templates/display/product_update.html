@@ -2,7 +2,7 @@
     <div id="updatedData">
       <form enctype="multipart/form-data" action="{% url 'update_product' %}" method="POST">
         {% csrf_token %}
-              <div class="m-2 d-flex align-items-center flex-row view-title">
+              <div class="m-2 d-flex align-items-center flex-row flex-grow-1 justify-content-between view-title">
                   <!-- <h2 class="col-sm-6">Create Product</h2> -->
                   <div class="justify-content-start col-sm-6 d-flex row flex-grow-1">
                     <span class="model-icon"><i class="fa fa-cube" aria-hidden="true" style="scale: 200%;"></i></span>
@@ -33,7 +33,7 @@
                       {% include "crud/thumbnail.html" %}
                     </div>
                     <div>
-                      {% include "crud/variants.html" %}
+                      {% comment %} {% include "crud/variants.html" %} {% endcomment %}
                   </div>
                   </div>
               </div>

@@ -10,6 +10,7 @@ class Dashboard(models.Model):
 class Company(models.Model):
     name = models.CharField(null=True,max_length=100)
     owner = models.CharField(null=True,max_length=100)
+    gstin = models.CharField(default=None,null=True, max_length=100)
     phone = models.CharField(max_length=100, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     email = models.CharField(null=True, blank=True,max_length=100)
@@ -24,6 +25,7 @@ class Company(models.Model):
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
+    gstin = models.CharField(default=None, null=True, max_length=100)
     address = models.OneToOneField(ShippingAddress, on_delete=models.PROTECT, null=True)
     communication = models.OneToOneField(Communication, on_delete=models.PROTECT, null=True)
     bankaccount = models.OneToOneField(BankAccount, on_delete=models.PROTECT, null=True)
@@ -36,6 +38,7 @@ class Vendor(models.Model):
 class Consumer(models.Model):
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
+    gstin = models.CharField(default=None, null=True, max_length=100)
     phone = models.CharField(max_length=100, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     email = models.CharField(null=True, blank=True,max_length=100)

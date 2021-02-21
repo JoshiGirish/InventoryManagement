@@ -30,7 +30,7 @@ class VendorSerializer(serializers.ModelSerializer):
     address = ShippingAddressSerializer()
     class Meta:
         model = Vendor
-        fields = ('name','identifier','address')
+        fields = ('name','identifier','gstin','address')
         phone = serializers.IntegerField(source='communication__phone')
         email = serializers.IntegerField(source='communication__email')
 
@@ -42,7 +42,7 @@ class VendorSerializer(serializers.ModelSerializer):
 class ConsumerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consumer
-        fields = ('name','identifier','phone','address','email','location')
+        fields = ('name','identifier','gstin','phone','address','email','location')
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
@@ -247,7 +247,7 @@ class SalesOrderSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('name','owner','phone','address','email','location','image')
+        fields = ('name','owner','gstin','phone','address','email','location','image')
 
 
 class PurchaseInvoiceSerializer(serializers.ModelSerializer):
