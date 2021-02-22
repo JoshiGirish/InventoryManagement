@@ -1,0 +1,32 @@
+/* font converted using font-converter.net. thank you! */
+
+@font-face {
+    font-family: "Segoe UI";
+    font-weight: 700;
+    src: local("Segoe UI Bold");
+    }
+
+:root{
+    --bg-color: #f8f8f8;
+    --header-color: #3c6faa;
+}
+
+.db-title{
+    /* background: linear-gradient(180deg,var(--bg-color),#bdbdbd,var(--bg-color)); */
+    background: #ececec;
+    /* color: white; */
+}
+
+.header-menu{
+    color: var(--header-color);
+    font-weight: bold;
+}
+
+/* .table-striped tbody tr:nth-child(odd) td {
+    background-color: green;
+} */
+
+.table-striped tbody tr.highlight td {
+    background-color: rgb(255, 254, 169);
+}
+

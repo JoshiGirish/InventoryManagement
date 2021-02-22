@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
 import django
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 't180o3-)&s#jf71)2nv$og3^fh_&y11m&v-$^uypu3%i8$b!9b'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [config('ALLOWED_HOST'), config('LOCALHOST')]
 
 
 # Application definition
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_countries',
     'django-dia',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = '/static'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'InventoryManagement/assets/'),
     os.path.join(BASE_DIR, 'InventoryManagement/assets/css/'),
@@ -165,3 +168,17 @@ GRAPH_MODELS = {
 if DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js", True)
+    
+    
+# AWS S3 Bucket configuration    
+AWS_ACCESS_KEY_ID = config('S3_SECRET_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('S3_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = config('S3_REGION')
+AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3-{AWS_S3_REGION_NAME}.amazonaws.com"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
