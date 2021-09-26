@@ -187,13 +187,13 @@
                 })
                 var dictionary = data;
                 $.each(dictionary,function(key,obj){
-                  if(obj.pendingQty != 0){
+                  if(obj.pending_quantity != 0){
                     var poRef = obj.po;
                     var ppe_id = obj.ppe_id;
                     var prod_name = obj.product.name;
                     var prod_id = obj.product.pk;
                     var identifier = obj.product.identifier;
-                    var quantity = obj.pendingQty;
+                    var quantity = obj.pending_quantity;
                     addRow_poRef(null,-1, poRef, ppe_id, prod_name, prod_id,identifier, quantity,0,0,0,'')
                   }
                 })

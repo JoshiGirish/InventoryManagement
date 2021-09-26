@@ -52,13 +52,11 @@ class ConsumerSerializer(serializers.ModelSerializer):
 class PPEntrySerializer(serializers.ModelSerializer):
     ppe_id = serializers.IntegerField(source='pk')
     product = ProductSerializer()
-    pendingQty = serializers.SerializerMethodField()
+    pendingQty = serializers.ReadOnlyField(source='pending_quantity')
     class Meta:
         model = ProductPurchaseEntry
         fields = ('ppe_id','product','quantity','price', 'discount','order','pendingQty')
-
-    def get_pendingQty(self,ppe):
-        return ppe.pending_quantity()
+        # read_only_fields = ['pendingQty']
 
     def to_representation(self,instance):
         data = super().to_representation(instance)
@@ -83,6 +81,7 @@ class PPEntrySerializer(serializers.ModelSerializer):
         instance.order = validated_data.get('order',instance.order)
         instance.save()
         return instance
+    
 
 
 class PurchaseOrderSerializer(serializers.ModelSerializer):

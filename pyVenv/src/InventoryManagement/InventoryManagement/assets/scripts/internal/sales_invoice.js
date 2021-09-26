@@ -102,7 +102,7 @@ function generatePDF(data){
 
   // Don't forget, that there are CORS-Restrictions. So if you want to run it without a Server in your Browser you need to transform the image to a dataURL
   // Use http://dataurl.net/#dataurlmaker
-  var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', lineHeight:1.25, format:'a4' });
+  var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', lineHeight:1.25, format:'a4' });
 
   margins = {
               top: 15,

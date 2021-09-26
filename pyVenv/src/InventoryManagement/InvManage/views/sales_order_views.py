@@ -98,7 +98,7 @@ def create_sales_order_view(request):
                                       }
                     if pse_id == -1:  # new pse to be created if id is -1
                         pentry = PSEntrySerializer(data=validated_data)
-                        print(pentry.is_valid())
+                        # print(pentry.is_valid())
                         if pentry.is_valid():
                             pentry.save()
                             product.quantity -= quantity  # Subtract the quantity to the product stock as it is new pse

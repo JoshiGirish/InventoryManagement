@@ -168,6 +168,7 @@ class ProductPurchaseEntry(models.Model):
             completionStatus = True
         return completionStatus
     
+    @property
     def pending_quantity(self):
         totalAcceptedQty = 0
         for grnentry in self.grnentry_set.all():

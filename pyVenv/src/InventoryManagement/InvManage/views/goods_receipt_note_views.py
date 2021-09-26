@@ -89,7 +89,7 @@ def create_grn_view(request):
         if grn_form.is_valid():
             for field in grn_fields_with_poRef:
                 data[field]=grn_form.cleaned_data.get(field)
-                print(data)
+            print(data)
             new_grn = GoodsReceiptNote.objects.create(**data)
             # Add Purchase Order references to the GRN
             poRefs = grn_form.cleaned_data.get('poRef')
@@ -97,6 +97,7 @@ def create_grn_view(request):
                 new_grn.poRef.add(po)
             grne_fields_with_poRef = ['grne_id','product','quantity','grn','ppe_id','po_id','remark','receivedQty','acceptedQty', 'rejectedQty']
             for grneform in grnentry_formset:
+                print(grneform.is_valid())
                 validated_data={}
                 if int(grneform.cleaned_data.get('receivedQty'))<=0: # for GRN type of PO reference, skip GRN entry creation if no quantity is received
                     continue

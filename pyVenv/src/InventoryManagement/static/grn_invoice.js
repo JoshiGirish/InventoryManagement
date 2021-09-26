@@ -335,7 +335,7 @@ function generatePDF(data,imgdata){
             ]
           })
       
-          atLine += lineHeight+35;    
+          atLine += lineHeight+350;    
       
           // Divider line
           doc.line(margins.left,atLine,pageWidth-margins.right,atLine)
