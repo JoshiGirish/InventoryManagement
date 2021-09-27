@@ -101,7 +101,6 @@ def create_purchase_order_view(request):
                         pentry = PPEntrySerializer(data=validated_data)
                         if pentry.is_valid():
                             pentry.save()
-                            # product.quantity += quantity  # Add the quantity to the product stock as it is new ppe
                         else:
                             print(pentry.errors)
         create_event(new_po,'Created')
@@ -112,9 +111,6 @@ def display_purchase_orders_view(request):
     if request.method == 'GET':
         exclude_ids = get_parameter_list_from_request(request,'exclude')
         vendor_names = get_parameter_list_from_request(request,'vendor_names')
-        # if vendor_names:
-        # pos = PurchaseOrder.objects.filter(vendor__name=vendor_names).exclude(pk__in=exclude_ids)
-        # else:
         pos = PurchaseOrder.objects.all().exclude(pk__in=exclude_ids)
         state = FilterState.objects.get(name='POs_basic')
         column_list = change_column_position(request, state)
@@ -264,17 +260,10 @@ def update_purchase_order_view(request):
                             print(pentry.errors)
                     else:
                         ppe = ProductPurchaseEntry.objects.get(id=ppe_id)
-                        # print(ppe)
                         old_quantity = ppe.quantity
-                        # ppeform.cleaned_data.update({'order':order})
-                        # validated_data.update({'ppe_id': ppe_id})
-                        # print(validated_data)
                         pentry = PPEntrySerializer(ppe, data=validated_data)
                         if pentry.is_valid():
-                            # print(validated_data)
                             pentry.save()
-                            # ProductPurchaseEntry.objects.filter(id=ppe_id).update(product=product,quantity=quantity,price=price,discount=discount,order=order)
-                            # Add the difference of quantity to the product stock as it is updated ppe
                             product.quantity += quantity-old_quantity
                             product.save()  # Save the changes to the product instance
                         else:
@@ -299,7 +288,6 @@ def print_purchase_order_view(request, pk):
         company = Company.objects.all().last()
         company_shippingaddress = company.shippingaddress
         vendor_communication = po.vendor.communication
-        # print(shippingaddress)
         invoice_serializer = PurchaseInvoiceSerializer(
             PurchaseInvoice(company=company, 
                             po=po, 
@@ -311,9 +299,7 @@ def print_purchase_order_view(request, pk):
 
 def get_product_purchase_entries_view(request):
     if request.method == 'GET':
-        # pks = get_parameter_list_from_request(request,'pks')
         pks = request.GET.getlist('pks[]')
-        # pks = request.GET.get('pks')
         ppes = []
         for pk in pks:
             ppes.extend(PurchaseOrder.objects.get(id=int(pk)).productpurchaseentry_set.all())

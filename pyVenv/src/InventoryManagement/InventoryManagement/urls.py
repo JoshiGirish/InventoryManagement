@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import RedirectView
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from rest_framework.schemas import get_schema_view
 
 from InvManage.views import *
 
@@ -66,6 +68,18 @@ urlpatterns = [
 
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/warehouse-colored-blue.svg')),
+    
+    # DRF-SPECTACULAR
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # path('schema', get_schema_view(
+    #     title="INVENT API",
+    #     description = "API Reference for INVENT application.",
+    #     version="1.0.0"
+    # ), name="openapi-schema")
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

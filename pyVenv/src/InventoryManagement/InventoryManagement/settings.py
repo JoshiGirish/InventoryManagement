@@ -79,28 +79,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'InventoryManagement.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'djongo',
-    #     'NAME': 'mongoCluster',
-    #     'HOST': "mongodb+srv://Girish:Giri$hthe1@mongocluster-5yefg.mongodb.net/test?retryWrites=true&w=majority",
-    #     'USER': 'Girish',
-    #     'PASSWORD': 'Giri$hthe1',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
-# client = pymongo.MongoClient("mongodb+srv://Girish:<password>@mongocluster-5yefg.mongodb.net/test?retryWrites=true&w=majority")
-# db = client.test
-
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -168,17 +154,4 @@ GRAPH_MODELS = {
 if DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js", True)
-    
-    
-# AWS S3 Bucket configuration    
-# AWS_ACCESS_KEY_ID = config('S3_SECRET_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = config('S3_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = config('S3_STORAGE_BUCKET_NAME')
-# AWS_S3_REGION_NAME = config('S3_REGION')
-# AWS_S3_FILE_OVERWRITE = False
-# # AWS_DEFAULT_ACL = None
-# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3-{AWS_S3_REGION_NAME}.amazonaws.com"
-
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 

@@ -2,11 +2,16 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from InvManage.forms import *
 from InvManage.models import *
+from InvManage.serializers import CompanySerializer, ShippingAddressSerializer
 from django.core.files.storage import FileSystemStorage
 from InvManage.filters import CompanyFilter
 from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event
 from django.urls import reverse
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
+from rest_framework.renderers import JSONRenderer,HTMLFormRenderer
+from rest_framework.decorators import api_view, renderer_classes
 
 
 def create_company_view(request):
@@ -21,6 +26,7 @@ def create_company_view(request):
 	if request.method == 'POST':
 		comp_data = {}
 		ship_data = {}
+		print(request.POST)
 		company_form = CompanyForm(request.POST,prefix=CompanyForm.prefix)
 		thumbnail_form = ThumbnailForm(request.POST,prefix=ThumbnailForm.prefix)
 		shipping_form = ShippingAddressForm(request.POST, prefix= ShippingAddressForm.prefix)
