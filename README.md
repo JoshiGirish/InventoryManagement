@@ -1,7 +1,7 @@
 # INVENT
 
 [![INVENT](https://img.shields.io/badge/INVENT-python-blue)](#)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/JoshiGirish/InventoryManagement)](https://github.com/JoshiGirish/InventoryManagement/releases/tag/v1.0.0)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/joshigirish/InventoryManagement?color=gr&logo=GitHub)](https://github.com/JoshiGirish/InventoryManagement/releases/tag/v1.0.0)
 [![GitHub issues](https://img.shields.io/github/issues-raw/JoshiGirish/InventoryManagement?color=red)](https://github.com/JoshiGirish/InventoryManagement/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/JoshiGirish/InventoryManagement?color=green)](https://github.com/JoshiGirish/InventoryManagement/issues?q=is%3Aissue+is%3Aclosed)
 
