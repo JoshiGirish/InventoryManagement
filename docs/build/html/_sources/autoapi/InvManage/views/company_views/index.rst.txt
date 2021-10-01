@@ -1,0 +1,232 @@
+:py:mod:`InvManage.views.company_views`
+=======================================
+
+.. py:module:: InvManage.views.company_views
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.views.company_views.create_company_view
+   InvManage.views.company_views.update_company_view
+   InvManage.views.company_views.delete_company_view
+   InvManage.views.company_views.display_companies_view
+
+
+
+.. py:function:: create_company_view(request)
+
+   Creates a company on ``POST`` request and returns a company creation form  ``GET`` request.
+
+   .. http:get:: /company
+
+       Gets the company creation form.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /company/ HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: Company creation form received successfully.
+
+   .. http:post:: /company
+
+       Creates a company.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /company/ HTTP/1.1
+           Host: localhost:8000
+           Content-Type: multipart/form-data;
+
+       :form comp-name: ``Fringillami``
+
+       :form comp-owner: ``Ivor Barnett``
+
+       :form comp-gstin: ``89AAC056465468``
+
+       :form comp-phone: ``332 220-7026``
+
+       :form comp-address: ``Ap #849-6241 Euismod Av., 677598, Carinthia, Belgium``
+
+       :form comp-email: ``est.tempor@fringillami.org``
+
+       :form comp-location: ``Belgium``
+
+       :form ship-title: ``FingDocks``
+
+       :form ship-name: ``Harding Gross``
+
+       :form ship-phone: ``936 651-4847``
+
+       :form ship-address: ``8798 At, St., 7639``
+
+       :form ship-city: ``Rome``
+
+       :form ship-state: ``Lazio``
+
+       :form ship-country: ``Italy``
+
+       :form ship-website: ``fringdocs.com``
+
+       :form ship-post: ``300326``
+
+       :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+       :statuscode 302: Redirects to ``/company``.
+
+
+
+.. py:function:: update_company_view(request)
+
+   Updates a company on ``POST`` request and returns the company update form  ``GET`` request.
+
+   .. http:get:: /company/update
+
+       Gets the company update form whose primary key matches the query parameter ``pk``.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /company/update HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+       :query pk: The primary key of the company.
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: Company update form received successfully.
+
+   .. http:post:: /company/update
+
+       Updates a company.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /company/ HTTP/1.1
+           Host: localhost:8000
+           Content-Type: multipart/form-data;
+
+       :form pk: ``4``
+
+       :form comp-name: ``Fringillami``
+
+       :form comp-owner: ``Ivor Barnett``
+
+       :form comp-gstin: ``89AAC056465468``
+
+       :form comp-phone: ``332 220-7026``
+
+       :form comp-address: ``Ap #849-6241 Euismod Av., 677598, Carinthia, Belgium``
+
+       :form comp-email: ``est.tempor@fringillami.org``
+
+       :form comp-location: ``Belgium``
+
+       :form ship-title: ``FingDocks``
+
+       :form ship-name: ``Harding Gross``
+
+       :form ship-phone: ``936 651-4847``
+
+       :form ship-address: ``8798 At, St., 7639``
+
+       :form ship-city: ``Rome``
+
+       :form ship-state: ``Lazio``
+
+       :form ship-country: ``Italy``
+
+       :form ship-website: ``fringdocs.com``
+
+       :form ship-post: ``300326``
+
+       :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+       :statuscode 302: Redirects to ``/company``.
+
+
+
+.. py:function:: delete_company_view(request, pk)
+
+   Deletes the company with primary key ``pk`` on ``POST`` request.
+
+   .. http:post:: /company/<str:object_id>/delete
+
+       Deletes the company represented by the primary key ``object_id``.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /company/32/delete HTTP/1.1
+           Host: localhost:8000
+           Content-Type: application/x-www-form-urlencoded
+
+       :param object_id: Company primary key.
+       :resheader Content-Type: application/x-www-form-urlencoded
+       :statuscode 302: Redirects to ``/company``.
+       :statuscode 500: Company matching query does not exist.
+
+
+
+.. py:function:: display_companies_view(request)
+
+   Retrieves the list of companies on ``GET`` request.
+
+   .. http:get:: /companies/
+
+       Gets the list of all companies.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /companies/ HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+       :form page: The page number of the companies list.
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: List of companies received successfully.
+
+

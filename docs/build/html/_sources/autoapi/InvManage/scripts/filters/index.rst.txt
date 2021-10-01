@@ -1,0 +1,89 @@
+:py:mod:`InvManage.scripts.filters`
+===================================
+
+.. py:module:: InvManage.scripts.filters
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.scripts.filters.get_columns
+   InvManage.scripts.filters.sort_ascending_descending
+   InvManage.scripts.filters.change_column_position
+   InvManage.scripts.filters.paginate
+
+
+
+.. py:function:: get_columns(state)
+
+   Gets the columns of the display table.
+
+   This function takes a filter state and returns an array of column names that are
+   ordered depending on the position attribute of the columns. This order is important
+   as the queryset will be rendered in the display table according to the column order
+   in this returned array.
+
+   :param state: Filter state of the columns.
+   :type state: FilterState
+
+   :returns: A list that dictates the order of the columns.
+   :rtype: List
+
+
+.. py:function:: sort_ascending_descending(request, model)
+
+   Sorts and saves the state of the column.
+
+   This function takes a request, finds which column needs to be sorted in ascending/descending
+   order, and returns the sorted queryset.
+
+   :param request: ``GET`` request received for retreiving the list of model instances.
+   :type request: HttpRequest
+   :param model: Model of the objects being retrieved.
+   :type model: Model
+
+   :returns: List of sorted object instances.
+   :rtype: QuerySet
+
+
+.. py:function:: change_column_position(request, state)
+
+   Modifies the column states depending on the request.
+
+   This function:
+       - Takes a filter state
+       - Extracts the column names into an order array
+       - Modifies the column order in the array depending on user input direction (left/right)
+       - Saves this modified state of columns into the database
+       - Returns the modified column names array
+
+   :param request: ``GET`` request for retrieving the state of the columns.
+   :type request: HttpRequest
+   :param state: Filter state of the columns.
+   :type state: FilterState
+
+   :returns: List of sorted columns.
+   :rtype: List
+
+
+.. py:function:: paginate(queryset, filter, page_number)
+
+   Paginates the list of objects.
+
+   This function takes the entire queryset and filters out only objects belonging to the
+   request page
+
+   :param queryset: ``QuerySet`` of the objects retrieved from the database.
+   :type queryset: QuerySet
+   :param filter: Filter state of the columns.
+   :type filter: FilterState
+   :param page_number: Page number requested.
+   :type page_number: int
+
+

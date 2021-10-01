@@ -1,0 +1,15 @@
+:py:mod:`InvManage.scripts`
+===========================
+
+.. py:module:: InvManage.scripts
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   filters/index.rst
+
+

@@ -1,0 +1,216 @@
+:py:mod:`InvManage.models.reuse`
+================================
+
+.. py:module:: InvManage.models.reuse
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.models.reuse.ShippingAddress
+   InvManage.models.reuse.Communication
+   InvManage.models.reuse.PurchaseData
+   InvManage.models.reuse.BankAccount
+
+
+
+
+.. py:class:: ShippingAddress
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the shipping address.
+
+   .. attribute:: title
+
+      Title of the firm.
+
+      :type: str
+
+   .. attribute:: name
+
+      Name of the firm.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number of the firm.
+
+      :type: str
+
+   .. attribute:: address
+
+      Postal address.
+
+      :type: str
+
+   .. attribute:: city
+
+      City.
+
+      :type: str
+
+   .. attribute:: state
+
+      State.
+
+      :type: str
+
+   .. attribute:: country
+
+      Country.
+
+      :type: str
+
+   .. attribute:: website
+
+      Official website of the firm.
+
+      :type: URLField
+
+   .. attribute:: post
+
+      Postal code of the firm.
+
+      :type: str
+
+
+.. py:class:: Communication
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the communication information.
+
+   .. attribute:: language
+
+      Language of communication.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number of the firm.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail of the contact person.
+
+      :type: EmailField
+
+   .. attribute:: fax
+
+      Fax number.
+
+      :type: str
+
+
+.. py:class:: PurchaseData
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the purchase data.
+
+   .. attribute:: currency
+
+      Currency of purchase.
+
+      :type: str
+
+   .. attribute:: minorder
+
+      Minimum order quantity.
+
+      :type: int
+
+   .. attribute:: contactperson
+
+      Name of the contact person.
+
+      :type: str
+
+   .. attribute:: refcode
+
+      Reference code.
+
+      :type: str
+
+   .. attribute:: transportmode
+
+      Mode of transport of the shipment.
+
+      :type: str
+
+
+.. py:class:: BankAccount
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the bank account details.
+
+   .. attribute:: name
+
+      Name of the bank.
+
+      :type: str
+
+   .. attribute:: branch
+
+      Branch number of the bank.
+
+      :type: str
+
+   .. attribute:: region
+
+      City in which the branch is located.
+
+      :type: str
+
+   .. attribute:: route
+
+      Transit number.
+
+      :type: str
+
+   .. attribute:: number
+
+      Bank account number.
+
+      :type: int
+
+   .. attribute:: acctype
+
+      Type of bank account.
+
+      :type: str
+
+   .. attribute:: iban
+
+      IBAN number.
+
+      :type: str
+
+   .. attribute:: code
+
+      Bank code.
+
+      :type: str
+
+   .. attribute:: branchcode
+
+      Branch code.
+
+      :type: str
+
+

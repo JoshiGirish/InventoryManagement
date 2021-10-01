@@ -1,0 +1,249 @@
+:py:mod:`InvManage.views.product_views`
+=======================================
+
+.. py:module:: InvManage.views.product_views
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.views.product_views.create_product_view
+   InvManage.views.product_views.update_product_view
+   InvManage.views.product_views.delete_product_view
+   InvManage.views.product_views.display_products_view
+   InvManage.views.product_views.uploadCSV
+
+
+
+.. py:function:: create_product_view(request)
+
+   Creates a product on ``POST`` request, and returns a product creation form on ``GET`` request.
+
+   .. http:get:: /product
+
+       Gets the product creation form.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /product/ HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: Product creation form received successfully.
+
+   .. http:post:: /product
+
+       Creates a product.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /product/ HTTP/1.1
+           Host: localhost:8000
+           Content-Type: multipart/form-data;
+
+       :form basic-name: ``Yamaha FS100C Acoustic Guitar``
+
+       :form basic-item_type: ``Black Acoustic Guitar``
+
+       :form basic-category: ``Musical Instrument``
+
+       :form basic-description: ``Top: Spruce back/sides, Mahogany neck, Nato fret board, Rosewood bridge, Snorkeling frets: 20, Open chrome tuners, Finishes: Black``
+
+       :form detailed-length: ``1056``
+
+       :form detailed-width: ``376``
+
+       :form detailed-height: ``140``
+
+       :form detailed-weight: ``3.2``
+
+       :form storage-barcode: ``036000029145``
+
+       :form storage-expiry: ``2040-09-29``
+
+       :form status-quantity: ``20``
+
+       :form status-identifier: ``FS100C``
+
+       :form status-location: ``BAY004``
+
+       :form pricing-price: ``9990``
+
+       :form pricing-discount: ``7``
+
+       :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+       :statuscode 302: Redirects to ``/product``.
+
+
+
+.. py:function:: update_product_view(request)
+
+   Updates a product on ``POST`` request and returns the product update form on ``GET`` request.
+
+   .. http:get:: /product/update
+
+       Gets the product update form whose primary key matches the query parameter ``pk``.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /product/update HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+       :query pk: The primary key of the product.
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: Product update form received successfully.
+
+   .. http:post:: /product/update
+
+       Updates the product.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /product/update HTTP/1.1
+           Host: localhost:8000
+           Content-Type: multipart/form-data;
+
+       :form pk: ``778``
+
+       :form basic-name: ``Yamaha FS100C Acoustic Guitar``
+
+       :form basic-item_type: ``Black Acoustic Guitar``
+
+       :form basic-category: ``Musical Instrument``
+
+       :form basic-description: ``Top: Spruce back/sides, Mahogany neck, Nato fret board, Rosewood bridge, Snorkeling frets: 20, Open chrome tuners, Finishes: Black``
+
+       :form detailed-length: ``1056``
+
+       :form detailed-width: ``376``
+
+       :form detailed-height: ``140``
+
+       :form detailed-weight: ``3.2``
+
+       :form storage-barcode: ``036000029145``
+
+       :form storage-expiry: ``2040-09-29``
+
+       :form status-quantity: ``20``
+
+       :form status-identifier: ``FS100C``
+
+       :form status-location: ``BAY004``
+
+       :form pricing-price: ``9990``
+
+       :form pricing-discount: ``7``
+
+       :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+       :statuscode 302: Redirects to ``/product``.
+
+
+
+.. py:function:: delete_product_view(request, pk)
+
+   Deletes the product with primary key ``product_id`` on ``POST`` request.
+
+   .. http:post:: /product/<str:product_id>/delete
+
+       Deletes the consumer represented by the primary key ``product_id``.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /product/778/delete HTTP/1.1
+           Host: localhost:8000
+           Content-Type: application/x-www-form-urlencoded
+
+       :param product_id: Product primary key.
+       :resheader Content-Type: application/x-www-form-urlencoded
+       :statuscode 302: Redirects to ``/product``.
+       :statuscode 500: Prodcut matching query does not exist.
+
+
+
+.. py:function:: display_products_view(request)
+
+   Retrieves the list of products on ``GET`` request.
+
+   .. http:get:: /products/
+
+       Gets the list of all products.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           GET /products/ HTTP/1.1
+           Host: localhost:8000
+           Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+       :form page: The page number of the products list.
+
+       **Example response**:
+
+       .. sourcecode:: http
+
+           HTTP/1.1 200 OK
+           Vary: Accept
+           Content-Type: text/html; charset=utf-8
+
+       :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+       :statuscode 200: List of products received successfully.
+
+
+.. py:function:: uploadCSV(request, data)
+
+   Imports products into database from a ``.csv`` file on ``POST`` request.
+   CSV template columns: ``name``, ``category``, ``item_type``, ``description``, ``price``, ``quantity``, ``identifier``, ``location``, ``length``, ``width``, ``height``, ``weight``, ``discount``, ``barcode``, ``expiry``.
+
+   .. http:post:: /upload/<data>/
+
+       Imports product data.
+
+       **Example request**:
+
+       .. sourcecode:: http
+
+           POST /product/778/delete HTTP/1.1
+           Host: localhost:8000
+
+       :statuscode 302: Redirects to ``/product``.
+
+
+

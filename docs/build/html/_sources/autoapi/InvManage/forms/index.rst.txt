@@ -1,0 +1,886 @@
+:py:mod:`InvManage.forms`
+=========================
+
+.. py:module:: InvManage.forms
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   forms/index.rst
+   vendor_forms/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.forms.ProductBasicInfoForm
+   InvManage.forms.ProductDetailedInfoForm
+   InvManage.forms.ProductPricingForm
+   InvManage.forms.ProductPurchaseEntryForm
+   InvManage.forms.ProductSalesEntryForm
+   InvManage.forms.ProductStatusForm
+   InvManage.forms.ProductStorageInfoForm
+   InvManage.forms.PurchaseOrderBasicInfo
+   InvManage.forms.GRNInfo
+   InvManage.forms.GRNEntryForm
+   InvManage.forms.ThumbnailForm
+   InvManage.forms.SalesOrderBasicInfo
+   InvManage.forms.ConsumerForm
+   InvManage.forms.CompanyForm
+   InvManage.forms.HistoryForm
+   InvManage.forms.ShippingAddressForm
+   InvManage.forms.VendorForm
+   InvManage.forms.CommunicationForm
+   InvManage.forms.PurchaseDataForm
+   InvManage.forms.BankAccountForm
+
+
+
+
+.. py:class:: ProductBasicInfoForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for basic product information.
+
+   .. attribute:: name
+
+      Name of the product.
+
+      :type: str
+
+   .. attribute:: item_type
+
+      Type of the product.
+
+      :type: str
+
+   .. attribute:: category
+
+      Product category.
+
+      :type: str
+
+   .. attribute:: description
+
+      Short description of the product.
+
+      :type: str
+
+
+.. py:class:: ProductDetailedInfoForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for product physical details
+
+   .. attribute:: length
+
+      Length of the product.
+
+      :type: str
+
+   .. attribute:: width
+
+      Width of the product.
+
+      :type: str
+
+   .. attribute:: height
+
+      Height of the product.
+
+      :type: str
+
+   .. attribute:: weight
+
+      Weight of the product.
+
+      :type: str
+
+
+.. py:class:: ProductPricingForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for pricing information of the product.
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: discount
+
+      Default discount percentage on the product.
+
+      :type: float
+
+
+.. py:class:: ProductPurchaseEntryForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for product purchase entry.
+
+   .. attribute:: ppe_id
+
+      Unique identifier of the product purchase entry.
+
+      :type: int
+
+   .. attribute:: product
+
+      Product associated wit the product purchase entry.
+
+      :type: Product
+
+   .. attribute:: quantity
+
+      Quantity of the product to be ordered.
+
+      :type: int
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: discount
+
+      Percentage discount on the product purchase.
+
+      :type: float
+
+
+.. py:class:: ProductSalesEntryForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for product sales entry.
+
+   .. attribute:: pse_id
+
+      Unique identifier of the product sales entry.
+
+      :type: int
+
+   .. attribute:: product
+
+      Product associated with the product sales entry.
+
+      :type: Product
+
+   .. attribute:: quantity
+
+      Quantity of the product.
+
+      :type: int
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: discount
+
+      Percentage discount on the product.
+
+      :type: float
+
+
+.. py:class:: ProductStatusForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for locating and identifying the product.
+
+   .. attribute:: quantity
+
+      Stock quantity of the product.
+
+      :type: int
+
+   .. attribute:: identifier
+
+      Unique identifier of the product.
+
+      :type: str
+
+   .. attribute:: location
+
+      Physical location of the product.
+
+      :type: str
+
+
+.. py:class:: ProductStorageInfoForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for storage information.
+
+   .. attribute:: barcode
+
+      Barcode of the product.
+
+      :type: str
+
+   .. attribute:: expiry
+
+      Expiry date of the product.
+
+      :type: DateField
+
+
+.. py:class:: PurchaseOrderBasicInfo
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for basic information of the purchase order.
+
+   .. attribute:: vendor
+
+      Vendor associated with the purcahse order.
+
+      :type: Vendor
+
+   .. attribute:: date
+
+      Date of the purchase order creation.
+
+      :type: DateField
+
+   .. attribute:: po
+
+      Purchase order number.
+
+      :type: int
+
+   .. attribute:: discount
+
+      Percentage of overall discount.
+
+      :type: float
+
+   .. attribute:: tax
+
+      Percentage of tax.
+
+      :type: float
+
+   .. attribute:: paid
+
+      Amount paid to the vendor.
+
+      :type: float
+
+   .. attribute:: balance
+
+      Balance amount to be paid to the vendor.
+
+      :type: float
+
+   .. attribute:: subtotal
+
+      Total of all the product purchase entries associated with the purchase order.
+
+      :type: float
+
+   .. attribute:: taxtotal
+
+      Total tax applicable on the `subtotal`.
+
+      :type: float
+
+   .. attribute:: ordertotal
+
+      Total price of the purchase order including  `taxtotal`.
+
+      :type: float
+
+
+.. py:class:: GRNInfo
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for goods receipt note (GRN).
+
+   .. attribute:: vendor
+
+      Vendor associated with the goods receipt note.
+
+      :type: Vendor
+
+   .. attribute:: poRef
+
+      List of identifiers of the purchase orders from which the goods receipt note is derived.
+
+      :type: PurchaseOrder
+
+   .. attribute:: identifier
+
+      Unique identifier of the goods receipt note.
+
+      :type: str
+
+   .. attribute:: date
+
+      Date of GRN creation.
+
+      :type: DateField
+
+   .. attribute:: grnType
+
+      Type of GRN (``auto`` or ``manual``).
+
+      :type: str
+
+   .. attribute:: amendNumber
+
+      Amendment number of the GRN.
+
+      :type: int
+
+   .. attribute:: amendDate
+
+      Amendment date.
+
+      :type: DateField
+
+   .. attribute:: transporter
+
+      Name of the transport/shipping service.
+
+      :type: str
+
+   .. attribute:: vehicleNumber
+
+      Vehicle number using which the products are shipped.
+
+      :type: str
+
+   .. attribute:: gateInwardNumber
+
+      Gate inward number of the vehicle.
+
+      :type: str
+
+   .. attribute:: preparedBy
+
+      Name/identifier of the person who created the goods receipt note.
+
+      :type: str
+
+   .. attribute:: checkedBy
+
+      Name/identifier of the person who validated the goods receipt note.
+
+      :type: str
+
+   .. attribute:: checkedBy
+
+      Name/identifier of the person who inspected the physical products in the goods receipt note.
+
+      :type: str
+
+   .. attribute:: approvedBy
+
+      Name/identifier of the authority who approved the goods receipt note.
+
+      :type: str
+
+
+.. py:class:: GRNEntryForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for goods receipt note entry (GRNE).
+
+   .. attribute:: product
+
+      Product associated with the goods receipt note entry.
+
+      :type: Product
+
+   .. attribute:: grne_id
+
+      Unique identifier of the GRNE.
+
+      :type: int
+
+   .. attribute:: ppe_id
+
+      Unique identifier of the product purchase entry associated with the GRNE.
+
+      :type: int
+
+   .. attribute:: quantity
+
+      Ordered quantity of product with reference to product purchase entry.
+
+      :type: int
+
+   .. attribute:: remark
+
+      Remarks of the quality engineer or the GRN creator about status of products received.
+
+      :type: str
+
+   .. attribute:: receivedQty
+
+      Quantity of product received against the ordered quantity.
+
+      :type: str
+
+   .. attribute:: acceptedQty
+
+      Quantity of product accepted as OK.
+
+      :type: str
+
+   .. attribute:: rejectedQty
+
+      Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+
+      :type: str
+
+
+.. py:class:: ThumbnailForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   For for product thumbnail image.
+
+   .. attribute:: image
+
+      Image of the product.
+
+      :type: ImageField
+
+
+.. py:class:: SalesOrderBasicInfo
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for basic information on sales order.
+
+   .. attribute:: consumer
+
+      Consumer associated with the sales order.
+
+      :type: Consumer
+
+   .. attribute:: date
+
+      Date of the sales order creation.
+
+      :type: DateField
+
+   .. attribute:: so
+
+      Sales order number.
+
+      :type: int
+
+   .. attribute:: discount
+
+      Percentage discount associated with the sales order.
+
+      :type: float
+
+   .. attribute:: tax
+
+      Percentage of tax applicable.
+
+      :type: float
+
+   .. attribute:: paid
+
+      Amount received from the consumer.
+
+      :type: float
+
+   .. attribute:: balance
+
+      Amount balance with the consumer.
+
+      :type: float
+
+   .. attribute:: subtotal
+
+      Total of all the product sales entries associated with the sales order.
+
+      :type: float
+
+   .. attribute:: taxtotal
+
+      Total tax applicable on the `subtotal`.
+
+      :type: float
+
+   .. attribute:: ordertotal
+
+      Total price of the sales order including  `taxtotal`.
+
+      :type: float
+
+
+.. py:class:: ConsumerForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for consumer.
+
+   .. attribute:: name
+
+      Name of the consumer.
+
+      :type: str
+
+   .. attribute:: identifier
+
+      Unique identifier of the consumer.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the consumer.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number.
+
+      :type: str
+
+   .. attribute:: address
+
+      Address of the consumer.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail address of the consumer.
+
+      :type: str
+
+   .. attribute:: location
+
+      City of the consumer.
+
+      :type: str
+
+
+.. py:class:: CompanyForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for company.
+
+   .. attribute:: name
+
+      Name of the company.
+
+      :type: str
+
+   .. attribute:: owner
+
+      Name of the owner of the company.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the company.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number of the company.
+
+      :type: str
+
+   .. attribute:: address
+
+      Postal address.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail address of the contact person.
+
+      :type: str
+
+   .. attribute:: location
+
+      City of the company.
+
+      :type: str
+
+
+.. py:class:: HistoryForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for history view.
+
+   .. attribute:: qlen
+
+      Count of the events visible on the history view.
+
+      :type: int
+
+
+.. py:class:: ShippingAddressForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   For for shipping address.
+
+   .. attribute:: title
+
+      Title of the firm.
+
+      :type: str
+
+   .. attribute:: name
+
+      Name of the firm.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number of the firm.
+
+      :type: str
+
+   .. attribute:: address
+
+      Postal address.
+
+      :type: str
+
+   .. attribute:: city
+
+      City.
+
+      :type: str
+
+   .. attribute:: state
+
+      State.
+
+      :type: str
+
+   .. attribute:: country
+
+      Country.
+
+      :type: str
+
+   .. attribute:: website
+
+      Official website of the firm.
+
+      :type: URLField
+
+   .. attribute:: post
+
+      Postal code of the firm.
+
+      :type: str
+
+
+.. py:class:: VendorForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for basic informaion of the vendor.
+
+   .. attribute:: name
+
+      Name of the vendor.
+
+      :type: str
+
+   .. attribute:: identifier
+
+      Unique identifier of the vendor.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the vendor.
+
+      :type: str
+
+
+.. py:class:: CommunicationForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for communication information.
+
+   .. attribute:: language
+
+      Language of communication.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number of the firm.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail of the contact person.
+
+      :type: EmailField
+
+   .. attribute:: fax
+
+      Fax number.
+
+      :type: str
+
+
+.. py:class:: PurchaseDataForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for purchase related data.
+
+   .. attribute:: currency
+
+      Currency of purchase.
+
+      :type: str
+
+   .. attribute:: minorder
+
+      Minimum order quantity.
+
+      :type: int
+
+   .. attribute:: contactperson
+
+      Name of the contact person.
+
+      :type: str
+
+   .. attribute:: refcode
+
+      Reference code.
+
+      :type: str
+
+   .. attribute:: transportmode
+
+      Mode of transport of the shipment.
+
+      :type: str
+
+
+.. py:class:: BankAccountForm
+
+
+   Bases: :py:obj:`django.forms.Form`
+
+   Form for bank account details.
+
+   .. attribute:: name
+
+      Name of the bank.
+
+      :type: str
+
+   .. attribute:: branch
+
+      Branch number of the bank.
+
+      :type: str
+
+   .. attribute:: region
+
+      City in which the branch is located.
+
+      :type: str
+
+   .. attribute:: route
+
+      Transit number.
+
+      :type: str
+
+   .. attribute:: number
+
+      Bank account number.
+
+      :type: int
+
+   .. attribute:: acctype
+
+      Type of bank account.
+
+      :type: str
+
+   .. attribute:: iban
+
+      IBAN number.
+
+      :type: str
+
+   .. attribute:: code
+
+      Bank code.
+
+      :type: str
+
+   .. attribute:: branchcode
+
+      Branch code.
+
+      :type: str
+
+

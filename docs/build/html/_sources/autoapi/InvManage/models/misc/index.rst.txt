@@ -1,0 +1,159 @@
+:py:mod:`InvManage.models.misc`
+===============================
+
+.. py:module:: InvManage.models.misc
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.models.misc.Object
+   InvManage.models.misc.EventType
+   InvManage.models.misc.ObjectModel
+   InvManage.models.misc.EventCard
+   InvManage.models.misc.HistoryFilterState
+
+
+
+
+.. py:class:: Object
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for a generic object.
+
+   .. attribute:: identifier
+
+      Unique identifier of the object.
+
+      :type: str
+
+   .. attribute:: name
+
+      Name of the object.
+
+      :type: str
+
+   .. attribute:: model
+
+      Model associated with the object.
+
+      :type: str
+
+
+.. py:class:: EventType
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for event type.
+
+   .. attribute:: name
+
+      Name of the event being triggered.
+
+      :type: str
+
+   .. attribute:: label
+
+      Label associated with the event.
+
+      :type: str
+
+   :returns: Returns the string representation of the label when the event type is queried.
+   :rtype: Label
+
+
+.. py:class:: ObjectModel
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model associated with an object.
+
+   .. attribute:: name
+
+      Name of the object.
+
+      :type: str
+
+   .. attribute:: label
+
+      Label string of the object.
+
+      :type: str
+
+   .. attribute:: modName
+
+      Name of the model associated with the object.
+
+      :type: str
+
+   :returns: Returns string representation of the label when object model is queried.
+   :rtype: Label
+
+
+.. py:class:: EventCard
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for event card to be displayed in the history view.
+
+   .. attribute:: obj
+
+      Object associated with the event.
+
+      :type: OneToOneField
+
+   .. attribute:: objId
+
+      Unique identifier of the object.
+
+      :type: str
+
+   .. attribute:: objname
+
+      Name of the object.
+
+      :type: str
+
+   .. attribute:: objmodel
+
+      Model of the object.
+
+      :type: str
+
+   .. attribute:: date
+
+      Timestamp of the event.
+
+      :type: DateField
+
+   .. attribute:: operation
+
+      Type of event.
+
+      :type: str
+
+
+.. py:class:: HistoryFilterState
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of filter state of the history.
+
+   .. attribute:: params
+
+      Paramameters of the configured filters.
+
+      :type: str
+
+

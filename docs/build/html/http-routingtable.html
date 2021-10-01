@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Routing Table &mdash; INVENT 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+ 
+
+    <script>
+      DOCUMENTATION_OPTIONS.COLLAPSE_INDEX = true;
+    </script>
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> INVENT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">INVENT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>HTTP Routing Table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+   <h1>HTTP Routing Table</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-/companies"><strong>/companies</strong></a> | 
+   <a href="#cap-/company"><strong>/company</strong></a> | 
+   <a href="#cap-/consumer"><strong>/consumer</strong></a> | 
+   <a href="#cap-/consumers"><strong>/consumers</strong></a> | 
+   <a href="#cap-/get_consumer"><strong>/get_consumer</strong></a> | 
+   <a href="#cap-/get_vendor"><strong>/get_vendor</strong></a> | 
+   <a href="#cap-/grn"><strong>/grn</strong></a> | 
+   <a href="#cap-/grns"><strong>/grns</strong></a> | 
+   <a href="#cap-/history"><strong>/history</strong></a> | 
+   <a href="#cap-/product"><strong>/product</strong></a> | 
+   <a href="#cap-/product_purchase_entries"><strong>/product_purchase_entries</strong></a> | 
+   <a href="#cap-/products"><strong>/products</strong></a> | 
+   <a href="#cap-/purchaes_order"><strong>/purchaes_order</strong></a> | 
+   <a href="#cap-/purchase_order"><strong>/purchase_order</strong></a> | 
+   <a href="#cap-/purchase_orders"><strong>/purchase_orders</strong></a> | 
+   <a href="#cap-/sales_order"><strong>/sales_order</strong></a> | 
+   <a href="#cap-/sales_orders"><strong>/sales_orders</strong></a> | 
+   <a href="#cap-/upload"><strong>/upload</strong></a> | 
+   <a href="#cap-/vendor"><strong>/vendor</strong></a> | 
+   <a href="#cap-/vendors"><strong>/vendors</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/companies"><td></td><td>
+       <strong>/companies</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--companies-"><code class="xref">GET /companies/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/company"><td></td><td>
+       <strong>/company</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--company"><code class="xref">GET /company</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--company-update"><code class="xref">GET /company/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--company"><code class="xref">POST /company</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--company--str-object_id--delete"><code class="xref">POST /company/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--company-update"><code class="xref">POST /company/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/consumer"><td></td><td>
+       <strong>/consumer</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--consumer"><code class="xref">GET /consumer</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--consumer-update"><code class="xref">GET /consumer/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--consumer"><code class="xref">POST /consumer</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--consumer--str-object_id--delete"><code class="xref">POST /consumer/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--consumer-update"><code class="xref">POST /consumer/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/consumers"><td></td><td>
+       <strong>/consumers</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--consumers-"><code class="xref">GET /consumers/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/get_consumer"><td></td><td>
+       <strong>/get_consumer</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--get_consumer-"><code class="xref">GET /get_consumer/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/get_vendor"><td></td><td>
+       <strong>/get_vendor</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#get--get_vendor-"><code class="xref">GET /get_vendor/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/grn"><td></td><td>
+       <strong>/grn</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--grn"><code class="xref">GET /grn</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--grn-update"><code class="xref">GET /grn/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--grn"><code class="xref">POST /grn</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--grn--str-grn_id--print"><code class="xref">POST /grn/&lt;str:grn_id&gt;/print</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--grn--str-object_id--delete"><code class="xref">POST /grn/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#post--grn-update"><code class="xref">POST /grn/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/grns"><td></td><td>
+       <strong>/grns</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--grns-"><code class="xref">GET /grns/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/history"><td></td><td>
+       <strong>/history</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/index.html#get--history-"><code class="xref">GET /history/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/product"><td></td><td>
+       <strong>/product</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#get--product"><code class="xref">GET /product</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#get--product-update"><code class="xref">GET /product/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#post--product"><code class="xref">POST /product</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#post--product--str-product_id--delete"><code class="xref">POST /product/&lt;str:product_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#post--product-update"><code class="xref">POST /product/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/product_purchase_entries"><td></td><td>
+       <strong>/product_purchase_entries</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#get--product_purchase_entries-"><code class="xref">GET /product_purchase_entries/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/products"><td></td><td>
+       <strong>/products</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#get--products-"><code class="xref">GET /products/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/purchaes_order"><td></td><td>
+       <strong>/purchaes_order</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#get--purchaes_order-update"><code class="xref">GET /purchaes_order/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/purchase_order"><td></td><td>
+       <strong>/purchase_order</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#get--purchase_order"><code class="xref">GET /purchase_order</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#post--purchase_order"><code class="xref">POST /purchase_order</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#post--purchase_order--str-object_id--delete"><code class="xref">POST /purchase_order/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#post--purchase_order--str-po_id--print"><code class="xref">POST /purchase_order/&lt;str:po_id&gt;/print</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#post--purchase_order--str-so_id--print"><code class="xref">POST /purchase_order/&lt;str:so_id&gt;/print</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#post--purchase_order-update"><code class="xref">POST /purchase_order/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/purchase_orders"><td></td><td>
+       <strong>/purchase_orders</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/purchase_order_views/index.html#get--purchase_orders-"><code class="xref">GET /purchase_orders/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/sales_order"><td></td><td>
+       <strong>/sales_order</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#get--sales_order"><code class="xref">GET /sales_order</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#get--sales_order-update"><code class="xref">GET /sales_order/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#post--sales_order"><code class="xref">POST /sales_order</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#post--sales_order--str-object_id--delete"><code class="xref">POST /sales_order/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#post--sales_order-update"><code class="xref">POST /sales_order/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/sales_orders"><td></td><td>
+       <strong>/sales_orders</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/sales_order_views/index.html#get--sales_orders-"><code class="xref">GET /sales_orders/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/upload"><td></td><td>
+       <strong>/upload</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/product_views/index.html#post--upload--data--"><code class="xref">POST /upload/&lt;data&gt;/</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/vendor"><td></td><td>
+       <strong>/vendor</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#get--vendor"><code class="xref">GET /vendor</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#get--vendor-update"><code class="xref">GET /vendor/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#post--vendor"><code class="xref">POST /vendor</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#post--vendor--str-object_id--delete"><code class="xref">POST /vendor/&lt;str:object_id&gt;/delete</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#post--vendor-update"><code class="xref">POST /vendor/update</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/vendors"><td></td><td>
+       <strong>/vendors</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="autoapi/InvManage/views/vendor_views/index.html#get--vendors-"><code class="xref">GET /vendors/</code></a></td><td>
+       <em></em></td></tr>
+   </table>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Girish Joshi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

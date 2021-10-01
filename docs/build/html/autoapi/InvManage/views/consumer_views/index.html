@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvManage.views.consumer_views &mdash; INVENT 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> INVENT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">INVENT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">InvManage.views.consumer_views</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/InvManage/views/consumer_views/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-InvManage.views.consumer_views">
+<span id="invmanage-views-consumer-views"></span><h1><a class="reference internal" href="#module-InvManage.views.consumer_views" title="InvManage.views.consumer_views"><code class="xref py py-mod docutils literal notranslate"><span class="pre">InvManage.views.consumer_views</span></code></a><a class="headerlink" href="#module-InvManage.views.consumer_views" title="Permalink to this headline"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#InvManage.views.consumer_views.create_consumer_view" title="InvManage.views.consumer_views.create_consumer_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_consumer_view</span></code></a>(request)</p></td>
+<td><p>Creates a consumer on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request, and returns a consumer creation form on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#InvManage.views.consumer_views.update_consumer_view" title="InvManage.views.consumer_views.update_consumer_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_consumer_view</span></code></a>(request)</p></td>
+<td><p>Updates a consuemr on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request and returns the consumer update form for <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#InvManage.views.consumer_views.delete_consumer_view" title="InvManage.views.consumer_views.delete_consumer_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_consumer_view</span></code></a>(request, pk)</p></td>
+<td><p>Deletes the consumer with primary key <code class="docutils literal notranslate"><span class="pre">pk</span></code> on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#InvManage.views.consumer_views.display_consumers_view" title="InvManage.views.consumer_views.display_consumers_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_consumers_view</span></code></a>(request)</p></td>
+<td><p>Retrieves the list of consumers on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#InvManage.views.consumer_views.get_consumer" title="InvManage.views.consumer_views.get_consumer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_consumer</span></code></a>(request)</p></td>
+<td><p>Returns the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> serialized data of the requested consumer on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="InvManage.views.consumer_views.create_consumer_view">
+<span class="sig-prename descclassname"><span class="pre">InvManage.views.consumer_views.</span></span><span class="sig-name descname"><span class="pre">create_consumer_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvManage.views.consumer_views.create_consumer_view" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a consumer on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request, and returns a consumer creation form on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--consumer">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/consumer</span></span><a class="headerlink" href="#get--consumer" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the consumer creation form.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/consumer/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+</pre></div>
+</div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=utf-8</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Request Headers</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a></span> – text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/<a href="#id1"><span class="problematic" id="id2">*</span></a>;q=0.8,application/signed-exchange;v=b3;q=0.9</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Consumer creation form received successfully.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--consumer">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/consumer</span></span><a class="headerlink" href="#post--consumer" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a consumer.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/consumer/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">multipart/form-data;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Form Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>consumer-name</strong> – <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">Music</span> <span class="pre">Store</span></code></p></li>
+<li><p><strong>consumer-identifier</strong> – <code class="docutils literal notranslate"><span class="pre">CONS1256</span></code></p></li>
+<li><p><strong>consumer-gstin</strong> – <code class="docutils literal notranslate"><span class="pre">89ACC654654335</span></code></p></li>
+<li><p><strong>consumer-phone</strong> – <code class="docutils literal notranslate"><span class="pre">+91</span> <span class="pre">6543525422</span></code></p></li>
+<li><p><strong>consumer-address</strong> – <code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">no.</span> <span class="pre">958,</span> <span class="pre">N-4,</span> <span class="pre">Neo</span> <span class="pre">Complex,</span> <span class="pre">Barh,</span> <span class="pre">Wokha,</span> <span class="pre">Nagaland,</span> <span class="pre">797111</span></code></p></li>
+<li><p><strong>consumer-email</strong> – <code class="docutils literal notranslate"><span class="pre">johnDoe&#64;themusic.store</span></code></p></li>
+<li><p><strong>consumer-location</strong> – <code class="docutils literal notranslate"><span class="pre">Wokha</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Response Headers</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a></span> – multipart/form-data; boundary=—-WebKitFormBoundaryLTR88aZAnBUSE7mv</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a></span> – Redirects to <code class="docutils literal notranslate"><span class="pre">/consumer</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="InvManage.views.consumer_views.update_consumer_view">
+<span class="sig-prename descclassname"><span class="pre">InvManage.views.consumer_views.</span></span><span class="sig-name descname"><span class="pre">update_consumer_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvManage.views.consumer_views.update_consumer_view" title="Permalink to this definition"></a></dt>
+<dd><p>Updates a consuemr on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request and returns the consumer update form for <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--consumer-update">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/consumer/update</span></span><a class="headerlink" href="#get--consumer-update" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the consumer update form whose primary key matches the query parameter <code class="docutils literal notranslate"><span class="pre">pk</span></code>.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/consumer/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pk</strong> – The primary key of the consumer.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=utf-8</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Request Headers</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a></span> – text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/<a href="#id3"><span class="problematic" id="id4">*</span></a>;q=0.8,application/signed-exchange;v=b3;q=0.9</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Consumer update form received successfully.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--consumer-update">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/consumer/update</span></span><a class="headerlink" href="#post--consumer-update" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the consumer.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/company/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">multipart/form-data;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Form Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pk</strong> – <code class="docutils literal notranslate"><span class="pre">7</span></code></p></li>
+<li><p><strong>consumer-name</strong> – <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">Music</span> <span class="pre">Store</span></code></p></li>
+<li><p><strong>consumer-identifier</strong> – <code class="docutils literal notranslate"><span class="pre">CONS1256</span></code></p></li>
+<li><p><strong>consumer-gstin</strong> – <code class="docutils literal notranslate"><span class="pre">89ACC654654335</span></code></p></li>
+<li><p><strong>consumer-phone</strong> – <code class="docutils literal notranslate"><span class="pre">+91</span> <span class="pre">6543525422</span></code></p></li>
+<li><p><strong>consumer-address</strong> – <code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">no.</span> <span class="pre">958,</span> <span class="pre">N-4,</span> <span class="pre">Neo</span> <span class="pre">Complex,</span> <span class="pre">Barh,</span> <span class="pre">Wokha,</span> <span class="pre">Nagaland,</span> <span class="pre">797111</span></code></p></li>
+<li><p><strong>consumer-email</strong> – <code class="docutils literal notranslate"><span class="pre">johnDoe&#64;themusic.store</span></code></p></li>
+<li><p><strong>consumer-location</strong> – <code class="docutils literal notranslate"><span class="pre">Wokha</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Response Headers</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a></span> – multipart/form-data; boundary=—-WebKitFormBoundaryLTR88aZAnBUSE7mv</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a></span> – Redirects to <code class="docutils literal notranslate"><span class="pre">/consumer</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="InvManage.views.consumer_views.delete_consumer_view">
+<span class="sig-prename descclassname"><span class="pre">InvManage.views.consumer_views.</span></span><span class="sig-name descname"><span class="pre">delete_consumer_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvManage.views.consumer_views.delete_consumer_view" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the consumer with primary key <code class="docutils literal notranslate"><span class="pre">pk</span></code> on <code class="docutils literal notranslate"><span class="pre">POST</span></code> request.</p>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--consumer--str-object_id--delete">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/consumer/&lt;str:object_id&gt;/delete</span></span><a class="headerlink" href="#post--consumer--str-object_id--delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the consumer represented by the primary key <code class="docutils literal notranslate"><span class="pre">object_id</span></code>.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/consumer/5/delete</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_id</strong> – Consumer primary key.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Response Headers</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a></span> – application/x-www-form-urlencoded</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a></span> – Redirects to <code class="docutils literal notranslate"><span class="pre">/consumer</span></code>.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a></span> – Consumer matching query does not exist.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="InvManage.views.consumer_views.display_consumers_view">
+<span class="sig-prename descclassname"><span class="pre">InvManage.views.consumer_views.</span></span><span class="sig-name descname"><span class="pre">display_consumers_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvManage.views.consumer_views.display_consumers_view" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves the list of consumers on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--consumers-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/consumers/</span></span><a class="headerlink" href="#get--consumers-" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the list of all consumers.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/companies/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Form Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page</strong> – The page number of the consumers list.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=utf-8</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Request Headers</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a></span> – text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/<a href="#id5"><span class="problematic" id="id6">*</span></a>;q=0.8,application/signed-exchange;v=b3;q=0.9</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – List of consumers received successfully.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="InvManage.views.consumer_views.get_consumer">
+<span class="sig-prename descclassname"><span class="pre">InvManage.views.consumer_views.</span></span><span class="sig-name descname"><span class="pre">get_consumer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvManage.views.consumer_views.get_consumer" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> serialized data of the requested consumer on <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--get_consumer-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/get_consumer/</span></span><a class="headerlink" href="#get--get_consumer-" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the JSON serialized data of the requested consumer.</p>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/get_consumer/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8000</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+</pre></div>
+</div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json; charset=utf-8</span>
+
+<span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;The Music Store&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;CONS1256&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;gstin&quot;</span><span class="p">:</span> <span class="s2">&quot;89AAC4633353643&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;+91 8325642358&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;Plot no 958, N- 4, Neo Complex, Barh, Wokha, Nagaland, 797111&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;JohnDoe@themusic.store&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;Wokha&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Response Headers</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a></span> – application/json</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – List of consumers received successfully.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad request version</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a></span> – Consumer matching query does not exist.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Girish Joshi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

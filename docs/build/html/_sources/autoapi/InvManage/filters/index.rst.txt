@@ -1,0 +1,106 @@
+:py:mod:`InvManage.filters`
+===========================
+
+.. py:module:: InvManage.filters
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.filters.ProductFilter
+   InvManage.filters.VendorFilter
+   InvManage.filters.ConsumerFilter
+   InvManage.filters.PurchaseOrderFilter
+   InvManage.filters.GoodsReceiptNoteFilter
+   InvManage.filters.SalesOrderFilter
+   InvManage.filters.CompanyFilter
+   InvManage.filters.EventCardFilter
+
+
+
+
+.. py:class:: ProductFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: VendorFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: ConsumerFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: PurchaseOrderFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: GoodsReceiptNoteFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: SalesOrderFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: CompanyFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+
+.. py:class:: EventCardFilter
+
+
+   Bases: :py:obj:`django_filters.FilterSet`
+
+   .. py:class:: Meta
+
+
+
+

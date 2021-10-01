@@ -1,0 +1,803 @@
+:py:mod:`InvManage.models.objects`
+==================================
+
+.. py:module:: InvManage.models.objects
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   InvManage.models.objects.Dashboard
+   InvManage.models.objects.Company
+   InvManage.models.objects.Vendor
+   InvManage.models.objects.Consumer
+   InvManage.models.objects.PurchaseOrder
+   InvManage.models.objects.GoodsReceiptNote
+   InvManage.models.objects.SalesOrder
+   InvManage.models.objects.Product
+   InvManage.models.objects.ProductPurchaseEntry
+   InvManage.models.objects.GRNEntry
+   InvManage.models.objects.ProductSalesEntry
+   InvManage.models.objects.PurchaseInvoice
+   InvManage.models.objects.GRNInvoice
+   InvManage.models.objects.SalesInvoice
+
+
+
+
+.. py:class:: Dashboard
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the dashboard.
+
+
+
+
+.. py:class:: Company
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the company.
+
+   .. attribute:: name
+
+      Name of the company.
+
+      :type: str
+
+   .. attribute:: owner
+
+      Owner of the company.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the company.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number.
+
+      :type: str
+
+   .. attribute:: address
+
+      Postal address.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail address of the contact person.
+
+      :type: str
+
+   .. attribute:: location
+
+      City of the company.
+
+      :type: str
+
+   .. attribute:: image
+
+      Photo/logo of the company.
+
+      :type: ImageField
+
+   .. attribute:: shippingaddress
+
+      Primary key of the ``ShippingAddress`` instance associated with the company.
+
+      :type: ShippingAddress
+
+   :returns: String representation of the company name.
+   :rtype: str
+
+
+.. py:class:: Vendor
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the vendor.
+
+   .. attribute:: name
+
+      Name of the vendor.
+
+      :type: str
+
+   .. attribute:: identifier
+
+      Unique identifier of the vendor.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the vendor.
+
+      :type: str
+
+   .. attribute:: address
+
+      Primary key of the ``ShippingAddress`` instance associated with the vendor.
+
+      :type: ShippingAddress
+
+   .. attribute:: communication
+
+      Primary key of the ``Communication`` instance associated with the vendor.
+
+      :type: Communication
+
+   .. attribute:: backaccount
+
+      Primary key of the ``BankAccount`` instance associated with the vendor.
+
+      :type: BankAccount
+
+   .. attribute:: purchasedata
+
+      Primary key of the ``PurchaseData`` instance associated with the vendor.
+
+      :type: PurchaseData
+
+   :returns: String representation of the vendor name.
+   :rtype: str
+
+
+.. py:class:: Consumer
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the consumer.
+
+   .. attribute:: name
+
+      Name of the consumer.
+
+      :type: str
+
+   .. attribute:: identifier
+
+      Unique identifier of the consumer.
+
+      :type: str
+
+   .. attribute:: gstin
+
+      GSTIN number of the consumer.
+
+      :type: str
+
+   .. attribute:: phone
+
+      Contact number.
+
+      :type: str
+
+   .. attribute:: address
+
+      Address of the consumer.
+
+      :type: str
+
+   .. attribute:: email
+
+      E-mail address of the consumer.
+
+      :type: str
+
+   .. attribute:: location
+
+      City of the consumer.
+
+      :type: str
+
+   :returns: [description]
+   :rtype: [type]
+
+
+.. py:class:: PurchaseOrder
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the purchase order.
+
+   .. attribute:: vendor
+
+      Vendor associated with the purchase order.
+
+      :type: Vendor
+
+   .. attribute:: date
+
+      Date and time of the purchase order creation.
+
+      :type: DateField
+
+   .. attribute:: po
+
+      Purchase order number.
+
+      :type: int
+
+   .. attribute:: discount
+
+      Percentage discount.
+
+      :type: float
+
+   .. attribute:: tax
+
+      Percentage of tax applicable for the purchase.
+
+      :type: float
+
+   .. attribute:: paid
+
+      Amount paid against the PO.
+
+      :type: float
+
+   .. attribute:: balance
+
+      Amount balance which remains to be paid.
+
+      :type: float
+
+   .. attribute:: subtotal
+
+      Total of all the product purchase entries associated with the purchase order.
+
+      :type: float
+
+   .. attribute:: taxtotal
+
+      Total tax applicable on the `subtotal`.
+
+      :type: float
+
+   .. attribute:: ordertotal
+
+      Total price of the purchase order including  `taxtotal`.
+
+      :type: float
+
+   .. method:: is_complete()
+
+      Returns the completion status (boolean).
+
+   .. method:: pending_ppes()
+
+      Returns list of product purchase entries which are not completed.
+
+
+
+.. py:class:: GoodsReceiptNote
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the goods receipt note (GRN).
+
+   .. attribute:: vendor
+
+      Vendor associated with the goods receipt note.
+
+      :type: ModelChoiceField
+
+   .. attribute:: poRef
+
+      List of identifiers of the purchase orders from which the goods receipt note is derived.
+
+      :type: MultipleChoiceField
+
+   .. attribute:: identifier
+
+      Unique identifier of the goods receipt note.
+
+      :type: str
+
+   .. attribute:: date
+
+      Date of GRN creation.
+
+      :type: DateField
+
+   .. attribute:: grnType
+
+      Type of GRN (``auto`` or ``manual``).
+
+      :type: ChoiceField
+
+   .. attribute:: amendNumber
+
+      Amendment number of the GRN.
+
+      :type: int
+
+   .. attribute:: amendDate
+
+      Amendment date.
+
+      :type: DateField
+
+   .. attribute:: transporter
+
+      Name of the transport/shipping service.
+
+      :type: str
+
+   .. attribute:: vehicleNumber
+
+      Vehicle number using which the products are shipped.
+
+      :type: str
+
+   .. attribute:: gateInwardNumber
+
+      Gate inward number of the vehicle.
+
+      :type: str
+
+   .. attribute:: preparedBy
+
+      Name/identifier of the person who created the goods receipt note.
+
+      :type: str
+
+   .. attribute:: checkedBy
+
+      Name/identifier of the person who validated the goods receipt note.
+
+      :type: str
+
+   .. attribute:: checkedBy
+
+      Name/identifier of the person who inspected the physical products in the goods receipt note.
+
+      :type: str
+
+   .. attribute:: approvedBy
+
+      Name/identifier of the authority who approved the goods receipt note.
+
+      :type: str
+
+
+.. py:class:: SalesOrder
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the sales order.
+
+   .. attribute:: consumer
+
+      Consumer associated with the sales order.
+
+      :type: ModelChoiceField
+
+   .. attribute:: date
+
+      Date of the sales order creation.
+
+      :type: DateField
+
+   .. attribute:: so
+
+      Sales order number.
+
+      :type: int
+
+   .. attribute:: discount
+
+      Percentage discount associated with the sales order.
+
+      :type: float
+
+   .. attribute:: tax
+
+      Percentage of tax applicable.
+
+      :type: float
+
+   .. attribute:: paid
+
+      Amount received from the consumer.
+
+      :type: float
+
+   .. attribute:: balance
+
+      Amount balance with the consumer.
+
+      :type: float
+
+   .. attribute:: subtotal
+
+      Total of all the product sales entries associated with the sales order.
+
+      :type: float
+
+   .. attribute:: taxtotal
+
+      Total tax applicable on the `subtotal`.
+
+      :type: float
+
+   .. attribute:: ordertotal
+
+      Total price of the sales order including  `taxtotal`.
+
+      :type: float
+
+
+.. py:class:: Product
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the product.
+
+   .. attribute:: name
+
+      Name of the product.
+
+      :type: str
+
+   .. attribute:: category
+
+      Product category.
+
+      :type: str
+
+   .. attribute:: item_type
+
+      Type of the product.
+
+      :type: str
+
+   .. attribute:: description
+
+      Short description of the product.
+
+      :type: str
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: quantity
+
+      Stock quantity of the product.
+
+      :type: int
+
+   .. attribute:: identifier
+
+      Unique identifier of the product.
+
+      :type: str
+
+   .. attribute:: location
+
+      Physical location of the product.
+
+      :type: str
+
+   .. attribute:: length
+
+      Length of the product.
+
+      :type: str
+
+   .. attribute:: width
+
+      Width of the product.
+
+      :type: str
+
+   .. attribute:: height
+
+      Height of the product.
+
+      :type: str
+
+   .. attribute:: weight
+
+      Weight of the product.
+
+      :type: str
+
+   .. attribute:: discount
+
+      Default discount percentage on the product.
+
+      :type: float
+
+   .. attribute:: barcode
+
+      Barcode of the product.
+
+      :type: str
+
+   .. attribute:: expiry
+
+      Expiry date of the product.
+
+      :type: DateField
+
+   .. attribute:: image
+
+      Image of the product.
+
+      :type: ImageField
+
+
+.. py:class:: ProductPurchaseEntry
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the product purchase entry.
+
+   .. attribute:: product
+
+      Product associated wit the product purchase entry.
+
+      :type: ModelChoiceField
+
+   .. attribute:: quantity
+
+      Quantity of the product to be ordered.
+
+      :type: int
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: discount
+
+      Percentage discount on the product purchase.
+
+      :type: float
+
+   .. attribute:: order
+
+      Referenced purchase order.
+
+      :type: PurchaseOrder
+
+   .. attribute:: receivedQty
+
+      Quantity of product received against the ordered quantity.
+
+      :type: str
+
+   .. attribute:: acceptedQty
+
+      Quantity of product accepted as OK.
+
+      :type: str
+
+   .. attribute:: rejectedQty
+
+      Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+
+      :type: str
+
+   .. method:: is_complete()
+
+      Returns the completion status (boolean).
+
+   .. method:: pending_quantity()
+
+      Returns the pending quantity against the entry (int).
+
+
+
+.. py:class:: GRNEntry
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the goods receipt note entry (GRNE).
+
+   .. attribute:: product
+
+      Primary key of the ``Product`` instance associated with the goods receipt note entry.
+
+      :type: Product
+
+   .. attribute:: quantity
+
+      Ordered quantity of product with reference to product purchase entry.
+
+      :type: int
+
+   .. attribute:: grne
+
+      Primary key of the ``GoodsReceiptNote`` instance.
+
+      :type: int
+
+   .. attribute:: ppe
+
+      Primary key of the ``ProductPurchaseEntry`` instance associated with the GRNE.
+
+      :type: int
+
+   .. attribute:: remark
+
+      Remarks of the quality engineer or the GRN creator about status of products received.
+
+      :type: str
+
+   .. attribute:: receivedQty
+
+      Quantity of product received against the ordered quantity.
+
+      :type: str
+
+   .. attribute:: acceptedQty
+
+      Quantity of product accepted as OK.
+
+      :type: str
+
+   .. attribute:: rejectedQty
+
+      Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+
+      :type: str
+
+
+.. py:class:: ProductSalesEntry
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model of the product sales entry.
+
+   .. attribute:: product
+
+      Primary key of the ``Product`` associated with the product sales entry.
+
+      :type: Product
+
+   .. attribute:: quantity
+
+      Quantity of the product.
+
+      :type: int
+
+   .. attribute:: price
+
+      Price of the product.
+
+      :type: float
+
+   .. attribute:: discount
+
+      Percentage discount on the product.
+
+      :type: float
+
+   .. attribute:: order
+
+      Primary key of the ``SalesOrder`` referenced by the entry.
+
+      :type: SalesOrder
+
+
+.. py:class:: PurchaseInvoice
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for the purchase invoice.
+
+   .. attribute:: company
+
+      Primary key of the ``Company``.
+
+      :type: Company
+
+   .. attribute:: po
+
+      Primary key of the ``PurchaseOrder``.
+
+      :type: PurchaseOrder
+
+   .. attribute:: shippingaddress
+
+      Primary key of the ``ShippingAddress``.
+
+      :type: ShippingAddress
+
+   .. attribute:: communication
+
+      Primary key of the ``Communication``.
+
+      :type: Communication
+
+
+.. py:class:: GRNInvoice
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for the goods receipt note invoice.
+
+   .. attribute:: company
+
+      Primary key of the ``Company``.
+
+      :type: Company
+
+   .. attribute:: grn
+
+      Primary key of the ``GoodsReceiptNote``.
+
+      :type: GoodsReceiptNote
+
+   .. attribute:: shippingaddress
+
+      Primary key of the ``ShippingAddress``.
+
+      :type: ShippingAddress
+
+   .. attribute:: communication
+
+      Primary key of the ``Communication``.
+
+      :type: Communication
+
+
+.. py:class:: SalesInvoice
+
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Model for the sales order invoice.
+
+   .. attribute:: company
+
+      Primary key of the ``Company``.
+
+      :type: Company
+
+   .. attribute:: so
+
+      Primary key of the ``SalesOrder``.
+
+      :type: SalesOrder
+
+   .. attribute:: shippingaddress
+
+      Primary key of the ``ShippingAddress``.
+
+      :type: ShippingAddress
+
+

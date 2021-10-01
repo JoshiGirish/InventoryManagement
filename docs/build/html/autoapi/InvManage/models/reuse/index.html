@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvManage.models.reuse &mdash; INVENT 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> INVENT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">INVENT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">InvManage.models.reuse</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/InvManage/models/reuse/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-InvManage.models.reuse">
+<span id="invmanage-models-reuse"></span><h1><a class="reference internal" href="#module-InvManage.models.reuse" title="InvManage.models.reuse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">InvManage.models.reuse</span></code></a><a class="headerlink" href="#module-InvManage.models.reuse" title="Permalink to this headline"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#InvManage.models.reuse.ShippingAddress" title="InvManage.models.reuse.ShippingAddress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShippingAddress</span></code></a></p></td>
+<td><p>Model of the shipping address.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#InvManage.models.reuse.Communication" title="InvManage.models.reuse.Communication"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Communication</span></code></a></p></td>
+<td><p>Model of the communication information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#InvManage.models.reuse.PurchaseData" title="InvManage.models.reuse.PurchaseData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PurchaseData</span></code></a></p></td>
+<td><p>Model of the purchase data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#InvManage.models.reuse.BankAccount" title="InvManage.models.reuse.BankAccount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BankAccount</span></code></a></p></td>
+<td><p>Model of the bank account details.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">InvManage.models.reuse.</span></span><span class="sig-name descname"><span class="pre">ShippingAddress</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Model of the shipping address.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.title" title="Permalink to this definition"></a></dt>
+<dd><p>Title of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.phone">
+<span class="sig-name descname"><span class="pre">phone</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.phone" title="Permalink to this definition"></a></dt>
+<dd><p>Contact number of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.address" title="Permalink to this definition"></a></dt>
+<dd><p>Postal address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.city">
+<span class="sig-name descname"><span class="pre">city</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.city" title="Permalink to this definition"></a></dt>
+<dd><p>City.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.state" title="Permalink to this definition"></a></dt>
+<dd><p>State.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.country">
+<span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.country" title="Permalink to this definition"></a></dt>
+<dd><p>Country.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.website">
+<span class="sig-name descname"><span class="pre">website</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.website" title="Permalink to this definition"></a></dt>
+<dd><p>Official website of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>URLField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.ShippingAddress.post">
+<span class="sig-name descname"><span class="pre">post</span></span><a class="headerlink" href="#InvManage.models.reuse.ShippingAddress.post" title="Permalink to this definition"></a></dt>
+<dd><p>Postal code of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="InvManage.models.reuse.Communication">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">InvManage.models.reuse.</span></span><span class="sig-name descname"><span class="pre">Communication</span></span><a class="headerlink" href="#InvManage.models.reuse.Communication" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Model of the communication information.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.Communication.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#InvManage.models.reuse.Communication.language" title="Permalink to this definition"></a></dt>
+<dd><p>Language of communication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.Communication.phone">
+<span class="sig-name descname"><span class="pre">phone</span></span><a class="headerlink" href="#InvManage.models.reuse.Communication.phone" title="Permalink to this definition"></a></dt>
+<dd><p>Contact number of the firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.Communication.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#InvManage.models.reuse.Communication.email" title="Permalink to this definition"></a></dt>
+<dd><p>E-mail of the contact person.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>EmailField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.Communication.fax">
+<span class="sig-name descname"><span class="pre">fax</span></span><a class="headerlink" href="#InvManage.models.reuse.Communication.fax" title="Permalink to this definition"></a></dt>
+<dd><p>Fax number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">InvManage.models.reuse.</span></span><span class="sig-name descname"><span class="pre">PurchaseData</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Model of the purchase data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData.currency">
+<span class="sig-name descname"><span class="pre">currency</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData.currency" title="Permalink to this definition"></a></dt>
+<dd><p>Currency of purchase.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData.minorder">
+<span class="sig-name descname"><span class="pre">minorder</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData.minorder" title="Permalink to this definition"></a></dt>
+<dd><p>Minimum order quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData.contactperson">
+<span class="sig-name descname"><span class="pre">contactperson</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData.contactperson" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the contact person.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData.refcode">
+<span class="sig-name descname"><span class="pre">refcode</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData.refcode" title="Permalink to this definition"></a></dt>
+<dd><p>Reference code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.PurchaseData.transportmode">
+<span class="sig-name descname"><span class="pre">transportmode</span></span><a class="headerlink" href="#InvManage.models.reuse.PurchaseData.transportmode" title="Permalink to this definition"></a></dt>
+<dd><p>Mode of transport of the shipment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">InvManage.models.reuse.</span></span><span class="sig-name descname"><span class="pre">BankAccount</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Model of the bank account details.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the bank.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.branch">
+<span class="sig-name descname"><span class="pre">branch</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.branch" title="Permalink to this definition"></a></dt>
+<dd><p>Branch number of the bank.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.region">
+<span class="sig-name descname"><span class="pre">region</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.region" title="Permalink to this definition"></a></dt>
+<dd><p>City in which the branch is located.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.route">
+<span class="sig-name descname"><span class="pre">route</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.route" title="Permalink to this definition"></a></dt>
+<dd><p>Transit number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.number">
+<span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.number" title="Permalink to this definition"></a></dt>
+<dd><p>Bank account number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.acctype">
+<span class="sig-name descname"><span class="pre">acctype</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.acctype" title="Permalink to this definition"></a></dt>
+<dd><p>Type of bank account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.iban">
+<span class="sig-name descname"><span class="pre">iban</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.iban" title="Permalink to this definition"></a></dt>
+<dd><p>IBAN number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.code">
+<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.code" title="Permalink to this definition"></a></dt>
+<dd><p>Bank code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="InvManage.models.reuse.BankAccount.branchcode">
+<span class="sig-name descname"><span class="pre">branchcode</span></span><a class="headerlink" href="#InvManage.models.reuse.BankAccount.branchcode" title="Permalink to this definition"></a></dt>
+<dd><p>Branch code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Girish Joshi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
