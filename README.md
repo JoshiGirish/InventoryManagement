@@ -36,34 +36,34 @@ For REST API documentation check out the `InvManage.views` section.
 				Company
 			</td>
 			<td>
-				`'/company'`
+				<code>/company</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.create_company_view">create_company_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/companies`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.display_companies_view">display_companies_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.create_company_view" style="font-style:italic;">create_company_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/company/update'`
+				<code>/companies</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.update_company_view">update_company_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.display_companies_view" style="font-style:italic;">display_companies_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/company/&lt;str:pk&gt;/delete'`
+				<code>/company/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.delete_company_view">delete_company_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.update_company_view" style="font-style:italic;">update_company_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/company/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/company_views/index.html#InvManage.views.company_views.delete_company_view" style="font-style:italic;">delete_company_view(request, pk)</a>
 			</td>
 		</tr>
 		<!-- Product APIs -->
@@ -72,42 +72,42 @@ For REST API documentation check out the `InvManage.views` section.
 				Product
 			</td>
 			<td>
-				`'/product'`
+				<code>/product</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.create_product_view">create_product_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/products`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.display_products_view">display_products_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.create_product_view" style="font-style:italic;">create_product_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/product/update'`
+				<code>/products</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.update_product_view">update_product_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/product/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.delete_product_view">delete_product_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.display_products_view" style="font-style:italic;">display_products_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/upload/&lt;data&gt;'`
+				<code>/product/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.uploadCSV">uploadCSV(request, data)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.update_product_view" style="font-style:italic;">update_product_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/product/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.delete_product_view" style="font-style:italic;">delete_product_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/upload/&lt;data&gt;</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/product_views/index.html#InvManage.views.product_views.uploadCSV" style="font-style:italic;">uploadCSV(request, data)</a>
 			</td>
 		</tr>
 		<!-- Vendor APIs -->
@@ -116,42 +116,42 @@ For REST API documentation check out the `InvManage.views` section.
 				Vendor
 			</td>
 			<td>
-				`'/vendor'`
+				<code>/vendor</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.create_vendor_view">create_vendor_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/vendors`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.display_vendors_view">display_vendors_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.create_vendor_view" style="font-style:italic;">create_vendor_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/vendor/update'`
+				<code>/vendors</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.update_vendor_view">update_vendor_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/vendor/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.delete_vendor_view">delete_vendor_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.display_vendors_view" style="font-style:italic;">display_vendors_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/get_vendor'`
+				<code>/vendor/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.get_vendor">get_vendor(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.update_vendor_view" style="font-style:italic;">update_vendor_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/vendor/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.delete_vendor_view" style="font-style:italic;">delete_vendor_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/get_vendor</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/vendor_views/index.html#InvManage.views.vendor_views.get_vendor" style="font-style:italic;">get_vendor(request)</a>
 			</td>
 		</tr>
 		<!-- Consumer APIs -->
@@ -160,42 +160,42 @@ For REST API documentation check out the `InvManage.views` section.
 				Consumer
 			</td>
 			<td>
-				`'/consumer'`
+				<code>/consumer</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.create_consumer_view">create_consumer_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/consumers`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.display_consumers_view">display_consumers_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.create_consumer_view" style="font-style:italic;">create_consumer_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/consumer/update'`
+				<code>/consumers</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.update_consumer_view">update_consumer_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/consumer/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.delete_consumer_view">delete_consumer_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.display_consumers_view" style="font-style:italic;">display_consumers_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/get_consumer'`
+				<code>/consumer/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.get_consumer">get_consumer(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.update_consumer_view" style="font-style:italic;">update_consumer_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/consumer/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.delete_consumer_view" style="font-style:italic;">delete_consumer_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/get_consumer</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/consumer_views/index.html#InvManage.views.consumer_views.get_consumer" style="font-style:italic;">get_consumer(request)</a>
 			</td>
 		</tr>
 		<!-- GRN APIs -->
@@ -204,42 +204,42 @@ For REST API documentation check out the `InvManage.views` section.
 				GoodsReceiptNote
 			</td>
 			<td>
-				`'/grn'`
+				<code>/grn</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.create_grn_view">create_grn_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/grns`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.display_grns_view">display_grns_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.create_grn_view" style="font-style:italic;">create_grn_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/grn/update'`
+				<code>/grns</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.update_grn_view">update_grn_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/grn/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.delete_grn_view">delete_grn_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.display_grns_view" style="font-style:italic;">display_grns_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/grn/&lt;str:pk&gt;/print'`
+				<code>/grn/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.print_grn_view">print_grn_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.update_grn_view" style="font-style:italic;">update_grn_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/grn/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.delete_grn_view" style="font-style:italic;">delete_grn_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/grn/&lt;str:pk&gt;/print</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/goods_receipt_note_views/index.html#InvManage.views.goods_receipt_note_views.print_grn_view" style="font-style:italic;">print_grn_view(request, pk)</a>
 			</td>
 		</tr>
 		<!-- PO APIs -->
@@ -248,50 +248,50 @@ For REST API documentation check out the `InvManage.views` section.
 				PurchaseOrder
 			</td>
 			<td>
-				`'/purchase_order'`
+				<code>/purchase_order</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.create_purchase_order_view">create_purchase_order_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/purchase_orders`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.display_purchase_orders_view">display_purchase_orders_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.create_purchase_order_view" style="font-style:italic;">create_purchase_order_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/purchase_order/update'`
+				<code>/purchase_orders</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.update_purchase_order_view">update_purchase_order_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/purchase_order/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.delete_purchase_order_view">delete_purchase_order_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.display_purchase_orders_view" style="font-style:italic;">display_purchase_orders_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/purchase_order/&lt;str:pk&gt;/print'`
+				<code>/purchase_order/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.print_purchase_order_view">print_purchase_order_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.update_purchase_order_view" style="font-style:italic;">update_purchase_order_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/product_purchase_entries'`
+				<code>/purchase_order/&lt;str:pk&gt;/delete</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.get_product_purchase_entries_view">get_product_purchase_entries_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.delete_purchase_order_view" style="font-style:italic;">delete_purchase_order_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/purchase_order/&lt;str:pk&gt;/print</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.print_purchase_order_view" style="font-style:italic;">print_purchase_order_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/product_purchase_entries</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/purchase_order_views/index.html#InvManage.views.purchase_order_views.get_product_purchase_entries_view" style="font-style:italic;">get_product_purchase_entries_view(request)</a>
 			</td>
 		</tr>
 		<!-- SO APIs -->
@@ -300,42 +300,42 @@ For REST API documentation check out the `InvManage.views` section.
 				SalesOrder
 			</td>
 			<td>
-				`'/sales_order'`
+				<code>/sales_order</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.create_sales_order_view">create_sales_order_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/sales_orders`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.display_sales_orders_view">display_sales_orders_view(request)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.create_sales_order_view" style="font-style:italic;">create_sales_order_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/sales_order/update'`
+				<code>/sales_orders</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.update_sales_order_view">update_sales_order_view(request)</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				`'/sales_order/&lt;str:pk&gt;/delete'`
-			</td>
-			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.delete_sales_order_view">delete_sales_order_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.display_sales_orders_view" style="font-style:italic;">display_sales_orders_view(request)</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				`'/sales_order/&lt;str:pk&gt;/print'`
+				<code>/sales_order/update</code>
 			</td>
 			<td>
-				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.print_sales_order_view">print_sales_order_view(request, pk)</a>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.update_sales_order_view" style="font-style:italic;">update_sales_order_view(request)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/sales_order/&lt;str:pk&gt;/delete</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.delete_sales_order_view" style="font-style:italic;">delete_sales_order_view(request, pk)</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>/sales_order/&lt;str:pk&gt;/print</code>
+			</td>
+			<td>
+				<a href="https://inventory-management.readthedocs.io/en/latest/autoapi/InvManage/views/sales_order_views/index.html#InvManage.views.sales_order_views.print_sales_order_view" style="font-style:italic;">print_sales_order_view(request, pk)</a>
 			</td>
 		</tr>
 	</tbody>
