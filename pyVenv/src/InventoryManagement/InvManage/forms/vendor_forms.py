@@ -1,6 +1,17 @@
 from django import forms
 
 class VendorForm(forms.Form):
+    """Form for basic informaion of the vendor.
+
+    Attributes
+    ----------
+    name : str
+        Name of the vendor.
+    identifier : str
+        Unique identifier of the vendor.
+    gstin : str
+        GSTIN number of the vendor.
+    """
     prefix = "vend"
     context={
         "class": "form-control",
@@ -11,6 +22,29 @@ class VendorForm(forms.Form):
 
 
 class ShippingAddressForm(forms.Form):
+    """For for shipping address.
+
+    Attributes
+    ----------
+    title : str
+        Title of the firm.
+    name : str
+        Name of the firm.
+    phone : str
+        Contact number of the firm.
+    address : str
+        Postal address.
+    city : str
+        City.
+    state : str
+        State.
+    country : str
+        Country.
+    website : URLField
+        Official website of the firm.
+    post : str
+        Postal code of the firm.
+    """
     prefix = "ship"
     context={
         "class": "form-control",
@@ -31,6 +65,19 @@ class ShippingAddressForm(forms.Form):
     
 
 class CommunicationForm(forms.Form):
+    """Form for communication information.
+
+    Attributes
+    ----------
+    language : str
+        Language of communication.
+    phone : str
+        Contact number of the firm.
+    email : EmailField
+        E-mail of the contact person.
+    fax : str
+        Fax number.
+    """
     prefix = "com"
     context={
         "class": "form-control",
@@ -42,6 +89,21 @@ class CommunicationForm(forms.Form):
     
 
 class PurchaseDataForm(forms.Form):
+    """Form for purchase related data.
+
+    Attributes
+    ----------
+    currency : str
+        Currency of purchase.
+    minorder : int
+        Minimum order quantity.
+    contactperson : str
+        Name of the contact person.
+    refcode : str
+        Reference code.
+    transportmode : str
+        Mode of transport of the shipment.
+    """
     prefix = "pdform"
     context = {
         "class": "form-control",
@@ -54,6 +116,29 @@ class PurchaseDataForm(forms.Form):
     
     
 class BankAccountForm(forms.Form):
+    """Form for bank account details.
+
+    Attributes
+    ----------
+    name : str
+        Name of the bank.
+    branch : str
+        Branch number of the bank.
+    region : str
+        City in which the branch is located.
+    route : str
+        Transit number.
+    number : int
+        Bank account number.
+    acctype : str  
+        Type of bank account.
+    iban : str
+        IBAN number.
+    code : str 
+        Bank code.
+    branchcode : str
+        Branch code.
+    """
     prefix = "bank"
     context = {
         "class": "form-control",

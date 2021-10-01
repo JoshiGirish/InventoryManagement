@@ -3,6 +3,20 @@ from InvManage.models import Product, Vendor, PurchaseOrder, Consumer
 from django.utils import timezone
 
 class ProductBasicInfoForm(forms.Form):
+    """Form for basic product information.
+
+    Attributes
+    ----------
+    name : str
+        Name of the product.
+    item_type : str
+        Type of the product.
+    category : str
+        Product category.
+    description : str
+        Short description of the product.
+
+    """
     prefix = "basic"
     context={
         "class": "form-control",
@@ -19,6 +33,19 @@ class ProductBasicInfoForm(forms.Form):
     ))
 
 class ProductDetailedInfoForm(forms.Form):
+    """Form for product physical details
+
+    Attributes
+    ----------
+    length : str
+        Length of the product.
+    width : str
+        Width of the product.
+    height : str
+        Height of the product.
+    weight : str
+        Weight of the product.
+    """
     prefix = "detailed"
     context={
         "class": "form-control",
@@ -31,10 +58,26 @@ class ProductDetailedInfoForm(forms.Form):
 
 
 class ThumbnailForm(forms.Form):
+    """For for product thumbnail image.
+
+    Attributes
+    ----------
+    image : ImageField
+        Image of the product.
+    """
     prefix = "thumbnail"
     image = forms.ImageField(widget=forms.FileInput(attrs={"class": "upload"}))
 
 class ProductStorageInfoForm(forms.Form):
+    """Form for storage information.
+
+    Attributes
+    ----------
+    barcode : str
+        Barcode of the product.
+    expiry : DateField
+        Expiry date of the product.
+    """
     prefix = "storage"
     barcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
     context={
@@ -44,6 +87,15 @@ class ProductStorageInfoForm(forms.Form):
     expiry = forms.DateField(widget=forms.widgets.DateInput(attrs=context),initial=timezone.now)
 
 class ProductPricingForm(forms.Form):
+    """Form for pricing information of the product.
+
+    Attributes
+    ----------
+    price : float
+        Price of the product.
+    discount : float
+        Default discount percentage on the product.
+    """
     prefix = "pricing"
     context={
         "class": "form-control",
@@ -52,6 +104,17 @@ class ProductPricingForm(forms.Form):
     discount = forms.FloatField(widget=forms.NumberInput(attrs={'id': 'form_homework', 'step': "1", "class": "form-control"}))
 
 class ProductStatusForm(forms.Form):
+    """Form for locating and identifying the product.
+
+    Attributes
+    ----------
+    quantity : int
+        Stock quantity of the product.
+    identifier : str
+        Unique identifier of the product.
+    location : str
+        Physical location of the product.
+    """
     context={
         "class": "form-control",
     }
@@ -62,6 +125,31 @@ class ProductStatusForm(forms.Form):
 
 ####### Purchase Order Forms #########
 class PurchaseOrderBasicInfo(forms.Form):
+    """Form for basic information of the purchase order.
+
+    Attributes
+    ----------
+    vendor : Vendor
+        Vendor associated with the purcahse order.
+    date : DateField
+        Date of the purchase order creation.
+    po : int
+        Purchase order number.
+    discount : float
+        Percentage of overall discount.
+    tax : float
+        Percentage of tax.
+    paid : float
+        Amount paid to the vendor.
+    balance : float
+        Balance amount to be paid to the vendor.
+    subtotal : float
+        Total of all the product purchase entries associated with the purchase order.
+    taxtotal : float
+        Total tax applicable on the `subtotal`.
+    ordertotal : float
+        Total price of the purchase order including  `taxtotal`.
+    """
     prefix = "po"
     context={
         "class": "form-control",
@@ -85,6 +173,39 @@ class PurchaseOrderBasicInfo(forms.Form):
     
 ####### GRN Forms #########
 class GRNInfo(forms.Form):
+    """Form for goods receipt note (GRN).
+
+    Attributes
+    ----------
+    vendor : Vendor
+        Vendor associated with the goods receipt note.
+    poRef : PurchaseOrder
+        List of identifiers of the purchase orders from which the goods receipt note is derived.
+    identifier : str
+        Unique identifier of the goods receipt note.
+    date : DateField
+        Date of GRN creation.
+    grnType : str
+        Type of GRN (``auto`` or ``manual``).
+    amendNumber : int
+        Amendment number of the GRN.
+    amendDate : DateField
+        Amendment date.
+    transporter : str
+        Name of the transport/shipping service.
+    vehicleNumber : str
+        Vehicle number using which the products are shipped.
+    gateInwardNumber : str
+        Gate inward number of the vehicle.
+    preparedBy : str
+        Name/identifier of the person who created the goods receipt note.
+    checkedBy : str
+        Name/identifier of the person who validated the goods receipt note.
+    checkedBy : str
+        Name/identifier of the person who inspected the physical products in the goods receipt note.
+    approvedBy : str
+        Name/identifier of the authority who approved the goods receipt note.
+    """
     prefix = "grn"
     context={
         "class": "form-control",
@@ -113,6 +234,31 @@ class GRNInfo(forms.Form):
 
 ####### Sales Order Forms #########
 class SalesOrderBasicInfo(forms.Form):
+    """Form for basic information on sales order.
+
+    Attributes
+    ----------
+    consumer : Consumer
+        Consumer associated with the sales order.
+    date : DateField
+        Date of the sales order creation.
+    so : int
+        Sales order number.
+    discount : float
+        Percentage discount associated with the sales order.
+    tax : float
+        Percentage of tax applicable.
+    paid : float
+        Amount received from the consumer.
+    balance : float
+        Amount balance with the consumer.
+    subtotal : float
+        Total of all the product sales entries associated with the sales order.
+    taxtotal : float
+        Total tax applicable on the `subtotal`.
+    ordertotal : float
+        Total price of the sales order including  `taxtotal`.
+    """
     prefix = "so"
     context={
         "class": "form-control",
@@ -135,6 +281,25 @@ class SalesOrderBasicInfo(forms.Form):
 
     
 class ConsumerForm(forms.Form):
+    """Form for consumer.
+
+    Attributes
+    ----------
+    name : str
+        Name of the consumer.
+    identifier : str
+        Unique identifier of the consumer.
+    gstin : str
+        GSTIN number of the consumer.
+    phone : str
+        Contact number.
+    address : str
+        Address of the consumer.
+    email : str
+        E-mail address of the consumer.
+    location : str
+        City of the consumer.
+    """
     prefix = "consumer"
     context={
         "class": "form-control",
@@ -154,6 +319,27 @@ class ConsumerForm(forms.Form):
 
 
 class GRNEntryForm(forms.Form):
+    """Form for goods receipt note entry (GRNE).
+
+    Attributes
+    ----------
+    product : Product
+        Product associated with the goods receipt note entry.
+    grne_id : int
+        Unique identifier of the GRNE.
+    ppe_id : int
+        Unique identifier of the product purchase entry associated with the GRNE.
+    quantity : int
+        Ordered quantity of product with reference to product purchase entry.
+    remark : str
+        Remarks of the quality engineer or the GRN creator about status of products received.
+    receivedQty : str
+        Quantity of product received against the ordered quantity.
+    acceptedQty : str
+        Quantity of product accepted as OK.
+    rejectedQty : str
+        Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+    """
     prefix = "form"
     context = {
         "class": "form-control",
@@ -173,6 +359,21 @@ class GRNEntryForm(forms.Form):
     
 
 class ProductPurchaseEntryForm(forms.Form):
+    """Form for product purchase entry.
+
+    Attributes
+    ----------
+    ppe_id : int
+        Unique identifier of the product purchase entry.
+    product : Product
+        Product associated wit the product purchase entry.
+    quantity : int
+        Quantity of the product to be ordered.
+    price : float
+        Price of the product.
+    discount : float
+        Percentage discount on the product purchase.
+    """
     prefix = "form"
     context={
         "class": "form-control",
@@ -191,6 +392,21 @@ class ProductPurchaseEntryForm(forms.Form):
     
     
 class ProductSalesEntryForm(forms.Form):
+    """Form for product sales entry.
+
+    Attributes
+    ----------
+    pse_id : int
+        Unique identifier of the product sales entry.
+    product : Product
+        Product associated with the product sales entry.
+    quantity : int
+        Quantity of the product.
+    price : float
+        Price of the product.
+    discount : float
+        Percentage discount on the product.
+    """
     prefix = "form"
     context={
         "class": "form-control",
@@ -209,6 +425,25 @@ class ProductSalesEntryForm(forms.Form):
     
 
 class CompanyForm(forms.Form):
+    """Form for company.
+
+    Attributes
+    ----------
+    name : str
+        Name of the company.
+    owner : str
+        Name of the owner of the company.
+    gstin : str
+        GSTIN number of the company.
+    phone : str
+        Contact number of the company.
+    address : str
+        Postal address.
+    email : str
+        E-mail address of the contact person.
+    location : str
+        City of the company.
+    """
     prefix = "comp"
     context={
         "class": "form-control",
@@ -229,6 +464,13 @@ class CompanyForm(forms.Form):
 
     
 class HistoryForm(forms.Form):
+    """Form for history view.
+
+    Attributes
+    ----------
+    qlen : int
+        Count of the events visible on the history view.
+    """
     prefix = 'history'
     context={
         "class": "form-control",

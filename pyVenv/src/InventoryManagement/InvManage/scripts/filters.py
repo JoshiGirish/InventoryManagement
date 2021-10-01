@@ -3,11 +3,22 @@ from django.core.paginator import Paginator
 
 
 def get_columns(state):
-    """
+    """Gets the columns of the display table.
+    
     This function takes a filter state and returns an array of column names that are
     ordered depending on the position attribute of the columns. This order is important 
     as the queryset will be rendered in the display table according to the column order
     in this returned array.
+    
+    Parameters
+    ----------
+    state : FilterState
+        Filter state of the columns.
+        
+    Returns
+    -------
+    List
+        A list that dictates the order of the columns.
 
     """
     a=[]
@@ -33,9 +44,22 @@ def get_columns(state):
 
 
 def sort_ascending_descending(request,model):
-    """
+    """Sorts and saves the state of the column.
+    
     This function takes a request, finds which column needs to be sorted in ascending/descending
-    order, and returns the sorted queryset
+    order, and returns the sorted queryset.
+    
+    Parameters
+    ----------
+    request : HttpRequest
+        ``GET`` request received for retreiving the list of model instances.
+    model : Model
+        Model of the objects being retrieved.
+    
+    Returns
+    -------
+    QuerySet 
+        List of sorted object instances.
     """
     try:
         if request.GET.get('sort')=='ascend': 
@@ -49,13 +73,26 @@ def sort_ascending_descending(request,model):
 
 
 def change_column_position(request,state):
-    """
+    """Modifies the column states depending on the request.
+    
     This function:
         - Takes a filter state
         - Extracts the column names into an order array
         - Modifies the column order in the array depending on user input direction (left/right)
         - Saves this modified state of columns into the database
         - Returns the modified column names array
+        
+    Parameters
+    ----------
+    request : HttpRequest
+        ``GET`` request for retrieving the state of the columns.
+    state : FilterState
+        Filter state of the columns.
+    
+    Returns
+    -------
+    List
+        List of sorted columns.
     """
 
     def modify_column_list(request,column_list):
@@ -99,9 +136,19 @@ def change_column_position(request,state):
 
 
 def paginate(queryset,filter,page_number):
-    """
+    """Paginates the list of objects.
+    
     This function takes the entire queryset and filters out only objects belonging to the
     request page
+    
+    Parameters
+    ----------
+    queryset : QuerySet
+        ``QuerySet`` of the objects retrieved from the database.
+    filter : FilterState
+        Filter state of the columns.
+    page_number : int
+        Page number requested.
     """
     paginator = Paginator(queryset,15)
     page_obj = paginator.get_page(page_number)

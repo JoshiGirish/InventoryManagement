@@ -10,8 +10,149 @@ from InvManage.scripts.filters import *
 from InvManage.scripts.helpers import create_event
 from InvManage.models.objects import GRNInvoice
 
+from InvManage.scripts.helpers import generate_form_parameter_string
+from django.http import HttpResponse, JsonResponse
+
 
 def create_grn_view(request):
+    """ 
+        Creates a goods receipt note (GRN) on ``POST`` request, and returns a GRN creation form on ``GET`` request. 
+
+        .. http:get:: /grn
+
+            Gets the GRN creation form.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                GET /grn/ HTTP/1.1
+                Host: localhost:8000
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            
+    
+            **Example response**:
+
+            .. sourcecode:: http
+
+                HTTP/1.1 200 OK
+                Vary: Accept
+                Content-Type: text/html; charset=utf-8
+
+            :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            :statuscode 200: GRN creation form received successfully.
+
+        .. http:post:: /grn
+
+            Creates a GRN.
+            There are two modes:
+            - ``auto`` : Setting ``grn-grnType`` to ``auto`` creates a GRN with PO reference.
+            - ``manual`` : Setting ``grn-grnType`` to ``manual`` creates a GRN without PO reference. In this case
+                            the ``grn-poRef`` is not required.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                POST /consumer/ HTTP/1.1
+                Host: localhost:8000
+                Content-Type: multipart/form-data;
+
+            :form grn-grnType: ``auto``
+
+            :form grn-vendor: ``4``
+
+            :form grn-poRef: ``182``
+
+            :form grn-amendNumber: ``546``
+
+            :form grn-amendDate: ``2021-09-29``
+
+            :form grn-identifier: ``846``
+
+            :form grn-date: ``2021-09-29``
+
+            :form grn-transporter: ``TeraTransport``
+
+            :form grn-vehicleNumber: ``GH-646358``
+
+            :form grn-gateInwardNumber: ``864353``
+
+            :form grn-preparedBy: ``KJL``
+
+            :form grn-checkedBy: ``KJH``
+
+            :form grn-inspectedBy: ``GIO``
+
+            :form grn-approvedBy: ``BHI``
+
+            :form form-TOTAL_FORMS: ``3``
+
+            :form form-INITIAL_FORMS: ``0``
+
+            :form form-MIN_NUM_FORMS: ````
+
+            :form form-MAX_NUM_FORMS: ````
+
+            :form form-0-product: ``637``
+
+            :form form-0-quantity: ``100``
+
+            :form form-0-receivedQty: ``50``
+
+            :form form-0-acceptedQty: ``50``
+
+            :form form-0-rejectedQty: ``0``
+
+            :form form-0-remark: ``OK``
+
+            :form form-0-DELETE: ````
+
+            :form form-0-grne_id: ``-1``
+
+            :form form-0-ppe_id: ``324``
+
+            :form form-1-product: ``645``
+
+            :form form-1-quantity: ``250``
+
+            :form form-1-receivedQty: ``200``
+
+            :form form-1-acceptedQty: ``180``
+
+            :form form-1-rejectedQty: ``20``
+
+            :form form-1-remark: ``20 pieces faulty``
+
+            :form form-1-DELETE: ````
+
+            :form form-1-grne_id: ``-1``
+
+            :form form-1-ppe_id: ``325``
+
+            :form form-2-product: ``638``
+
+            :form form-2-quantity: ``200``
+
+            :form form-2-receivedQty: ``0``
+
+            :form form-2-acceptedQty: ``0``
+
+            :form form-2-rejectedQty: ``0``
+
+            :form form-2-remark: ````
+
+            :form form-2-DELETE: ````
+
+            :form form-2-grne_id: ``-1``
+
+            :form form-2-ppe_id: ``326``
+                        
+            :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+            :statuscode 302: Redirects to ``/grn``.
+
+    """
+
     GRNEntryFormset = formset_factory(GRNEntryForm)
     data = {
         'form-TOTAL_FORMS': '0',
@@ -120,38 +261,145 @@ def create_grn_view(request):
         return redirect('grn')
 
 
-def display_grns_view(request):
-    if request.method == 'GET':
-        grns = GoodsReceiptNote.objects.all()
-        state = FilterState.objects.get(name='GRNs_basic')
-        column_list = change_column_position(request, state)
-        myFilter = GoodsReceiptNoteFilter(request.GET, queryset=grns)
-        queryset = myFilter.qs
-        number_of_objects = len(queryset)
-        page_number = request.GET.get('page')
-        page_obj, dictionaries = paginate(queryset, myFilter, page_number)
-        # dictionary contains only vendor id and not vendor name. So add it.
-        for dict in dictionaries:
-            vend_id = dict['vendor_id']
-            vendor = Vendor.objects.get(id=vend_id)
-            dict['vendor'] = vendor.name
-        return render(request, 'goods_receipt_note/grn_contents.html', {'page_obj': page_obj,
-                                                                               'myFilter': myFilter,
-                                                                               'n_prod': number_of_objects,
-                                                                               'columns': column_list,
-                                                                               'dicts': dictionaries,
-                                                                               'url': request.build_absolute_uri('/grns/')})
-
-
-def delete_grn_view(request, pk):
-    if request.method == 'POST':
-        grn = GoodsReceiptNote.objects.get(id=pk)
-        create_event(grn,'Deleted')
-        grn.delete()
-        return redirect('grn')
-
-
 def update_grn_view(request):
+    """ 
+        Updates the goods receipt note (GRN) on ``POST`` request, and returns a GRN update form on ``GET`` request. 
+
+        .. http:get:: /grn/update
+
+            Gets the GRN update form.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                GET /grn/update HTTP/1.1
+                Host: localhost:8000
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            
+    
+            **Example response**:
+
+            .. sourcecode:: http
+
+                HTTP/1.1 200 OK
+                Vary: Accept
+                Content-Type: text/html; charset=utf-8
+
+            :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            :statuscode 200: GRN update form received successfully.
+
+        .. http:post:: /grn/update
+
+            Updates a GRN.
+            There are two modes:
+            - ``auto`` : Setting ``grn-grnType`` to ``auto`` creates a GRN with PO reference.
+            - ``manual`` : Setting ``grn-grnType`` to ``manual`` creates a GRN without PO reference. In this case
+                            the ``grn-poRef`` is not required.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                POST /consumer/ HTTP/1.1
+                Host: localhost:8000
+                Content-Type: multipart/form-data;
+
+            :form grn-grnType: ``auto``
+
+            :form grn-vendor: ``4``
+
+            :form grn-poRef: ``182``
+
+            :form grn-amendNumber: ``546``
+
+            :form grn-amendDate: ``2021-09-29``
+
+            :form grn-identifier: ``846``
+
+            :form grn-date: ``2021-09-29``
+
+            :form grn-transporter: ``TeraTransport``
+
+            :form grn-vehicleNumber: ``GH-646358``
+
+            :form grn-gateInwardNumber: ``864353``
+
+            :form grn-preparedBy: ``KJL``
+
+            :form grn-checkedBy: ``KJH``
+
+            :form grn-inspectedBy: ``GIO``
+
+            :form grn-approvedBy: ``BHI``
+
+            :form form-TOTAL_FORMS: ``3``
+
+            :form form-INITIAL_FORMS: ``0``
+
+            :form form-MIN_NUM_FORMS: ````
+
+            :form form-MAX_NUM_FORMS: ````
+
+            :form form-0-product: ``637``
+
+            :form form-0-quantity: ``100``
+
+            :form form-0-receivedQty: ``50``
+
+            :form form-0-acceptedQty: ``50``
+
+            :form form-0-rejectedQty: ``0``
+
+            :form form-0-remark: ``OK``
+
+            :form form-0-DELETE: ````
+
+            :form form-0-grne_id: ``-1``
+
+            :form form-0-ppe_id: ``324``
+
+            :form form-1-product: ``645``
+
+            :form form-1-quantity: ``250``
+
+            :form form-1-receivedQty: ``200``
+
+            :form form-1-acceptedQty: ``180``
+
+            :form form-1-rejectedQty: ``20``
+
+            :form form-1-remark: ``20 pieces faulty``
+
+            :form form-1-DELETE: ````
+
+            :form form-1-grne_id: ``-1``
+
+            :form form-1-ppe_id: ``325``
+
+            :form form-2-product: ``638``
+
+            :form form-2-quantity: ``200``
+
+            :form form-2-receivedQty: ``0``
+
+            :form form-2-acceptedQty: ``0``
+
+            :form form-2-rejectedQty: ``0``
+
+            :form form-2-remark: ````
+
+            :form form-2-DELETE: ````
+
+            :form form-2-grne_id: ``-1``
+
+            :form form-2-ppe_id: ``326``
+                        
+            :resheader Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryLTR88aZAnBUSE7mv
+            :statuscode 302: Redirects to ``/grn``.
+
+    """
+
     if request.method == 'GET':
         ###### Fetch all the required data from the database ###########
         pk = request.GET.get('pk')
@@ -297,11 +545,224 @@ def update_grn_view(request):
                             else:
                                 print(grnentry.errors)
         create_event(GoodsReceiptNote.objects.get(id=pk),'Updated')
+        # return redirect('grn')
+        return HttpResponse(f'<p>{generate_form_parameter_string(request.POST)}</p>')
+
+
+def delete_grn_view(request, pk):
+    """ 
+        Deletes the GRN with primary key ``object_id`` on ``POST`` request.
+
+        .. http:post:: /grn/<str:object_id>/delete
+
+            Deletes the GRN represented by the primary key ``object_id``.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                POST /grn/104/delete HTTP/1.1
+                Host: localhost:8000
+                Content-Type: application/x-www-form-urlencoded
+                
+            :param object_id: GRN primary key.
+            :resheader Content-Type: application/x-www-form-urlencoded
+            :statuscode 302: Redirects to ``/grn``.
+            :statuscode 500: GRN matching query does not exist.
+
+    """
+    if request.method == 'POST':
+        grn = GoodsReceiptNote.objects.get(id=pk)
+        create_event(grn,'Deleted')
+        grn.delete()
         return redirect('grn')
     
 
 
+def display_grns_view(request):
+    """ 
+        Retrieves the list of GRNs on ``GET`` request.
+
+        .. http:get:: /grns/
+
+            Gets the list of all GRNs.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                GET /grns/ HTTP/1.1
+                Host: localhost:8000
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            
+            :form page: The page number of the GRN list.
+    
+            **Example response**:
+
+            .. sourcecode:: http
+
+                HTTP/1.1 200 OK
+                Vary: Accept
+                Content-Type: text/html; charset=utf-8
+
+            :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            :statuscode 200: List of GRNs received successfully.
+    """
+    if request.method == 'GET':
+        grns = GoodsReceiptNote.objects.all()
+        state = FilterState.objects.get(name='GRNs_basic')
+        column_list = change_column_position(request, state)
+        myFilter = GoodsReceiptNoteFilter(request.GET, queryset=grns)
+        queryset = myFilter.qs
+        number_of_objects = len(queryset)
+        page_number = request.GET.get('page')
+        page_obj, dictionaries = paginate(queryset, myFilter, page_number)
+        # dictionary contains only vendor id and not vendor name. So add it.
+        for dict in dictionaries:
+            vend_id = dict['vendor_id']
+            vendor = Vendor.objects.get(id=vend_id)
+            dict['vendor'] = vendor.name
+        return render(request, 'goods_receipt_note/grn_contents.html', {'page_obj': page_obj,
+                                                                               'myFilter': myFilter,
+                                                                               'n_prod': number_of_objects,
+                                                                               'columns': column_list,
+                                                                               'dicts': dictionaries,
+                                                                               'url': request.build_absolute_uri('/grns/')})
+
+
 def print_grn_view(request, pk):
+    """ 
+        Opens the GRN with primary key ``grn_id`` for printing on ``GET`` request.
+
+        .. http:post:: /grn/<str:grn_id>/print
+
+            Opens the GRN represented by the primary key ``grn_id``.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                POST /grn/103/print HTTP/1.1
+                Host: localhost:8000
+                Content-Type: application/x-www-form-urlencoded
+                
+                
+            **Example response**:
+
+            .. sourcecode:: http
+
+                HTTP/1.1 200 OK
+                Vary: Accept
+                Content-Type: application/json; charset=utf-8
+                
+                [
+                    {
+                        "company": {
+                            "name": "Fringillami",
+                            "owner": "Ivor Barnett",
+                            "gstin": "89AAC056465468",
+                            "phone": "332 220-7026",
+                            "address": "Ap #849-6241 Euismod Av., 677598, Carinthia, Belgium",
+                            "email": "est.tempor@fringillami.org",
+                            "location": "Belgium",
+                            "image": "/media/images/hyperlink-green_x91WW5n.png"
+                        },
+                        "grn": {
+                            "grnes": [
+                                {
+                                    "grn": 103,
+                                    "grne_id": 117,
+                                    "ppe_id": 324,
+                                    "po_id": 293,
+                                    "product": {
+                                        "pk": 637,
+                                        "name": "piano",
+                                        "category": "Ultricies PC",
+                                        "quantity": 23921,
+                                        "identifier": "PROD9",
+                                        "location": "Musselburgh",
+                                        "description": "88-key, Tri-sensor Scaled Hammer Action Keyboard II, Simulated ebony and ivory keys ",
+                                        "prod_id": 637
+                                    },
+                                    "quantity": 100,
+                                    "receivedQty": 50,
+                                    "acceptedQty": 50,
+                                    "rejectedQty": 0,
+                                    "remark": "OK"
+                                },
+                                {
+                                    "grn": 103,
+                                    "grne_id": 118,
+                                    "ppe_id": 325,
+                                    "po_id": 293,
+                                    "product": {
+                                        "pk": 645,
+                                        "name": "Tabl",
+                                        "category": "Sociis Natoque Company",
+                                        "quantity": 38276,
+                                        "identifier": "PROD17",
+                                        "location": "Schagen",
+                                        "description": "aldgjlakjlkasdj",
+                                        "prod_id": 645
+                                    },
+                                    "quantity": 250,
+                                    "receivedQty": 200,
+                                    "acceptedQty": 180,
+                                    "rejectedQty": 20,
+                                    "remark": "20 pieces faulty"
+                                }
+                            ],
+                            "date": "29-Sep-2021",
+                            "vendor": {
+                                "name": "Girish",
+                                "identifier": "GJ",
+                                "gstin": "GSTIN002",
+                                "address": {
+                                    "name": "alsf",
+                                    "address": "jas;k",
+                                    "city": ";sdalkf",
+                                    "phone": "alsf",
+                                    "state": "kjdflk",
+                                    "country": "ljflkj",
+                                    "post": "54545"
+                                }
+                            },
+                            "poRef": [
+                                182
+                            ],
+                            "identifier": 846,
+                            "grnType": "auto",
+                            "amendDate": "2021-09-29T00:00:00Z",
+                            "transporter": "TeraTransport",
+                            "vehicleNumber": "GH-646358",
+                            "gateInwardNumber": "864353",
+                            "preparedBy": "KJL",
+                            "checkedBy": "KJH",
+                            "inspectedBy": "GIO",
+                            "approvedBy": "BHI"
+                        },
+                        "shippingaddress": {
+                            "name": "Harding Gross",
+                            "address": "8798 At, St., 7639",
+                            "city": "Rome",
+                            "phone": "936 651-4847",
+                            "state": "Lazio",
+                            "country": "Italy",
+                            "post": "300326"
+                        },
+                        "communication": {
+                            "email": "asfs@aflk.com",
+                            "phone": "6546432"
+                        }
+                    }
+                ]
+                
+            :param grn_id: GRN primary key.
+            :resheader Content-Type: application/json
+            :statuscode 200: GRN print request successful.
+            :statuscode 500: GRN matching query does not exist.
+
+    """
     if request.method == 'GET':
         grn = GoodsReceiptNote.objects.get(id=pk)
         company = Company.objects.all().last()

@@ -68,18 +68,7 @@ urlpatterns = [
 
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/warehouse-colored-blue.svg')),
-    
-    # DRF-SPECTACULAR
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Optional UI:
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    # path('schema', get_schema_view(
-    #     title="INVENT API",
-    #     description = "API Reference for INVENT application.",
-    #     version="1.0.0"
-    # ), name="openapi-schema")
-    
+        
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

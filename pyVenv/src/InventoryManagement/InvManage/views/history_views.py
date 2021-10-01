@@ -10,8 +10,63 @@ from InvManage.forms import HistoryForm
 import json
 
 def display_history_view(request):
-    """   
-    This function generates the history view.    
+    """ 
+        Retrieves the list of events on ``GET`` request. The ``create``, ``update``, and ``delete`` events are registered for each model.
+
+        .. http:get:: /history/
+
+            Gets the list of all history items.
+
+            **Example request**:
+
+            .. sourcecode:: http
+
+                GET /history/ HTTP/1.1
+                Host: localhost:8000
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+                
+                [
+                    {
+                        "objname": {
+                            ""
+                        },
+                        "operation": {
+                            "Created",
+                            "Updated",
+                            "Deleted"
+                        },
+                        "objmodel": {
+                            "Company",
+                            "Vendor",
+                            "PurchaseOrder",
+                            "Product",
+                            "Consumer",
+                            "SalesOrder",
+                            "GoodsReceiptNote"
+                        },
+                        "history-qlen": {
+                            "10"
+                        },
+                        "date__gt": {
+                            "11/01/2020"
+                        },
+                        "date__lt": {
+                            "09/26/2021"
+                        }
+                    }
+                ]
+
+    
+            **Example response**:
+
+            .. sourcecode:: http
+
+                HTTP/1.1 200 OK
+                Vary: Accept
+                Content-Type: text/html; charset=utf-8
+
+            :reqheader Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+            :statuscode 200: List of filtered history events received successfully.
     """
     if request.method == 'GET':
         # Create a dictionary of all events

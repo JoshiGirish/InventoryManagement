@@ -4,10 +4,41 @@ from .reuse import ShippingAddress, Communication, BankAccount, PurchaseData
 
 
 class Dashboard(models.Model):
+    """Model of the dashboard.
+    
+    """
     pass
 
 
 class Company(models.Model):
+    """Model of the company.
+
+    Attributes
+    ----------
+    name : str
+        Name of the company.
+    owner : str
+        Owner of the company.
+    gstin : str
+        GSTIN number of the company.
+    phone : str
+        Contact number.
+    address : str
+        Postal address.
+    email : str
+        E-mail address of the contact person.
+    location : str
+        City of the company.
+    image : ImageField
+        Photo/logo of the company.
+    shippingaddress : ShippingAddress
+        Primary key of the ``ShippingAddress`` instance associated with the company.
+
+    Returns
+    -------
+    str
+        String representation of the company name.
+    """
     name = models.CharField(null=True,max_length=100)
     owner = models.CharField(null=True,max_length=100)
     gstin = models.CharField(default=None,null=True, max_length=100)
@@ -23,6 +54,30 @@ class Company(models.Model):
 
 
 class Vendor(models.Model):
+    """Model of the vendor.
+
+    Attributes
+    ----------
+    name : str
+        Name of the vendor.
+    identifier : str
+        Unique identifier of the vendor.
+    gstin : str
+        GSTIN number of the vendor.
+    address : ShippingAddress
+        Primary key of the ``ShippingAddress`` instance associated with the vendor.
+    communication : Communication
+        Primary key of the ``Communication`` instance associated with the vendor.
+    backaccount : BankAccount
+        Primary key of the ``BankAccount`` instance associated with the vendor.
+    purchasedata : PurchaseData
+        Primary key of the ``PurchaseData`` instance associated with the vendor.
+
+    Returns
+    -------
+    str
+        String representation of the vendor name.
+    """
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
     gstin = models.CharField(default=None, null=True, max_length=100)
@@ -36,6 +91,30 @@ class Vendor(models.Model):
     
 
 class Consumer(models.Model):
+    """Model of the consumer.
+
+    Attributes
+    ----------
+    name : str
+        Name of the consumer.
+    identifier : str
+        Unique identifier of the consumer.
+    gstin : str
+        GSTIN number of the consumer.
+    phone : str
+        Contact number.
+    address : str
+        Address of the consumer.
+    email : str
+        E-mail address of the consumer.
+    location : str
+        City of the consumer.
+
+    Returns
+    -------
+    [type]
+        [description]
+    """
     name = models.CharField(max_length=100)
     identifier = models.CharField(null=True, blank=True,max_length=100)
     gstin = models.CharField(default=None, null=True, max_length=100)
@@ -49,6 +128,38 @@ class Consumer(models.Model):
 
 
 class PurchaseOrder(models.Model):
+    """Model of the purchase order.
+
+    Attributes
+    ----------
+    vendor : Vendor
+        Vendor associated with the purchase order.
+    date : DateField
+        Date and time of the purchase order creation.
+    po : int
+        Purchase order number.
+    discount : float
+        Percentage discount.
+    tax : float
+        Percentage of tax applicable for the purchase.
+    paid : float
+        Amount paid against the PO.
+    balance : float
+        Amount balance which remains to be paid.
+    subtotal : float
+        Total of all the product purchase entries associated with the purchase order.
+    taxtotal : float
+        Total tax applicable on the `subtotal`.
+    ordertotal : float
+        Total price of the purchase order including  `taxtotal`.
+
+    Methods
+    -------
+    is_complete()
+        Returns the completion status (boolean).
+    pending_ppes()
+        Returns list of product purchase entries which are not completed.
+    """
     # Vendor details
     vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     # Order details
@@ -80,6 +191,39 @@ class PurchaseOrder(models.Model):
         
 
 class GoodsReceiptNote(models.Model):
+    """Model of the goods receipt note (GRN).
+
+    Attributes
+    ----------
+    vendor : ModelChoiceField
+        Vendor associated with the goods receipt note.
+    poRef : MultipleChoiceField
+        List of identifiers of the purchase orders from which the goods receipt note is derived.
+    identifier : str
+        Unique identifier of the goods receipt note.
+    date : DateField
+        Date of GRN creation.
+    grnType : ChoiceField
+        Type of GRN (``auto`` or ``manual``).
+    amendNumber : int
+        Amendment number of the GRN.
+    amendDate : DateField
+        Amendment date.
+    transporter : str
+        Name of the transport/shipping service.
+    vehicleNumber : str
+        Vehicle number using which the products are shipped.
+    gateInwardNumber : str
+        Gate inward number of the vehicle.
+    preparedBy : str
+        Name/identifier of the person who created the goods receipt note.
+    checkedBy : str
+        Name/identifier of the person who validated the goods receipt note.
+    checkedBy : str
+        Name/identifier of the person who inspected the physical products in the goods receipt note.
+    approvedBy : str
+        Name/identifier of the authority who approved the goods receipt note.
+    """
     TYPE_CHOICES = [
         ('manual', 'Blank'),
         ('auto', 'PO Reference')
@@ -107,6 +251,31 @@ class GoodsReceiptNote(models.Model):
     
     
 class SalesOrder(models.Model):
+    """Model of the sales order.
+
+    Attributes
+    ----------
+    consumer : ModelChoiceField
+        Consumer associated with the sales order.
+    date : DateField
+        Date of the sales order creation.
+    so : int
+        Sales order number.
+    discount : float
+        Percentage discount associated with the sales order.
+    tax : float
+        Percentage of tax applicable.
+    paid : float
+        Amount received from the consumer.
+    balance : float
+        Amount balance with the consumer.
+    subtotal : float
+        Total of all the product sales entries associated with the sales order.
+    taxtotal : float
+        Total tax applicable on the `subtotal`.
+    ordertotal : float
+        Total price of the sales order including  `taxtotal`.
+    """
     # Vendor details
     consumer = models.ForeignKey(Consumer,on_delete=models.CASCADE)
     # Order details
@@ -123,6 +292,43 @@ class SalesOrder(models.Model):
 
 
 class Product(models.Model):
+    """Model of the product.
+
+    Attributes
+    ----------
+    name : str
+        Name of the product.
+    category : str
+        Product category.
+    item_type : str
+        Type of the product.
+    description : str
+        Short description of the product.
+    price : float
+        Price of the product.
+    quantity : int
+        Stock quantity of the product.
+    identifier : str
+        Unique identifier of the product.
+    location : str
+        Physical location of the product.
+    length : str
+        Length of the product.
+    width : str
+        Width of the product.
+    height : str
+        Height of the product.
+    weight : str
+        Weight of the product.
+    discount : float
+        Default discount percentage on the product.
+    barcode : str
+        Barcode of the product.
+    expiry : DateField
+        Expiry date of the product.
+    image : ImageField
+        Image of the product.
+    """
     # Basic Information
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
@@ -148,6 +354,34 @@ class Product(models.Model):
 
 
 class ProductPurchaseEntry(models.Model):
+    """Model of the product purchase entry.
+    
+    Attributes
+    ----------
+    product : ModelChoiceField
+        Product associated wit the product purchase entry.
+    quantity : int
+        Quantity of the product to be ordered.
+    price : float
+        Price of the product.
+    discount : float
+        Percentage discount on the product purchase.
+    order : PurchaseOrder
+        Referenced purchase order.
+    receivedQty : str
+        Quantity of product received against the ordered quantity.
+    acceptedQty : str
+        Quantity of product accepted as OK.
+    rejectedQty : str
+        Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+    
+    Methods
+    -------
+    is_complete()
+        Returns the completion status (boolean).
+    pending_quantity()
+        Returns the pending quantity against the entry (int).
+    """
     # identifier = models.CharField(max_length=100)
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
@@ -177,6 +411,27 @@ class ProductPurchaseEntry(models.Model):
         
 
 class GRNEntry(models.Model):
+    """Model of the goods receipt note entry (GRNE).
+
+    Attributes
+    ----------
+    product : Product
+        Primary key of the ``Product`` instance associated with the goods receipt note entry.
+    quantity : int
+        Ordered quantity of product with reference to product purchase entry.
+    grne : int
+        Primary key of the ``GoodsReceiptNote`` instance.
+    ppe : int
+        Primary key of the ``ProductPurchaseEntry`` instance associated with the GRNE.
+    remark : str
+        Remarks of the quality engineer or the GRN creator about status of products received.
+    receivedQty : str
+        Quantity of product received against the ordered quantity.
+    acceptedQty : str
+        Quantity of product accepted as OK.
+    rejectedQty : str
+        Quantity of product rejected (not OK, on HOLD, extra delivery, etc.)
+    """
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
     grn = models.ForeignKey(GoodsReceiptNote,on_delete=models.CASCADE)
@@ -188,6 +443,21 @@ class GRNEntry(models.Model):
 
 
 class ProductSalesEntry(models.Model):
+    """Model of the product sales entry.
+
+    Attributes
+    ----------
+    product : Product
+        Primary key of the ``Product`` associated with the product sales entry.
+    quantity : int
+        Quantity of the product.
+    price : float
+        Price of the product.
+    discount : float
+        Percentage discount on the product.
+    order : SalesOrder
+        Primary key of the ``SalesOrder`` referenced by the entry.
+    """
     # identifier = models.CharField(max_length=100)
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(null=True)
@@ -198,18 +468,55 @@ class ProductSalesEntry(models.Model):
 
 
 class PurchaseInvoice(models.Model):
+    """Model for the purchase invoice.
+
+    Attributes
+    ----------
+    company : Company
+        Primary key of the ``Company``.
+    po : PurchaseOrder
+        Primary key of the ``PurchaseOrder``.
+    shippingaddress : ShippingAddress
+        Primary key of the ``ShippingAddress``.
+    communication : Communication
+        Primary key of the ``Communication``.
+    """
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
     po = models.OneToOneField(PurchaseOrder,on_delete=models.SET_NULL,null=True)
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
     communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
 class GRNInvoice(models.Model):
+    """Model for the goods receipt note invoice.
+
+    Attributes
+    ----------
+    company : Company
+        Primary key of the ``Company``.
+    grn : GoodsReceiptNote
+        Primary key of the ``GoodsReceiptNote``.
+    shippingaddress : ShippingAddress
+        Primary key of the ``ShippingAddress``.
+    communication : Communication
+        Primary key of the ``Communication``.
+    """
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
     grn = models.OneToOneField(GoodsReceiptNote,on_delete=models.SET_NULL,null=True)
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)
     communication = models.OneToOneField(Communication, on_delete=models.SET_NULL, null=True)
     
 class SalesInvoice(models.Model):
+    """Model for the sales order invoice.
+
+    Attributes
+    ----------
+    company : Company
+        Primary key of the ``Company``.
+    so : SalesOrder
+        Primary key of the ``SalesOrder``.
+    shippingaddress : ShippingAddress
+        Primary key of the ``ShippingAddress``.
+    """
     company = models.OneToOneField(Company,on_delete=models.SET_NULL,null=True)
     so = models.OneToOneField(SalesOrder,on_delete=models.SET_NULL,null=True)
     shippingaddress = models.OneToOneField(ShippingAddress,on_delete=models.SET_NULL,null=True)

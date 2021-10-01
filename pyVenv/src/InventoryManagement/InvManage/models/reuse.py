@@ -3,6 +3,29 @@ from django.utils import timezone
 
 
 class ShippingAddress(models.Model):
+    """Model of the shipping address.
+
+    Attributes
+    ----------
+    title : str
+        Title of the firm.
+    name : str
+        Name of the firm.
+    phone : str
+        Contact number of the firm.
+    address : str
+        Postal address.
+    city : str
+        City.
+    state : str
+        State.
+    country : str
+        Country.
+    website : URLField
+        Official website of the firm.
+    post : str
+        Postal code of the firm.
+    """
     title = models.CharField(null=True,max_length=20) # Company, Ms./, ...
     name = models.CharField(max_length=100) 
     phone = models.CharField(max_length=100, null=True, blank=True)
@@ -15,6 +38,19 @@ class ShippingAddress(models.Model):
     
     
 class Communication(models.Model):
+    """Model of the communication information.
+
+    Attributes
+    ----------
+    language : str
+        Language of communication.
+    phone : str
+        Contact number of the firm.
+    email : EmailField
+        E-mail of the contact person.
+    fax : str
+        Fax number.
+    """
     language = models.CharField(null=True, max_length=20, blank=True, default='English')
     phone = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True,max_length=100)
@@ -22,6 +58,21 @@ class Communication(models.Model):
     
 
 class PurchaseData(models.Model):
+    """Model of the purchase data.
+
+    Attributes
+    ----------
+    currency : str
+        Currency of purchase.
+    minorder : int
+        Minimum order quantity.
+    contactperson : str
+        Name of the contact person.
+    refcode : str
+        Reference code.
+    transportmode : str
+        Mode of transport of the shipment.
+    """
     currency = models.CharField(null=True, blank=True, max_length=10, verbose_name='PO Currency') # Purchase Order currency
     minorder = models.IntegerField(null=True, blank=True, verbose_name='Min Order Quantity') # Minimum order value
     contactperson = models.CharField(null=True, blank=True, max_length=50, verbose_name='Sales Person') # Sales representative of vendor company
@@ -30,6 +81,29 @@ class PurchaseData(models.Model):
 
 
 class BankAccount(models.Model):
+    """Model of the bank account details.
+
+    Attributes
+    ----------
+    name : str
+        Name of the bank.
+    branch : str
+        Branch number of the bank.
+    region : str
+        City in which the branch is located.
+    route : str
+        Transit number.
+    number : int
+        Bank account number.
+    acctype : str  
+        Type of bank account.
+    iban : str
+        IBAN number.
+    code : str 
+        Bank code.
+    branchcode : str
+        Branch code.
+    """
     name = models.CharField(null=True,max_length=100, verbose_name='Bank Name') # Bank name
     branch = models.CharField(null=True,max_length=20) # Bank branch
     region = models.CharField(null=True,max_length=20) # Country/region

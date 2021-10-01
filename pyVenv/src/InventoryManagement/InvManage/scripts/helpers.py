@@ -2,6 +2,15 @@ from InvManage.models import Object, EventCard, ObjectModel, EventType
 import datetime
 
 def create_event(obj,event):
+    """Creates an event card for each event.
+
+    Parameters
+    ----------
+    obj : Model
+        Model of the object instance being created, updated, or deleted.
+    event : EventType
+        Type of operation being performed on the object.
+    """
     modName = type(obj).__name__
     if modName == 'PurchaseOrder': # not all models have "name" field
         objName = '# '+ str(obj.po)
@@ -32,9 +41,44 @@ def create_event(obj,event):
     # newCard.save()
 
 def get_parameter_list_from_request(req,parameter):
+    """Extracts a parameter from the request.
+
+    Parameters
+    ----------
+    req : HttpRequest
+        The HTTP request.
+    parameter : str
+        The parameter being extracted.
+
+    Returns
+    -------
+    List
+        List of comma separated parameters. 
+    """
     try:
         id_string= req.GET.get(parameter)
         param_list = list(map(int, id_string.split(',')))
     except (AttributeError, ValueError) as e:
         param_list = []
     return param_list
+
+def generate_form_parameter_string(reqData):
+    """Generates a paragraph element with the form data.
+
+    Parameters
+    ----------
+    reqData : Dict
+        Form data.
+
+    Returns
+    -------
+    str
+        HTML string rendered as form.
+    """
+    print(reqData.dict())
+    d = reqData.dict()
+    formString = ""
+    # for form, data in enumerate(reqData):
+    for key, value in d.items():
+        formString += f"<p>:form {key}: ``{value}``\n</p>"
+    return formString
