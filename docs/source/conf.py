@@ -36,6 +36,7 @@ extensions = [	'autoapi.extension',
 				'sphinxcontrib.napoleon']
 
 autoapi_dirs = ['../../pyVenv/src/InventoryManagement/InvManage']
+autoapi_template_dir = '_templates/'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

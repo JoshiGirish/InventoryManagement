@@ -5,3 +5,11 @@
 
 ![INVENT](/docs/images/main.png)
 
+
+## Resources
+
+- Quick Start Tutorials : [INVENT - YouTube Tutorials](https://inventory-management.readthedocs.io/en/latest/tutorials.html)
+
+- Documentation : [INVENT v1.0.0 Documentation](https://inventory-management.readthedocs.io/en/latest/index.html)
+
+- APIs : [INVENT API Reference](https://inventory-management.readthedocs.io/en/latest/autoapi/index.html)
