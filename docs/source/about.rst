@@ -4,10 +4,10 @@ About
 **INVENT** is a ``Django`` based RESTful web application. It implements modular and reusable code with clear separation of concerns using ``Model-Template-View`` architectural pattern.
 
 - :doc:`Models </autoapi/InvManage/models/index>` describe the logical data structure.
-- :doc:`Templates` represent static HTML fragments of the user interface.
+- :doc:`Templates <https://github.com/JoshiGirish/InventoryManagement/tree/master/pyVenv/src/InventoryManagement/InvManage/templates>` represent static HTML fragments of the user interface.
 - :doc:`Views </autoapi/InvManage/views/index>` are responsible for handling requests and deciding the response. 
 
-In addition, the application uses `Django Forms API <https://docs.djangoproject.com/en/3.2/ref/forms/api>`_ and `Django REST framework <https://www.django-rest-framework.org>`_. Django Forms API allows hassle free rendering of web forms, while Django REST framework provides web browsable API, authontication, and serialization capabilities. See :doc:`Forms </autoapi/InvManage/forms/index>` and :doc:`Serializers </autoapi/InvManage/serializers/index>` sections of the documentation.
+In addition, the application uses `Django Forms API <https://docs.djangoproject.com/en/3.2/ref/forms/api>`_ and `Django REST framework <https://www.django-rest-framework.org>`_. Django Forms API allows hassle free rendering of web forms, while Django REST framework provides web browsable API, authentication, and serialization capabilities. See :doc:`Forms </autoapi/InvManage/forms/index>` and :doc:`Serializers </autoapi/InvManage/serializers/index>` sections of the documentation.
 
 The application exposes the following endpoints, which are listed in the `urls.py <https://github.com/JoshiGirish/InventoryManagement/blob/master/pyVenv/src/InventoryManagement/InventoryManagement/urls.py>`_ file and documented in :doc:`Views </autoapi/InvManage/views/index>` section.::
 

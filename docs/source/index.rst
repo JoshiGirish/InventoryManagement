@@ -6,7 +6,7 @@
 Welcome to INVENT's documentation!
 ==================================
 
-**INVENT** is a inventory management software. It is a minimalistic demo application based on `Django` web framework. It was created to demostrate the rapid prototyping capabililties of `Django` for web application development.
+**INVENT** is an inventory management software. It is a minimalistic demo application based on `Django` web framework. It was created to demostrate the rapid prototyping capabililties of `Django` for web application development.
 
 .. image:: ../images/main.png
   :width: 800

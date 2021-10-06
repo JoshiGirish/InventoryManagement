@@ -1,7 +1,7 @@
 Tutorials
 =========
 
-The application handles purchase, inventory, and sales stages of the products. The following videos provide workflow related to these stages.
+**INVENT** handles purchase, inventory, and sales stages of the products. The following videos provide workflow related to these stages.
 
 .. raw:: html
 
